@@ -1,0 +1,225 @@
+====================================================================
+NEXO VEO VISION — FONDAMENTO CONCETTUALE UX/UI E NAVIGAZIONE
+====================================================================
+STATO: SOLO PROGETTAZIONE (analisi + organizzazione). NESSUNA IMPLEMENTAZIONE.
+Nessun codice, nessuna UI, nessuna mappa/provider, nessun tema AUTO, nessun
+Road Horizon, nessun Nexo/Veo, nessun CarPlay/Android Auto, nessuna build/test.
+Estende: NEXO_VEO_VISION.md (visione, 51 punti) e NEXO_VEO_VISION_ROADMAP.txt (fasi).
+Le immagini allegate = riferimenti concettuali ufficiali (NON mockup pixel-perfect).
+Obiettivo: identita' propria, NON clone di Waze/Google/Apple Maps.
+--------------------------------------------------------------------
+
+1. IMMAGINI DI RIFERIMENTO (acquisite)
+- Due superfici mostrate: SMARTPHONE (verticale) e CARPLAY (orizzontale), stesso
+  linguaggio visivo. Comunicano: pulizia, mappa ampia, gerarchia info, dimensione/
+  posizione controlli, stile pannelli, leggibilita', carattere del prodotto.
+- Elementi osservati nell'immagine (da mantenere come riferimento):
+  * Card manovra in alto: "350 m — Via Appia Nuova — poi mantieni la sinistra".
+  * Avviso contestuale rosso sotto la manovra: "Veicolo fermo · corsia emergenza · 1,8 km".
+  * Road Horizon compatto "40 km davanti" con marker a 9/23/36 km.
+  * Freccia veicolo teal->violetto (identita' NEXO VEO), non pallino blu.
+  * Controlli lato destro: bussola/N, +, -, ricentra; a sinistra VEO (occhio) e
+    segnalazione "!+".
+  * Badge limite velocita' / tachimetro (es. "120 km/h") e badge strada (A1/SS7).
+  * Barra viaggio in basso: "18:42 arrivo · 37 min · 31 km" + alternativa "+2 min meno traffico".
+  * Indicatore stato vocale "NEXO · VEO — ascolto attivo" con anello luminoso.
+  * CarPlay: stessi elementi, meno controlli, elementi piu' grandi, colonna sinistra
+    manovra+eventi+limite, colonna destra VEO/segnala/audio/impostazioni.
+- Nota: pannello riferimento include "PALETTE COLORI" e "ORIENTAMENTO" (Marcia,
+  Nord, 3D Marcia, 2D, Reale) coerenti con i punti sotto.
+
+2. PRINCIPIO GENERALE — GERARCHIA SCHERMATA NAVIGAZIONE
+Ordine: STRADA > PERCORSO > PROSSIMA MANOVRA > PERICOLI/INFO IMPORTANTI >
+ALTERNATIVE > ROAD INTELLIGENCE > CONTROLLI.
+- La mappa occupa la maggior parte dello schermo. No dashboard piena di pulsanti.
+- "La complessita' e' nel sistema, non davanti agli occhi del guidatore."
+
+3. IDENTITA' CROMATICA
+- GRAFITE / NERO PROFONDO: interfaccia, pannelli, tema scuro.
+- BIANCO / GHIACCIO: testi e info principali nel tema scuro.
+- TEAL / VERDE ACQUA LUMINOSO: colore identificativo del PERCORSO ATTIVO e di NEXO.
+- VIOLETTO / BLU-VIOLA: VEO, AI, Road Intelligence, funzioni intelligenti.
+- AMBRA: attenzione, rallentamenti, ZTL (attenzione ma non pericolo immediato).
+- ROSSO: uso PARSIMONIOSO = pericolo/chiusura/critico/attenzione immediata.
+- Teal + violetto combinabili in elementi identificativi (es. freccia, anello vocale).
+
+4. DOPPIO TEMA COMPLETO — CHIARO / SCURO
+- Non due interfacce diverse: STESSA disposizione, gerarchia, controlli, simbologia,
+  significati cromatici. Cambia solo il linguaggio luminoso (comfort/leggibilita').
+- Vale sia per interfaccia sia per cartografia.
+
+5. MODALITA' AUTO — ADATTIVA ALL'AMBIENTE (non solo giorno/notte)
+- AUTO != orario fisso. Considera (quando possibile): posizione, ora, ALBA/TRAMONTO
+  calcolati sulla posizione reale, condizioni ambientali, ingresso/uscita GALLERIA,
+  tunnel, parcheggi coperti, ambienti chiusi rilevabili.
+- Esempio: 14:00 chiaro -> galleria scuro -> uscita chiaro; notte scuro.
+
+6. TRANSIZIONI AMBIENTALI
+- Cambio Chiaro<->Scuro rapido ma gradevole, NO flash. Breve transizione.
+- ISTERESI / soglie per evitare flicker (cavalcavia, ponti, ombre, oscuramenti brevi,
+  errori temporanei). Una galleria e' ambiente chiuso reale; l'ombra di un cavalcavia no.
+
+7. RILEVAMENTO AMBIENTE
+- Multi-segnale quando possibile: dati cartografici tunnel, GPS, posizione sul percorso,
+  luminosita' dispositivo, info OS, info automotive disponibili. Non dipendere da un solo metodo.
+- VINCOLO: NON inventare capacita' hardware/API non realmente disponibili; comportamento
+  definitivo da valutare su iOS/Android/CarPlay/Android Auto in base alle API reali.
+
+8. CONTROLLO UTENTE
+- AUTO = default consigliato, NON obbligatorio. Utente sceglie CHIARO / SCURO / AUTO
+  liberamente (scuro a mezzogiorno o chiaro di notte ammessi). Guidatore in controllo.
+- Anche vocale: "Nexo, modalita' scura" / "Veo, modalita' chiara" / "Nexo, automatica".
+
+9. SINCRONIZZAZIONE AUTOMOTIVE
+- Tema coerente tra smartphone / CarPlay / Android Auto quando tecnicamente possibile
+  (es. galleria adatta anche l'esperienza auto). Rispettare limiti piattaforma.
+
+10. POSIZIONE DEL VEICOLO
+- Identita' = FRECCIA NEXO VEO minimalista (NON pallino/triangolo blu classico).
+  Semplice, leggibile anche piccola, adatta a smartphone/CarPlay/Android Auto, con
+  eventuale leggera 3D in modalita' 3D. Freccia = default.
+- Future alternative: freccia NEXO VEO / automobile minimal / altre rappresentazioni.
+
+11. ORIENTAMENTO MAPPA (almeno)
+- SENSO DI MARCIA (default): freccia fissa in alto, mappa ruota.
+- NORD: Nord in alto, freccia ruota.
+- 3D SENSO DI MARCIA: prospettiva della strada davanti. Cambio rapido/intuitivo.
+
+12. BUSSOLA
+- Compatta e dinamica (NO 4 grandi indicatori N/E/S/O permanenti).
+- Senso di marcia: indica chiaramente il Nord. Nord-up: piu' discreta.
+- Comportamento: tap -> cambia orientamento; long-press -> apre modalita' visualizzazione.
+
+13. MODALITA' MAPPA
+- 2D (dall'alto), 3D (prospettiva senso di marcia), REALE (DA DEFINIRE tecnicamente).
+- "REALE" NON implementabile finche' non definito. Possibili: satellitare/fotografico,
+  futura modalita' immersiva, eventuale AR molto piu' avanti (se tecnicamente/legalmente ok).
+- VINCOLO: "Reale" NON autorizza automaticamente lo sviluppo AR.
+
+14. ZOOM E CONTROLLO MAPPA
+- Supporto: pinch-to-zoom, pan, rotazione, ricentraggio, zoom +, zoom -, cambio prospettiva.
+- Pochi controlli visibili, raggiungibili. Indicativamente lato destro: bussola/orientamento,
+  +, -, ricentra. Posizione definitiva coi mockup.
+
+15. CARD MANOVRA (in alto)
+- Molto leggibile ma non troppo grande. Es: "↱ 350 m — Via Appia Nuova / poi mantieni la sinistra".
+- Manovra principale leggibile con occhiata rapidissima.
+
+16. AVVISI CONTESTUALI (sotto la manovra, quando serve)
+- Es: "⚠ Veicolo fermo · corsia d'emergenza · 1,8 km". Non necessariamente popup grande.
+- La GRAVITA' dell'evento determina il livello di invasivita'.
+
+17. ROAD HORIZON (nuovo concetto visuale)
+- Rappresenta graficamente cio' che l'app conosce DAVANTI, oltre la vista fisica.
+- Es: "40 KM DAVANTI — 9 km veicolo fermo / 23 km lavori / 36 km rallentamento".
+- Non sempre aperto: compare su richiesta, con VEO, con "Nexo guarda avanti", o
+  automaticamente se c'e' qualcosa di importante. Compatto, non copre la navigazione.
+- Rappresentazione del principio: "occhi molti km davanti all'auto".
+
+18. VEO / GUARDA AVANTI
+- Controllo dedicato a VEO (simbolo tipo OCCHIO, coerente con l'identita').
+- tap -> Guarda avanti / Road Horizon; long-press -> Road Intelligence approfondita.
+- Vocale: "Veo, guarda avanti" / "Nexo, cosa succede davanti?".
+
+19. INFORMAZIONI DI VIAGGIO (in basso, compatta)
+- Es: "18:42 ARRIVO · 37 min · 31 km". Leggibile senza rubare spazio alla mappa.
+
+20. ALTERNATIVE LIVE (senza menu complessi)
+- Es: "+2 min · meno traffico" / "-3 min · pedaggio". Tap -> cambia percorso subito.
+- Pannello completo: ATTUALE 42 min / +2 min meno traffico / -3 min pedaggio 4,20 EUR /
+  +7 min panoramico. Vocale: "Nexo, prendi quello con meno traffico".
+
+21. STATO VOCALE (Voice-First, ma discreto)
+- NO grande microfono centrale permanente. Indicatore discreto "NEXO · VEO" con stati:
+  listener disponibile / ascolto comando / elaborazione / risposta / disattivato.
+- Tap -> attivazione manuale del sistema vocale.
+
+22. SEGNALAZIONE RAPIDA
+- Controllo rapido; categorie: incidente, veicolo fermo, ostacolo, traffico, corsia,
+  strada chiusa, pericolo, altro. In guida preferito Voice-First -> "Segnalato." e basta.
+
+23. MENU DURANTE LA NAVIGAZIONE (ridotto al minimo)
+- Restano: mappa, manovra, info viaggio, controlli mappa, VEO, segnalazione,
+  alternative, stato Voice, avvisi. Il resto contestuale o nascosto. NO bottom bar piena.
+
+24. MENU FUORI DALLA NAVIGAZIONE (indicativo, non definitivo)
+- Struttura semplice: MAPPA / VIAGGI / COMMUNITY / PROFILO.
+- TOUR / SCENIC / DISCOVER / Journey Points -> integrati nel flusso di creazione/
+  selezione viaggio, non necessariamente grandi sezioni permanenti.
+
+25. SMARTPHONE
+- Mappa molto ampia, uso a una mano quando possibile, controlli abbastanza grandi,
+  info contestuali, no clutter, Voice-First, leggibilita' giorno/notte, transizioni
+  ambientali, alternative immediate.
+
+26. CARPLAY
+- Stessa identita', NON schermata iPhone ingrandita. Adattata alla guida: meno controlli,
+  elementi piu' grandi, info essenziali, percorso molto evidente, manovra, ETA, eventi
+  importanti, Road Horizon quando appropriato, VEO, Voice privilegiato.
+- Stessa filosofia per Android Auto (rispettandone le specifiche).
+
+27. COERENZA TRA LE SUPERFICI
+- Smartphone/CarPlay/Android Auto = stesso prodotto. Condividono: colori, simbologia,
+  freccia, significato avvisi, Nexo/Veo, VEO, Road Horizon, filosofia Voice-First.
+- Ogni superficie adattata alle proprie regole/dimensioni.
+
+28. INFORMAZIONE PROGRESSIVA
+- Non mostrare tutto sempre. Nessun problema -> Road Horizon quasi invisibile;
+  problema significativo -> info compatta; problema critico -> comunicazione immediata,
+  evidente e vocale. Vale per tutta la UI.
+
+29. SICUREZZA VISIVA
+- Colori/animazioni non decorativi fini a se stessi. In guida: niente animazioni
+  distraenti, testi lunghi, elementi piccoli, popup inutili, sovraccarico.
+- "Sofisticato senza essere complicato."
+
+30. PRINCIPI UX AGGIUNTI AI FONDAMENTI
+- LA COMPLESSITA' E' NEL SISTEMA, NON DAVANTI AGLI OCCHI DEL GUIDATORE.
+- AUTO SI ADATTA ALL'AMBIENTE, NON SOLTANTO ALL'ORARIO.
+- (Mantenuto) VOICE-FIRST, TOUCH-COMPLETE.
+
+====================================================================
+COLLEGAMENTO CON ROADMAP (dove vivranno queste decisioni, quando si sviluppera')
+====================================================================
+- Sistema temi (Chiaro/Scuro + token cromatici + astrazione tema per multi-surface):
+  fondamenta in FASE 0; applicazione UI in FASE 1.
+- Freccia NEXO VEO, orientamento (Marcia/Nord/3D), bussola, zoom/ricentra, card manovra,
+  barra viaggio, stato vocale, mappa 2D/3D: FASE 1.
+- Alternative live UI: FASE 1 (base) / FASE 2 (pannello completo con pedaggi).
+- VEO / Guarda avanti + Road Horizon (guscio visivo): FASE 3; popolati da dati reali
+  in FASE 4 (Live Road Layer) e FASE 5 (fusione fonti).
+- Segnalazione rapida (touch) + Voice-First reporting: UI in FASE 1, logica in FASE 4.
+- Avvisi contestuali con priorita' (critico/importante/utile/opzionale): FASE 1 (framework),
+  contenuti reali FASE 4+.
+- CarPlay/Android Auto UI: predisposizione multi-surface FASE 0/1, hardening/auto reale FASE 10.
+- Modalita' "REALE": RIMANDATA (non definita) — nessuna fase la sviluppa finche' non specificata.
+
+====================================================================
+NOTE DI COORDINAMENTO / POSSIBILI CONTRADDIZIONI DA GESTIRE (nessun blocco)
+====================================================================
+A. MODALITA' AUTO in due livelli (per evitare promesse non mantenibili):
+   - AUTO-base (fattibile presto, FASE 1): giorno/notte + ALBA/TRAMONTO calcolati sulla
+     posizione GPS reale + luminosita' dispositivo, con isteresi anti-flicker.
+   - AUTO-avanzata (piu' avanti): rilevamento GALLERIA/TUNNEL richiede dati cartografici
+     tunnel (BASE MAP, disponibili con il provider scelto in FASE 1 e maturi in FASE 4+)
+     e/o segnali automotive (FASE 10). => Non promettere il tunnel-switch nella primissima
+     versione; introdurlo quando i dati mappa lo consentono. Coerente con il punto 7
+     ("non inventare API non disponibili").
+B. VIOLETTO/BLU-VIOLA: e' una scelta di brand ESPLICITA come accento su sfondi grafite/
+   scuri (identita' VEO/AI), NON un gradiente viola su bianco stile "AI-slop". In tema
+   CHIARO il violetto va usato con parsimonia/contrasto controllato per restare accessibile.
+   Da validare a livello di contrasto (WCAG) quando si faranno i mockup/temi.
+C. ROAD HORIZON: e' guscio visivo utile gia' in FASE 3, ma i suoi CONTENUTI reali
+   dipendono da FASE 4/5. Fino ad allora, se mostrato, i dati vanno etichettati come
+   SIMULATI (coerente col punto 49 della visione: mai confondere demo con realtime reale).
+D. TACHIMETRO / LIMITE VELOCITA' (visto nell'immagine, es. "120 km/h"): non citato nel
+   testo dei 30 punti; lo registro come elemento UI presente nel riferimento visivo, da
+   confermare esplicitamente (velocita' reale GPS = FASE 1; limite legale = dato provider,
+   FASE 2/5).
+E. "REALE": confermato come DA DEFINIRE; AR non autorizzata. Nessuna ambiguita' con la roadmap.
+F. Multi-surface (Surface abstraction di FASE 0) e' cio' che rende coerenti smartphone/
+   CarPlay/Android Auto senza rifacimenti: i punti 26/27 dipendono da quella scelta.
+
+STATO: decisioni UX/UI ACQUISITE come fondamento concettuale. NIENTE E' AUTORIZZATO
+ALLO SVILUPPO. Attendere autorizzazione esplicita prima di FASE 0 o FASE 1.
+FINE DOCUMENTO.
