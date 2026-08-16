@@ -1,0 +1,180 @@
+====================================================================
+NEXO VEO VISION — ESPANSIONE CONCETTUALE (47 NUOVI PUNTI)
+====================================================================
+STATO: SOLO ACQUISIZIONE CONCETTUALE. NESSUNA IMPLEMENTAZIONE.
+Nessun codice, UI, backend, provider/API, build, test, agente. Nessuna Fase avviata.
+Estende (NON sostituisce): NEXO_VEO_VISION.md (51 punti), NEXO_VEO_VISION_ROADMAP.txt,
+NEXO_VEO_VISION_UX_UI.txt (30 punti + sez.31 Smart Navigation View).
+PRINCIPIO INVALICABILE: l'AI puo' ragionare/interpretare/stimare (se dichiarato)/
+prevedere (se dati sufficienti), MA NON INVENTA LA REALTA' STRADALE.
+Legenda fasi: F0..F10 come da roadmap.
+--------------------------------------------------------------------
+
+BLOCCO A — SMART NAVIGATION VIEW (estende sez.31 UX/UI, NON duplica)
+1. SNV come SISTEMA EVOLUTIVO: decide quale porzione di strada mostrare (dist. manovra,
+   velocita', tipo strada, corsie, complessita' svincolo, traffico, eventi, Road Horizon,
+   condizioni, contesto). ESTENDE sez.31. -> F1 base, evoluzione F6+.
+2. Auto-zoom prima delle manovre (svincoli/rotatorie/incroci/uscite/cambi corsia/manovre
+   complesse) = gia' sez.31.2. -> F1.
+3. Visuale ampia nei tratti lunghi = gia' sez.31.1/31.3. -> F1.
+4. Zoom contestuale (non solo distanza) = gia' sez.31.4. -> F1 base, F6 pieno.
+5. Controllo manuale totale (sposta/zoom/ruota/inclina/esplora); l'automazione non
+   combatte il gesto = gia' sez.31.5. -> F1.
+6. Ricentra manuale (pulsante + voce "Nexo ricentra"/"Veo torna alla navigazione")
+   = gia' sez.31.6. -> F1.
+7. Ricentraggio automatico configurabile (10/20/30/60 s / MAI; default 30) = gia' sez.31.7. -> F1.
+8. Priorita' alle manovre imminenti (avviso discreto + ripristino per sicurezza)
+   = gia' sez.31.9. -> F1 (avviso base), affinamento F6.
+9. Transizioni visive fluide (zoom/rotazione/inclinazione/ricentro progressivi)
+   = gia' sez.31.8/31.10. -> F1.
+   [NOTA: Blocco A e' in gran parte GIA' REGISTRATO in sez.31; qui confermato ed esteso,
+    senza duplicazioni. L'unica vera estensione concettuale e' il punto 1 (SNV=sistema).]
+
+BLOCCO B — VEO/NEXO AI UNIVERSALE (estende punti 34/48 Vision e F3)
+10. VEO/NEXO = AI GENERALE, non solo "AI del navigatore". Risponde a domande general
+    purpose (matematica, cultura, meteo, spiegazioni) oltre a quelle stradali. -> F3 (NLU+LLM).
+11. Conversazione libera (linguaggio naturale, no elenco chiuso di comandi). -> F3.
+12. Risposta vocale naturale (voce = interfaccia primaria in guida). -> F3 (dipende da TTS/STT).
+13. Continuita' AI generale <-> navigazione: UN SOLO assistente che mantiene il contesto
+    del viaggio passando da domanda stradale a generale e viceversa. -> F3, cresce con VEO Context (pt.41).
+    ARCHITETTURA: singolo agente conversazionale + memoria di sessione (VEO Context). Da prevedere in F0/F3.
+
+BLOCCO C — EVENTI MOBILI E VEICOLI LENTI (estende Live Road Layer, pt.7-13 Vision)
+14. Segnalazione veicolo lento (qualsiasi corsia/strada/causa; es. "camion lento a destra"). -> F4.
+15. MOBILE ROAD EVENT: evento non statico, concettualmente mobile. ARCHITETTURA: il modello
+    "Evento" (F0) deve prevedere natura STATICA vs MOBILE fin dall'origine. -> schema F0, uso F4.
+16. Marker mobile PULSANTE che si sposta, distinguibile dagli eventi statici. -> UI F4.
+17. POSIZIONE STIMATA DICHIARATA: mai fingere tracking reale; stima da ultima segnalazione/
+    direzione/velocita'/segnalazioni successive/conferme, SEMPRE con Confidence e distinzione
+    reale vs stimata. -> F4 (coerente con pt.12/49 Vision).
+18. Altre categorie mobili (trattori, mezzi agricoli, trasporti eccezionali, spazzaneve,
+    avarie in movimento, convogli, altri ostacoli mobili). -> tassonomia estendibile in F0/F4.
+
+BLOCCO D — ROAD OBJECTS (nuovo layer, da prevedere in architettura)
+19. ROAD OBJECT LAYER: livello dedicato agli oggetti reali della strada. NON implementare ora.
+    ARCHITETTURA: previsto accanto a Base Map / Live Road Layer. -> schema F0, contenuti F9 (+F2/F5 per limiti/segnaletica da provider).
+20. Segnaletica (STOP, precedenze, divieti, sensi unici, attraversamenti, passaggi a livello,
+    dossi, restringimenti, corsie speciali/bus/ciclabili/emergenza, altro), dove i dati esistono. -> F5/F9.
+21. Limiti di velocita': visualizzazione chiara; relazione con velocita' GPS; avvisi
+    superamento CONFIGURABILI; affidabile solo se da fonte adeguata. -> F2 (base da provider) / F5 (fusione) / F9 (community).
+22. Semafori sulla mappa dove conosciuti; predisporre eventuale futuro dato dinamico
+    (SPaT/V2X o equivalenti) SOLO dove realmente disponibile; NON promettere copertura universale. -> F5+ (dipende da dati; molti punti non garantibili oggi).
+23. Road Object PERMANENT / TEMPORARY / DYNAMIC (classificazione). -> schema F0, uso F5/F9.
+24. Correzione community dei Road Objects (limite errato, semaforo inesistente, nuova
+    rotatoria) con conferme/reputazione/confidence/fonti ufficiali/soglie per criticita'.
+    Nessuna verita' da singola segnalazione. -> F9 (estende pt.20 Vision "correzioni mappa").
+
+BLOCCO E — MULTIMODALITA' (nuovo asse; predisporre in architettura routing)
+25. Modalita' selezionabili: AUTO, A PIEDI, TRASPORTO PUBBLICO; predisporre BICI, MOTO, future.
+    ARCHITETTURA: il motore di routing (F1/F2) deve prevedere il "profilo modalita'" dall'inizio. -> F2 base, estensioni successive.
+26. Cambio modalita' in viaggio senza terminare la navigazione ("Veo, da qui a piedi"); ricalcolo immediato. -> F2/F3.
+27. Viaggio MULTIMODALE (auto->parcheggio->piedi->metro->piedi->destinazione) come UN SOLO viaggio.
+    ARCHITETTURA: modello "Viaggio" con segmenti multi-modalita' da prevedere in F0. -> F0 schema, F7 esperienza.
+28. Parcheggio intelligente + passaggio pedonale (distanza finale a piedi, ZTL, accessibilita',
+    costo, orari, disponibilita', direzione). -> F7 (dipende da dati parcheggi/provider).
+
+BLOCCO F — DESTINAZIONE INTELLIGENTE (estende pt.34/35 Vision, F3)
+29. Destinazioni concettuali ("il mare piu' vicino", "posto tranquillo con vista",
+    "farmacia aperta senza perdere >5 min"): VEO interpreta l'intenzione e propone. -> F3 (+POI F5/F7).
+30. "PORTAMI LI'" VISIVO (inquadra/indica edificio/monumento e "Veo portami li'"): usa
+    posizione/orientamento/fotocamera/dati geo. NON implementare/promettere finche' non
+    valutata la fattibilita'. -> FUTURO NON GARANTIBILE OGGI (fotocamera+visione+geo).
+
+BLOCCO G — PERSONALIZZAZIONE E SPIEGAZIONE (estende pt.28/33 Vision)
+31. ROUTE MEMORY personale (strade evitate, percorsi preferiti, tolleranza deviazioni,
+    preferenza autostrada/panoramica, abitudini). Apprendere != decidere: VEO CHIEDE conferma.
+    -> F3 (con consenso; estende pt.33 Vision), migliora con dati F6+.
+32. "PERCHE'?" UNIVERSALE: ogni decisione/elemento UI spiegabile con dati realmente
+    disponibili ("perche' questa strada e' rossa?", "cos'e' quel simbolo?"). -> F3 (estende Route Explanation pt.28).
+
+BLOCCO H — PRIMA/DOPO IL VIAGGIO (nuovi; estendono Road History pt.42)
+33. ROAD REPLAY: riepilogo post-viaggio (percorso, deviazioni, eventi, soste, traffico,
+    alternative accettate, tempo risparmiato). -> F7/F9 (dati da fasi realtime).
+34. BRIEFING PRE-VIAGGIO: sintesi intelligente (traffico, lavori, eventi, meteo, pedaggi,
+    ZTL, restrizioni, problemi, situazione all'arrivo); VEO seleziona il rilevante. -> F3+ (qualita' con F5/meteo).
+
+BLOCCO I — WEATHER + ROAD HORIZON TEMPORALE (estende Road Horizon / predittiva pt.29/32)
+35. Meteo LUNGO IL PERCORSO legato ai tratti ("tra 32 km pioggia intensa", nebbia, vento,
+    neve/ghiaccio). -> F5/F6 (richiede provider meteo).
+36. ROAD HORIZON TEMPORALE: non solo "cosa c'e' davanti" ma "cosa trovero' QUANDO arrivero' li'"
+    (ragiona su ETA vs evoluzione evento). Estende Road Horizon (UX sez.17) + predittiva (F6). -> F6.
+
+BLOCCO J — SICUREZZA ED EVENTI INTELLIGENTI
+37. EMERGENCY CORRIDOR INTELLIGENCE: avviso arrivo/presenza mezzi di soccorso e indicazioni
+    per agevolarne il passaggio, SOLO con dati affidabili. -> FUTURO (dati non garantibili oggi).
+38. Segnalazioni in LINGUAGGIO NATURALE (l'utente non conosce le categorie interne: VEO
+    classifica: "materasso in strada", "e' tutto allagato", "macchina contromano"). -> F3+F4.
+39. PROPOSTA INTELLIGENTE di segnalazione da telemetria aggregata (frenate/rallentamenti/
+    cambi corsia/deviazioni sincronizzati -> "c'e' un ostacolo?" -> "Si/No"). Non inventare la causa.
+    -> F6 (estende Road Intelligence pt.18 Vision).
+
+BLOCCO K — DRIVER / PASSENGER
+40. MODALITA' PASSEGGERO: UI adattata al ruolo. DRIVER = essenziale, Voice-First, minima
+    distrazione. PASSENGER = mappa ricca, ricerca, dettagli, TOUR, analisi, interazioni complesse.
+    ARCHITETTURA: prevedere il "ruolo/contesto UI" (collegato a multi-surface F0). -> F1 base (driver), passenger F7.
+
+BLOCCO L — VEO CONTEXT (PILASTRO AI; requisito architetturale)
+41. VEO CONTEXT: VEO conosce il contesto del viaggio corrente (destinazione, posizione,
+    percorso, alternative, ETA, preferenze, modalita', eventi, traffico, meteo, soste,
+    Road Horizon, conversazione corrente, domande precedenti, POI discussi). Non un chatbot
+    smemorato. ARCHITETTURA FONDAMENTALE: da prevedere in F0 (contratto "contesto viaggio")
+    e realizzare in F3, arricchito da ogni fase successiva.
+42. Domande contestuali implicite/frasi incomplete ("piu' avanti c'e' di meglio?" riferito
+    a ristorante e alternative appena discusse). Dipende da VEO Context. -> F3.
+
+BLOCCO M — ROAD PROFILE / CONDITIONS (estende pt.25 Vision profilo veicolo)
+43. Profilo stradale legato al veicolo (altezza, larghezza, lunghezza, peso, alimentazione,
+    classe emissioni, restrizioni, permessi) -> routing compatibile per furgoni/camper/
+    commerciali/veicoli speciali. -> F2 (estende pt.25), qualita' con dati provider.
+44. Condizioni fisiche della strada (buche/dissesti, allagamenti, ghiaccio, neve, vento,
+    fango, ostacoli) con fonte/confidence/validita' temporale. -> F4/F5.
+
+BLOCCO N — ENERGIA E RIFORNIMENTO
+45. Rifornimento/ricarica CONTESTUALE al viaggio (sul percorso vs deviazione X min; tipo
+    carburante/connettore/potenza/prezzo/disponibilita'/orari). -> F7 (estende Journey Points/Fuel/Charge pt.36 Vision; dipende da provider).
+
+BLOCCO O — LANE GUIDANCE
+46. LANE GUIDANCE evoluta: indicazione anticipata della corsia migliore ("mantieniti sulle
+    due corsie di destra"), integrata con SNV + Dynamic Lane Intelligence + eventi corsia +
+    chiusure + corsia emergenza + Road Intelligence. -> F2 (base da provider) / F6 (dinamica).
+
+BLOCCO P — GLOBAL-FIRST (requisito architetturale FONDAMENTALE, dall'origine)
+47. GLOBAL-FIRST — NEXO VEO VISION NASCE MONDIALE (non "app italiana da tradurre").
+    - Prima versione linguistica: ITALIANO + INGLESE NATIVI; architettura pronta ad
+      aggiungere spagnolo/francese/tedesco/portoghese/altre.
+    - Multilingua = INTERFACCIA + VEO/NEXO. VEO comprende IT/EN, risponde nella lingua
+      dell'utente, mantiene il contesto anche cambiando lingua nella stessa conversazione.
+    - LINGUA UI e LINGUA VEO indipendenti (UI en + VEO it, ecc.) + modalita' VEO automatica.
+    - Predisporre dall'architettura: km/miglia, km/h / mph, guida a destra/sinistra, formati
+      ora/data, sistemi di indirizzi, differenze segnaletica, normative stradali, ZTL e
+      equivalenti locali, pedaggi/vignette, trasporto pubblico locale, convenzioni cartografiche.
+    - Regola: "nasce in Italia ma NON nasce tecnicamente italiano. Nasce globale."
+    -> REQUISITO ARCHITETTURALE F0 (i18n/l10n + unita' + localizzazione VEO); applicazione UI da F1.
+
+====================================================================
+REQUISITI ARCHITETTURALI DA PREVEDERE PRIMA DELLO SVILUPPO (F0)
+====================================================================
+- GLOBAL-FIRST / i18n-l10n: doppia lingua UI+VEO indipendenti, unita' di misura, guida dx/sx,
+  formati locali, normative/ZTL/pedaggi locali (pt.47).
+- VEO CONTEXT: contratto unico "contesto viaggio" + memoria conversazione, singolo assistente
+  generale+navigazione (pt.10-13, 41-42).
+- MODELLO EVENTO con natura STATICA vs MOBILE + posizione reale vs stimata + confidence (pt.14-18).
+- ROAD OBJECT LAYER + classificazione PERMANENT/TEMPORARY/DYNAMIC, accanto a Base/Live (pt.19-24).
+- MODELLO VIAGGIO multimodale a segmenti + profilo modalita' nel routing (pt.25-28).
+- RUOLO UI Driver/Passenger legato all'astrazione multi-surface (pt.40).
+- SNV come sistema evolutivo, non semplice auto-zoom (pt.1).
+
+====================================================================
+PUNTI CHE RICHIEDONO TECNOLOGIE/DATI/PROVIDER NON GARANTIBILI OGGI
+(conservati nella Vision, NON eliminati; da sviluppare solo se/quando fattibili)
+====================================================================
+- pt.22 Semafori dinamici (SPaT/V2X): copertura non universale, dipende da infrastruttura.
+- pt.30 "Portami li'" visivo (fotocamera+visione+geo-identificazione): fattibilita' da valutare.
+- pt.37 Emergency Corridor Intelligence: dipende da dati affidabili sui mezzi di soccorso.
+- pt.35/36 Meteo per tratto + Road Horizon temporale: richiede provider meteo affidabile.
+- pt.39 Proposta intelligente da telemetria: richiede massa critica di utenti (F6).
+- pt.28/45 Parcheggi/ricarica con disponibilita' realtime/prezzi: dipende da provider.
+- pt.20-21-43-46 Segnaletica/limiti/attributi veicolo/lane a livello dato: dipende dalla
+  copertura del provider mappa scelto (F1) e da fonti ufficiali (F5).
+
+FINE ESPANSIONE. NESSUNA AUTORIZZAZIONE ALLO SVILUPPO. NIENTE E' STATO IMPLEMENTATO.
