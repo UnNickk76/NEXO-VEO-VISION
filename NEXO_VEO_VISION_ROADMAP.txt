@@ -85,6 +85,11 @@ per verificare mappa, posizione, interfaccia e primo comportamento vocale.
 COSA REALIZZARE:
 - Mappa con identita' NEXO VEO VISION (no clone Waze/Google/Apple): zoom, pan,
   rotazione, ricentraggio, prospettiva; UI pulita (strada > percorso > manovra).
+- Smart Navigation View (base): zoom/scala/prospettiva dinamici in funzione della
+  prossima manovra; follow vehicle; ricentra (touch+voce); sospensione dell'automatismo
+  quando l'utente interagisce; ripristino automatico configurabile (default 30 s, opz. MAI);
+  2D/3D quando disponibile. (Evolve nelle fasi Road Intelligence: traffico, eventi, corsie,
+  Road Horizon, telemetria, complessita' stradale, predizione.)
 - Posizione GPS in tempo reale, heading, follow-me.
 - Ricerca destinazione (geocoding) + selezione.
 - Guscio Voice-First: attivazione assistente (Nexo/Veo) e comandi base

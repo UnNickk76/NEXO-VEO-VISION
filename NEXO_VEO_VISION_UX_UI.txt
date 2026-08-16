@@ -176,7 +176,92 @@ ALTERNATIVE > ROAD INTELLIGENCE > CONTROLLI.
 30. PRINCIPI UX AGGIUNTI AI FONDAMENTI
 - LA COMPLESSITA' E' NEL SISTEMA, NON DAVANTI AGLI OCCHI DEL GUIDATORE.
 - AUTO SI ADATTA ALL'AMBIENTE, NON SOLTANTO ALL'ORARIO.
+- LA MAPPA NON HA UNO ZOOM FISSO: MOSTRA IL CONTESTO UTILE ALLA GUIDA.
+- L'AUTOMAZIONE SI FERMA QUANDO L'UTENTE PRENDE IL CONTROLLO E RITORNA SOLO QUANDO E' UTILE O RICHIESTA.
 - (Mantenuto) VOICE-FIRST, TOUCH-COMPLETE.
+
+====================================================================
+31. SMART NAVIGATION VIEW (visuale dinamica della mappa in navigazione)
+====================================================================
+PRINCIPIO: la mappa in navigazione NON ha zoom fisso. Adatta automaticamente
+SCALA, ZOOM e PROSPETTIVA al contesto di guida. Obiettivo: mostrare la quantita'
+di strada e il dettaglio piu' utili in quel preciso momento (non solo seguire il veicolo).
+
+31.1 ZOOM DINAMICO IN BASE ALLA MANOVRA
+- Manovra lontana + lungo tratto sulla stessa strada -> visuale progressivamente piu' ampia.
+- Avvicinandosi alla manovra -> dettaglio crescente e progressivo.
+- Es. indicativo (NON soglie definitive): 18 km ampia / 5 km intermedia / 1 km dettaglio /
+  300 m dettaglio elevato. Le distanze reali saranno dinamiche e da tarare.
+
+31.2 AVVICINAMENTO A SVINCOLI/MANOVRE
+- Aumento automatico del dettaglio vicino a: svincoli, uscite autostradali, incroci,
+  rotatorie, cambi strada, biforcazioni, manovre complesse, cambi corsia importanti
+  (quando disponibili), altre situazioni ad alta precisione. Transizione progressiva,
+  NO salti bruschi di zoom.
+
+31.3 DOPO LA MANOVRA
+- Completata la manovra -> ritorno graduale alla scala utile per il tratto successivo
+  (es. prossima manovra tra 12 km -> allargamento progressivo).
+
+31.4 NON SOLO DISTANZA (comportamento contestuale, migliorabile nelle fasi Road Intelligence)
+- Oltre alla distanza, quando disponibili: velocita' veicolo, tipo strada, numero corsie,
+  complessita' svincolo, densita' stradale, traffico, eventi davanti, Road Horizon,
+  alternativa rilevante, geometria strada, ambiente urbano/extraurbano/autostradale.
+- Es.: la visuale utile a 130 km/h in autostrada != quella utile a 25 km/h in citta'.
+
+31.5 PRIORITA' ASSOLUTA ALL'UTENTE
+- La mappa resta SEMPRE liberamente controllabile (zoom/pinch/pan/rotazione/prospettiva/
+  esplorazione/orientamento). Appena l'utente interagisce manualmente, Smart Navigation
+  View SOSPENDE il controllo automatico. Il sistema NON combatte il gesto dell'utente.
+
+31.6 RICENTRA MANUALE
+- Quando sospesa, e' sempre disponibile RICENTRA: torna al veicolo, ripristina
+  l'orientamento scelto, riattiva Smart Navigation View, applica subito la scala contestuale.
+- Equivalente vocale: "Nexo, ricentra" / "Veo, torna alla navigazione".
+
+31.7 RIPRISTINO AUTOMATICO DOPO INATTIVITA'
+- Dopo interazione manuale, in assenza di ulteriori gesti per un periodo, ritorno
+  automatico a Smart Navigation View. Configurabile: 10 / 20 / 30 / 60 s / MAI.
+  DEFAULT proposto: 30 s. Valori modificabili successivamente.
+
+31.8 RITORNO FLUIDO
+- Nessun salto improvviso: transizione fluida posizione esplorata -> movimento/zoom
+  progressivo -> veicolo -> prospettiva corretta. Eventuale indicazione discreta
+  "Ripristino navigazione automatica" senza disturbare la guida.
+
+31.9 MANOVRA IMMINENTE E SICUREZZA (caso speciale)
+- Se una manovra critica si avvicina mentre la visuale e' stata spostata manualmente,
+  il timer non deve lasciare il guidatore senza visuale utile. NEXO VEO VISION puo':
+  avvertire, proporre il ricentraggio, o ripristinare la visuale della manovra quando
+  necessario per la sicurezza. Da progettare con cura per non contrastare una scelta
+  volontaria dell'utente. L'opzione MAI va rispettata secondo regole da definire.
+
+31.10 2D E 3D
+- Funziona in 2D e 3D: cambia la rappresentazione prospettica, non il principio.
+  In 3D puo' adattarsi dinamicamente anche l'INCLINAZIONE della visuale quando utile.
+
+31.11 SENSO DI MARCIA E NORD
+- Rispetta l'orientamento scelto: SENSO DI MARCIA (freccia stabile, mappa orientata al
+  viaggio) e NORD (Nord fisso, freccia che ruota). Lo zoom intelligente funziona in entrambe.
+
+31.12 COMPLEMENTARITA' CON ROAD HORIZON
+- Sistemi complementari. Es.: manovra tra 25 km ma evento importante tra 8 km -> la
+  visuale puo' adattarsi per rendere comprensibile la situazione davanti senza attendere
+  la prossima manovra. Con Road Intelligence considerera' non solo "dove girare" ma anche
+  "cosa succede lungo il percorso".
+
+31.13 EVOLUZIONE PROGRESSIVA (collegamento roadmap)
+- FASE 1 (base): follow vehicle; zoom dinamico in funzione della prossima manovra;
+  ricentraggio (touch + voce); sospensione automatismo su interazione utente; ripristino
+  automatico configurabile (default 30 s); 2D/3D quando disponibile.
+- FASI SUCCESSIVE: evoluzione con traffico, eventi, corsie, Road Horizon, Road
+  Intelligence, telemetria, complessita' stradale, predizione.
+- Principio: nasce semplice in Fase 1 e diventa progressivamente piu' intelligente.
+  Non serve attendere Road Intelligence per avere Smart Navigation View.
+
+STATO: decisioni UX/UI ACQUISITE come fondamento concettuale. NIENTE E' AUTORIZZATO
+ALLO SVILUPPO. Attendere autorizzazione esplicita prima di FASE 0 o FASE 1.
+FINE DOCUMENTO.
 
 ====================================================================
 COLLEGAMENTO CON ROADMAP (dove vivranno queste decisioni, quando si sviluppera')
