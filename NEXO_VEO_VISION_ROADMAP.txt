@@ -1,0 +1,361 @@
+====================================================================
+NEXO VEO VISION — ROADMAP PROGETTUALE (PROPOSTA DA DISCUTERE)
+====================================================================
+STATO: SOLO ANALISI + ORGANIZZAZIONE + PIANIFICAZIONE.
+NESSUNA FASE E' APPROVATA NE' IMPLEMENTATA.
+Nessun codice, nessun backend/DB, nessuna mappa/provider, nessuna AI,
+nessuna Voice, nessun CarPlay/Android Auto, nessuna build, nessun test.
+Ogni grande fase dovra' essere autorizzata SEPARATAMENTE.
+Es: "Procedi esclusivamente con la Fase 1" NON autorizza la Fase 2.
+--------------------------------------------------------------------
+
+NOME UFFICIALE
+- Progetto/App: NEXO VEO VISION
+- Assistente/wake word interne: "Nexo" e "Veo" (intercambiabili, stesso assistente).
+
+PRINCIPI GUIDA CHE VINCOLANO L'ORDINE DELLE FASI
+- Voice-First, Touch-Complete fin dall'architettura (non aggiungere la voce dopo).
+- CarPlay + Android Auto = requisiti architetturali dall'origine (non "in fondo").
+- Road Intelligence come UN unico sistema progressivo:
+  Base Map -> Live Road Layer -> Traffic Fusion -> Confidence -> Community
+  -> Telemetria aggregata -> Predittiva -> Map Evolution -> Road History.
+  (Non moduli separati e incompatibili.)
+- L'AI e' strutturale, non un chatbot finale. L'AI NON INVENTA FATTI STRADALI.
+- Base architetturale corretta prima delle feature: NON costruire oggi cio' che
+  domani andrebbe rifatto. Ordine = minor rilavoro, non "dal facile al difficile".
+- Distinzione sempre esplicita: dato reale / ufficiale / provider / community /
+  inferito / SIMULATO (demo). I dati simulati sono etichettati internamente.
+
+====================================================================
+PANORAMICA FASI (BLOCCHI AUTORIZZABILI SEPARATAMENTE)
+====================================================================
+FASE 0  - Fondamenta architetturali & contratti dati (nessuna feature utente)
+FASE 1  - Guscio Voice-First + Mappa base + Posizione (PRIMA VERSIONE TESTABILE SU STRADA)
+FASE 2  - Routing, ricalcolo, alternative, preferenze percorso, ZTL, profilo veicolo
+FASE 3  - AI conversazionale (intenzione, spiegazioni, POI contestuali) + Road Ask/Guarda avanti (dati parziali)
+FASE 4  - Live Road Layer + Segnalazioni community + Confidence + Reputazione/Anti-spam
+FASE 5  - Traffic Fusion (provider + fonti ufficiali) + Fusione segnalazioni
+FASE 6  - Road Intelligence (telemetria aggregata) + Navigazione predittiva + Dynamic Lane
+FASE 7  - Esperienza viaggio: TOUR AI, Smart Scenic, Journey Points, Safe Stop, Journey Awareness
+FASE 8  - Comunicazione tra automobilisti + Convoy/Together + Smart Emergency (voice-first)
+FASE 9  - Map Evolution + Correzioni mappa utenti + Road History
+FASE 10 - CarPlay & Android Auto: hardening, test su auto reali, store/entitlement
+(NB: predisposizione CarPlay/Android Auto e Voice inizia gia' in FASE 0-1, vedi sotto.)
+
+====================================================================
+FASE 0 — FONDAMENTA ARCHITETTURALI & CONTRATTI DATI
+====================================================================
+OBIETTIVO: definire l'ossatura che regge TUTTA la visione, senza feature utente,
+per evitare rilavori futuri.
+COSA REALIZZARE (progettazione + scaffolding, nessuna logica di prodotto):
+- Modello dati canonico: separazione netta BASE MAP vs LIVE ROAD LAYER.
+- Modello "Evento stradale" con: tipo, posizione, strada, direzione, KM,
+  CORSIA (incl. corsia d'emergenza come componente reale), timestamp,
+  sorgente (reale/ufficiale/provider/community/inferito/SIMULATO), confidence,
+  decadimento nel tempo/conferme.
+- Modello "Tratto stradale" predisposto per: velocita', densita', meteo,
+  chiusure, pericoli, lavori, affidabilita', storico (Road History), cambiamenti.
+- Astrazione "Provider" indipendente (mappa/routing/traffico/geocoding/POI)
+  cosi' da NON legarsi a un singolo fornitore.
+- Astrazione "Voice Intent" (Nexo/Veo) e "Command Bus": ogni azione dell'app
+  invocabile sia da voce sia da touch (Voice-First, Touch-Complete).
+- Astrazione "Surface" (telefono / CarPlay / Android Auto) per la UI di navigazione,
+  cosi' l'automotive non richiedera' un rifacimento.
+- Gestione privacy by design: separazione dati navigazione / telemetria temporanea /
+  aggregati / personalizzazione opzionale / identita' community / viaggi condivisi.
+PUNTI VISIONE COINVOLTI: 2,3,5,9,12,43,44,45,46,47,48,49,50,51.
+DIPENDENZE: nessuna.
+API/PROVIDER/SDK DA VALUTARE: nessuna integrazione; solo scelta dell'ASTRAZIONE.
+REQUISITI APPLE/GOOGLE: censire da subito CarPlay entitlement (navigazione) e
+requisiti Android Auto; predisporre bundle id / package stabili (non implementare).
+DATI SIMULATi: tutti (contratti dati con generatore demo etichettato).
+DATI REALI NECESSARI: nessuno.
+COMMUNITY NECESSARIA: no. PRIMO UTENTE: n/a (fase interna).
+CRITICITA' TECNICHE: e' la fase piu' importante; errori qui = rilavoro ovunque.
+COSTI ESTERNI: nessuno. ENTITLEMENT: solo pianificazione/censimento.
+COMPLETAMENTO QUANDO: esistono contratti dati e astrazioni approvati su carta,
+schemi Base/Live, provider-agnostico, voice/touch parity, multi-surface previsto.
+
+====================================================================
+FASE 1 — GUSCIO VOICE-FIRST + MAPPA BASE + POSIZIONE
+=> PRIMA VERSIONE REALMENTE TESTABILE SU STRADA
+====================================================================
+OBIETTIVO: un'app installabile sul tuo dispositivo, usabile in un vero viaggio
+per verificare mappa, posizione, interfaccia e primo comportamento vocale.
+COSA REALIZZARE:
+- Mappa con identita' NEXO VEO VISION (no clone Waze/Google/Apple): zoom, pan,
+  rotazione, ricentraggio, prospettiva; UI pulita (strada > percorso > manovra).
+- Posizione GPS in tempo reale, heading, follow-me.
+- Ricerca destinazione (geocoding) + selezione.
+- Guscio Voice-First: attivazione assistente (Nexo/Veo) e comandi base
+  ("portami a...", "ricentra", "zoom"), con parita' touch per ogni azione.
+- Indicazioni vocali di navigazione di base su un percorso.
+- Gestione audio OS (ducking) e permessi (posizione, microfono) contestuali.
+GIA' PRESENTE (dalla visione): mappa, posizione, routing base, indicazioni,
+interfaccia, Voice, Nexo/Veo, comportamento in guida.
+DA SIMULARE/RIMANDARE in questa versione: eventi realtime reali, community,
+traffic fusion, predittiva, TOUR, lane intelligence, CarPlay completo
+(qui solo predisposizione; test auto reale piu' avanti).
+PUNTI VISIONE COINVOLTI: 1,2,3,4,6,26(base),27(base),44,45,46.
+DIPENDENZE: Fase 0.
+API/PROVIDER/SDK DA VALUTARE (DECISIONE CHIAVE QUI): Mapbox vs OpenStreetMap
+per mappa+routing+geocoding+offline+corsie+CarPlay/Android Auto. E' il momento
+giusto per valutarli perche' impatta tutto il resto. (Solo valutazione, nessuna
+integrazione senza tua autorizzazione.)
+REQUISITI APPLE/GOOGLE: permessi posizione/microfono (Info.plist / permissions).
+Wake word "always listening" ha limiti OS: in Expo Go non testabile; richiedera'
+development build. Da segnalarti prima del test.
+DATI SIMULATI: eventi/traffico. DATI REALI: posizione GPS, mappa/routing reali.
+COMMUNITY NECESSARIA: no. FUNZIONA DAL PRIMO UTENTE: si'.
+CRITICITA': wake word continua e voce in background NON funzionano su Expo Go;
+serve build reale su dispositivo. CarPlay non testabile in Expo Go.
+COSTI ESTERNI: possibili costi mappa/routing (Mapbox usage) da valutare.
+ENTITLEMENT: iniziare la richiesta CarPlay entitlement (tempi lunghi Apple).
+COMPLETAMENTO QUANDO: puoi guidare un percorso reale con mappa+posizione+
+indicazioni e attivare Nexo/Veo per i comandi base, su build installata.
+
+====================================================================
+FASE 2 — ROUTING AVANZATO, RICALCOLO, ALTERNATIVE, PREFERENZE, ZTL, VEICOLO
+====================================================================
+OBIETTIVO: routing serio e personalizzabile, ancora senza dipendere dalla community.
+COSA REALIZZARE:
+- Tipi percorso: FAST, SHORT, CHEAP (pedaggi calcolabili), SCENIC (base).
+- Alternative live con 1 tap o vocale ("prendi quello con meno traffico").
+- Ricalcolo continuo controllato (no cambi inutili; guidatore in controllo).
+- Preferenze percorso permanenti/temporanee, anche vocali ("oggi niente autostrada").
+- ZTL: avviso pre-ingresso con EVITA/ATTRAVERSA + ricalcolo.
+- Profilo veicolo (tipo, alimentazione, dimensioni, classe emissioni, permessi)
+  che condiziona il routing.
+PUNTI VISIONE COINVOLTI: 21(parziale),23,24,25,26,27.
+DIPENDENZE: Fase 1 (provider mappa/routing scelto).
+API/PROVIDER: routing avanzato del provider scelto (corsie, pedaggi, restrizioni).
+DATI SIMULATI: pedaggi/ZTL dove mancano dati; DATI REALI: routing, restrizioni.
+COMMUNITY: no. PRIMO UTENTE: si'. CRITICITA': dati ZTL/pedaggi non uniformi in IT/EU.
+COSTI ESTERNI: chiamate routing/geocoding aggiuntive.
+COMPLETAMENTO QUANDO: puoi scegliere tipo percorso, preferenze e veicolo, ricevere
+alternative e avvisi ZTL, con ricalcolo affidabile.
+
+====================================================================
+FASE 3 — AI CONVERSAZIONALE (STRUTTURALE) + ROAD ASK / GUARDA AVANTI (dati parziali)
+====================================================================
+OBIETTIVO: l'AI diventa il livello che interpreta l'intenzione e SPIEGA, non solo ricalcola.
+COSA REALIZZARE:
+- Comprensione linguaggio naturale -> intenzione -> azione di navigazione
+  ("trovami una strada piu' tranquilla", "non passare dentro Roma", "sono stanco").
+- Route Explanation ("ti faccio risparmiare ~7 min perche'...").
+- POI contestuali legati al viaggio (aperto all'arrivo, deviazione max, con parcheggio).
+- Road Ask ("perche' siamo fermi?") e Guarda avanti (panoramica prossimi km) usando
+  i dati DISPONIBILI; se non sa: LO DICE ("non ho ancora informazioni affidabili").
+PUNTI VISIONE COINVOLTI: 28,31,32,34,35,48 (+ base 21).
+DIPENDENZE: Fasi 1-2 (routing/alternative da spiegare) + eventi (parziali).
+API/PROVIDER: LLM per NLU/spiegazioni/POI (integrazione da autorizzare a parte).
+Vincolo invalicabile: AI NON INVENTA FATTI STRADALI.
+DATI SIMULATI: eventi non ancora reali (etichettati); DATI REALI: routing, POI provider.
+COMMUNITY: non necessaria (migliora dopo). PRIMO UTENTE: si' (spiegazioni/NLU/POI).
+CRITICITA': ancorare le risposte AI SOLO a dati verificati; guardrail anti-invenzione.
+COSTI ESTERNI: costo LLM per richiesta.
+COMPLETAMENTO QUANDO: puoi parlare in linguaggio naturale, ottenere spiegazioni e
+POI contestuali, e ricevere onesti "non lo so" quando i dati mancano.
+
+====================================================================
+FASE 4 — LIVE ROAD LAYER + COMMUNITY + CONFIDENCE + REPUTAZIONE/ANTI-SPAM
+====================================================================
+OBIETTIVO: la strada inizia a "vivere" grazie ai primi utenti reali.
+COSA REALIZZARE:
+- Live Road Layer reale (eventi che decadono per natura/tempo/conferme).
+- Segnalazioni community rapidissime: voice in guida ("Nexo, auto ferma in corsia
+  d'emergenza") con deduzione automatica di posizione/strada/direzione/orario ->
+  risposta minima "Segnalato."; parita' touch.
+- Eventi a livello di CORSIA (quando i dati lo consentono).
+- Confidence score (aumenta con conferme indipendenti; diminuisce con smentite/tempo).
+- Reputazione/punti, bonus per eventi critici, Road Trust contestuale.
+- Anti-spam & freeze temporaneo progressivo (errori occasionali non puniti troppo).
+PUNTI VISIONE COINVOLTI: 7,8,9,11(base),12,13,14,15,16,43,45,49.
+DIPENDENZE: Fasi 0-1 (schema Live/eventi/confidence), Fase 3 (Road Ask usa questi dati).
+API/PROVIDER: backend realtime proprio (da autorizzare).
+DATI SIMULATI: seed demo iniziale ETICHETTATO; DATI REALI: segnalazioni utenti.
+COMMUNITY NECESSARIA: si' (valore cresce col numero di utenti).
+PRIMO UTENTE: parziale (puoi segnalare, ma le conferme richiedono piu' utenti).
+CRITICITA': qualita'/abuso; corretto decadimento eventi; privacy segnalazioni.
+COSTI ESTERNI: infrastruttura realtime.
+COMPLETAMENTO QUANDO: gli utenti possono segnalare a voce/touch, gli eventi
+appaiono/decadono, con confidence e reputazione funzionanti.
+
+====================================================================
+FASE 5 — TRAFFIC FUSION LAYER + FUSIONE SEGNALAZIONI
+====================================================================
+OBIETTIVO: non dipendere solo dagli utenti; unire piu' fonti legittime.
+COSA REALIZZARE:
+- Integrazione fonti: provider traffico + fonti ufficiali/gestori autostradali/open data.
+- Fusione: fonti diverse sullo stesso evento -> un unico evento con confidence combinata.
+PUNTI VISIONE COINVOLTI: 10,11,12,49.
+DIPENDENZE: Fase 4 (modello evento/confidence).
+API/PROVIDER DA VALUTARE (momento giusto): TomTom, HERE, Mapbox Traffic, enti
+stradali, gestori autostradali, comuni/autorita', open data. SOLO API/partnership
+ufficiali. VIETATO scraping/accesso non autorizzato a Waze/Google Maps/altri proprietari.
+DATI SIMULATI: solo in test; DATI REALI: feed provider/ufficiali.
+COMMUNITY: utile ma non indispensabile (le fonti coprono il vuoto iniziale).
+PRIMO UTENTE: si' (valore anche con pochi utenti, grazie alle fonti esterne).
+CRITICITA': licenze, costi, latenza, deduplica eventi.
+COSTI ESTERNI: probabili costi per feed traffico/provider.
+COMPLETAMENTO QUANDO: eventi da piu' fonti risultano fusi coerentemente con confidence.
+
+====================================================================
+FASE 6 — ROAD INTELLIGENCE (TELEMETRIA AGGREGATA) + PREDITTIVA + DYNAMIC LANE
+====================================================================
+OBIETTIVO: gli automobilisti diventano sensori distribuiti (aggregati, privacy-safe).
+COSA REALIZZARE:
+- Telemetria aggregata: rallentamenti improvvisi, cambi corsia sincronizzati,
+  deviazioni spontanee -> inferenze con confidence.
+- Navigazione predittiva (anticipa traffico 10-15 km avanti; costi/benefici deviazione).
+- Dynamic Lane Intelligence quando i dati sono affidabili (sicurezza prima).
+PUNTI VISIONE COINVOLTI: 18,29,30,42(base),43,48,49.
+DIPENDENZE: Fasi 4-5 (dati densi) + telemetria.
+DATI SIMULATI: modelli iniziali; DATI REALI+AGGREGATi indispensabili.
+COMMUNITY NECESSARIA: si', numerosa (serve massa critica di veicoli).
+PRIMO UTENTE: no (richiede molti utenti nella stessa area).
+CRITICITA': privacy aggregazione; evitare inferenze premature (AI non inventa).
+COSTI ESTERNI: elaborazione dati/stream.
+COMPLETAMENTO QUANDO: l'app rileva pattern aggregati reali e avvisa in modo predittivo/corsia.
+
+====================================================================
+FASE 7 — ESPERIENZA DI VIAGGIO: TOUR AI, SMART SCENIC, JOURNEY POINTS, SAFE STOP, AWARENESS
+====================================================================
+OBIETTIVO: "il viaggio conta quanto la destinazione".
+COSA REALIZZARE:
+- TOUR generato da AI (tappe per tempo/orari/panorami/storia/cibo/meteo/interessi;
+  tappa eliminabile con ricalcolo).
+- SCENIC evoluto (coste/montagne/borghi/luce/alba/tramonto): calcolo posizione al tramonto.
+- DISCOVER; Journey Points (Food/Fuel/Charge/Rest/View/Visit/Emergency/Meet).
+- Safe Stop (luogo pratico/sicuro nella stessa direzione).
+- Journey Awareness (durata guida, pause suggerite senza deviazioni).
+PUNTI VISIONE COINVOLTI: 21(completo),22,35,36,37,38,39.
+DIPENDENZE: Fasi 2-3 (routing+AI+POI), utile Fase 5 (POI/dati reali).
+DATI SIMULATI: suggerimenti demo; DATI REALI: POI/orari/meteo reali per qualita'.
+COMMUNITY: non necessaria. PRIMO UTENTE: si'.
+CRITICITA': qualita' curatela tappe; rispetto vincoli tempo/deviazione utente.
+COSTI ESTERNI: LLM + POI/meteo provider.
+COMPLETAMENTO QUANDO: puoi chiedere un TOUR/scenic e riceverne uno coerente e modificabile.
+
+====================================================================
+FASE 8 — COMUNICAZIONE TRA AUTOMOBILISTI + CONVOY/TOGETHER + SMART EMERGENCY
+====================================================================
+OBIETTIVO: rete temporanea di comunicazione stradale, principalmente VOCALE.
+COSA REALIZZARE:
+- Domanda contestuale agli automobilisti davanti ("qualcuno sa perche' siamo fermi?")
+  con risposta vocale letta al guidatore. NIENTE chat da leggere/scrivere in guida.
+- Convoy/Together: viaggio condiviso volontario, ETA gruppo, sosta comune.
+- Smart Emergency: NON sostituisce i soccorsi; fornisce coordinate/strada/direzione/km/
+  punto di riferimento; "vuoi chiamare i soccorsi?".
+PUNTI VISIONE COINVOLTI: 17,40,41,46,47.
+DIPENDENZE: Fase 4 (identita' community, presenza utenti area).
+DATI SIMULATI: no per la vera utilita'; DATI REALI + utenti co-presenti.
+COMMUNITY NECESSARIA: si', densa nella stessa area.
+PRIMO UTENTE: no (serve piu' di un utente vicino).
+CRITICITA': privacy (no posizione precisa/continua senza consenso), sicurezza in guida,
+regole piattaforme per funzioni emergenza.
+COSTI ESTERNI: messaggistica realtime.
+COMPLETAMENTO QUANDO: due+ utenti possono scambiarsi info vocali contestuali in sicurezza.
+
+====================================================================
+FASE 9 — MAP EVOLUTION + CORREZIONI MAPPA UTENTI + ROAD HISTORY
+====================================================================
+OBIETTIVO: la mappa evolve con la realta' (senza toccare i DB esterni fuori processo).
+COSA REALIZZARE:
+- Rilevamento cambiamenti reali (nuove strade/rotatorie/sensi unici/chiusure) da
+  traiettorie GPS ripetute -> oltre soglia confidence entra nel LAYER NEXO VEO VISION
+  o in un processo di revisione/contribuzione verso provider compatibili.
+- Correzioni mappa proposte dagli utenti (strade/svolte/corsie/restrizioni/POI/accessi),
+  con soglie maggiori per modifiche critiche.
+- Road History (statistiche per tratto/fascia oraria; MAI presentate come certezze).
+PUNTI VISIONE COINVOLTI: 19,20,42,43,50.
+DIPENDENZE: Fasi 4-6 (dati densi + telemetria storica).
+COMMUNITY NECESSARIA: si', numerosa e storicizzata.
+PRIMO UTENTE: no. CRITICITA': soglie affidabilita', NON modificare DB esterni
+automaticamente; qualita' proposte; privacy tracce.
+COSTI ESTERNI: storage/analytics storici.
+COMPLETAMENTO QUANDO: la mappa NEXO VEO VISION riflette cambiamenti reali validati e
+mostra storico statistico prudente.
+
+====================================================================
+FASE 10 — CARPLAY & ANDROID AUTO: HARDENING E TEST SU AUTO REALI
+====================================================================
+NB IMPORTANTE: CarPlay/Android Auto NON nascono qui. La PREDISPOSIZIONE inizia in
+FASE 0 (astrazione "Surface") e la richiesta entitlement Apple parte in FASE 1.
+Questa fase e' il COMPLETAMENTO/HARDENING e i TEST SU AUTO REALE.
+OBIETTIVO: navigazione automotive stabile, sicura, semplificata.
+COSA REALIZZARE:
+- UI navigazione dedicata CarPlay/Android Auto (semplificata, sicura, voice-first).
+- Controllo vocale Nexo/Veo integrato nella surface auto.
+- Test progressivi: prima su simulatori (senza auto), poi su auto reale.
+QUANDO RICHIEDERE ENTITLEMENT/AUTORIZZAZIONI: appena in Fase 1 (Apple CarPlay
+navigation entitlement ha tempi lunghi); registrare capability Android Auto.
+QUANDO INIZIARE I TEST:
+- Senza auto reale: da Fase 1 usando i simulatori CarPlay/Android Auto (UI, comandi).
+- Con auto reale: necessario per validare audio/telefonate/CarPlay/Android Auto veri,
+  wake word in guida, ducking, ripristino post-chiamata.
+COME EVITARE RILAVORI: mantenere separati "core navigazione" e "surface UI" (Fase 0),
+cosi' l'auto e' un'altra surface, non un rifacimento.
+PUNTI VISIONE COINVOLTI: 4,5,45,46.
+DIPENDENZE: idealmente dopo Fasi 1-3; hardening finale dopo le fasi realtime.
+REQUISITI APPLE/GOOGLE: CarPlay entitlement (categoria navigazione), review store,
+policy distrazione guidatore; Android Auto app quality + policy.
+CRITICITA': entitlement/approvazioni Apple; test richiede hardware/auto reale;
+non testabile in Expo Go.
+COSTI ESTERNI: account sviluppatore Apple/Google; eventuali build.
+COMPLETAMENTO QUANDO: navighi da CarPlay/Android Auto su auto reale con Nexo/Veo.
+
+====================================================================
+PRIMA VERSIONE REALMENTE TESTABILE SU STRADA
+====================================================================
+=> COINCIDE CON LA FINE DELLA FASE 1 (idealmente + parte di Fase 2 per il routing).
+Gia' presente: mappa (identita' propria), posizione GPS, ricerca destinazione,
+routing base + indicazioni, ricalcolo base, interfaccia pulita, Voice con Nexo/Veo
+per comandi base, gestione audio/permessi.
+Da SIMULARE o RIMANDARE in questa prima versione: eventi realtime reali, community,
+traffic fusion, predittiva, TOUR/scenic avanzati, lane intelligence, Road Intelligence,
+Map Evolution, comunicazione tra automobilisti, CarPlay completo (solo predisposizione;
+test su auto reale successivo).
+NOTA TECNICA: wake word "sempre in ascolto", voce in background e CarPlay NON sono
+testabili in Expo Go; richiedono una development build installata sul dispositivo.
+Te lo segnalero' prima di ogni test.
+
+====================================================================
+QUANDO ENTRANO I PILASTRI
+====================================================================
+- Voice-First / Nexo-Veo: architettura dalla FASE 0; comandi base dalla FASE 1;
+  cresce in ogni fase (segnalazioni voce F4, comunicazione F8, automotive F10).
+- CarPlay / Android Auto: predisposizione F0; entitlement F1; simulatori da F1;
+  auto reale/hardening F10.
+- Dati realtime: primi (parziali/simulati etichettati) F3-F4; community reale F4;
+  provider/ufficiali F5; telemetria aggregata F6.
+- Community: nasce F4, indispensabile e numerosa da F6/F8/F9.
+- AI: strutturale da F3; guardrail "non inventa" sempre; cresce fino a F6-F7-F9.
+- Provider mappa/routing (Mapbox vs OSM): DECISIONE in F1.
+- Provider traffico/fonti ufficiali (TomTom/HERE/Mapbox Traffic/open data): VALUTAZIONE F5.
+
+====================================================================
+COPERTURA DEI 51 PUNTI DELLA VISIONE (VERIFICA)
+====================================================================
+1 F1 | 2 F0/F1 | 3 F0/F1 | 4 F1/F10 | 5 F0/F1/F10 | 6 F1 | 7 F4 | 8 F4 |
+9 F0/F4 | 10 F5 | 11 F5 | 12 F0/F4 | 13 F4 | 14 F4 | 15 F4 | 16 F4 |
+17 F8 | 18 F6 | 19 F9 | 20 F9 | 21 F2/F7 | 22 F7 | 23 F2 | 24 F2 |
+25 F2 | 26 F1/F2 | 27 F1/F2 | 28 F3 | 29 F6 | 30 F6 | 31 F3/F4 | 32 F3/F4 |
+33 F3 (memoria personale, opzionale/consenso) | 34 F3 | 35 F3/F7 | 36 F7 |
+37 F7 | 38 F7 | 39 F7 | 40 F8 | 41 F8 | 42 F9 | 43 F0/F4/F9 | 44 F1 |
+45 F0/F1 | 46 F1/F10 | 47 F0 (by design, poi ovunque) | 48 F3 (poi F6-F9) |
+49 F0 (poi ovunque) | 50 F9/F10 (visione trasversale) | 51 principi trasversali a tutte le fasi.
+=> Tutti i 51 punti risultano coperti.
+(NB: il punto 33 "Memoria stradale personale" e' collocato in F3 come personalizzazione
+opzionale con consenso; verra' rifinito con i dati reali delle fasi successive.)
+
+====================================================================
+CONTROLLO CREDITI & AUTORIZZAZIONI
+====================================================================
+- Ogni FASE e' un blocco autorizzabile separatamente.
+- Nessuna fase e' approvata automaticamente. "Procedi con la Fase X" vale solo per X.
+- Suggerimento pratico dato il budget: quando vorrai partire, valutiamo di spezzare
+  anche la Fase 1 in sotto-blocchi piccoli (es. 1a mappa+posizione, 1b ricerca+routing
+  base, 1c guscio voce) per massimo controllo dei crediti.
+
+FINE ROADMAP — IN ATTESA DELLA TUA APPROVAZIONE. NON IMPLEMENTARE NULLA.

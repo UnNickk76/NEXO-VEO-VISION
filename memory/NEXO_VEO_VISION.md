@@ -1,4 +1,8 @@
-# NEXO VEO — Documento di Fondamento (Vision)
+# NEXO VEO VISION — Documento di Fondamento (Vision)
+
+> NOME UFFICIALE DEL PROGETTO/APP: **NEXO VEO VISION** (sostituisce "NEXO VEO").
+> "Nexo" e "Veo" restano invariati come nomi interni dell'assistente e come wake word (intercambiabili; stesso assistente; in futuro l'utente potrà scegliere Nexo, Veo o entrambi). Non modificare questa struttura.
+
 
 > STATO: SOLO VISIONE — NESSUNA IMPLEMENTAZIONE.
 > Questo documento registra l'identità, la filosofia e i requisiti architetturali fondamentali di NEXO VEO.
