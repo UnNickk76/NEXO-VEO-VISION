@@ -18,7 +18,7 @@
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.emergent.predictahead.zzj7am"
+      "package": "com.fabioandreola.nexoveovision"
     },
     "web": {
       "bundler": "metro",
