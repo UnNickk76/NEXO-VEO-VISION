@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.emergent.predictahead.zzj7am"
+      "bundleIdentifier": "com.fabioandreola.nexoveovision"
     },
     "android": {
       "adaptiveIcon": {
