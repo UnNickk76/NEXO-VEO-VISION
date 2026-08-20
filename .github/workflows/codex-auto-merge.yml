@@ -1,4 +1,9 @@
-name: Codex auto-merge
+name: Codex validation (manual merge)
+
+# Fail-safe: non è stato verificato un segnale GitHub/Codex machine-readable che
+# distingua review non iniziata, review conclusa senza rilievi e thread irrisolti.
+# Eligibility e validazione restano attive, ma il workflow non può scrivere né
+# abilitare auto-merge. Il merge rimane intenzionalmente manuale.
 
 on:
   pull_request_target:
@@ -93,36 +98,3 @@ jobs:
               echo "Script $check non definito: controllo non applicabile."
             fi
           done
-
-  enable-auto-merge:
-    name: Enable Codex squash auto-merge
-    needs: [eligibility, validation]
-    if: >-
-      needs.eligibility.result == 'success' &&
-      needs.validation.result == 'success'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Revalidate pull request and enable auto-merge
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          pr="$(gh api "repos/${GH_REPO}/pulls/${PR_NUMBER}")"
-
-          test "$(jq -r '.state' <<< "$pr")" = "open"
-          test "$(jq -r '.draft' <<< "$pr")" = "false"
-          test "$(jq -r '.user.login' <<< "$pr")" = "UnNickk76"
-          test "$(jq -r '.base.ref' <<< "$pr")" = "main"
-          [[ "$(jq -r '.head.ref' <<< "$pr")" == codex/* ]]
-          test "$(jq -r '.head.repo.full_name' <<< "$pr")" = "$GH_REPO"
-          test "$(jq -r '.head.sha' <<< "$pr")" = "$EXPECTED_SHA"
-          test "$(jq -r '.mergeable' <<< "$pr")" = "true"
-
-          gh pr merge "$PR_NUMBER" --repo "$GH_REPO" --auto --squash --delete-branch

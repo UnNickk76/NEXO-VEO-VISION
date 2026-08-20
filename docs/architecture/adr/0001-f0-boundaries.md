@@ -89,7 +89,10 @@ in questa PR. La sua tassonomia minima comprende segnaletica e regole, semafori 
 attraversamenti, geometria/accessi, limiti e restrizioni, condizioni fisiche,
 ostacoli e veicoli. Classifica ogni oggetto come statico (`permanent` o
 `temporary`) oppure dinamico (`dynamic`) e ne registra almeno fonte, posizione,
-direzione, corsia quando applicabile, timestamp, Confidence e Verification Status.
+direzione, timestamp, Confidence e Verification Status. La corsia è obbligatoria
+quando l'oggetto riguarda una corsia determinabile; è facoltativa o non applicabile
+per intera carreggiata, incrocio, attraversamento, geometria stradale o evento senza
+corsia determinabile e non deve mai essere inventata per soddisfare un contratto.
 
 Ogni Road Object dichiara inoltre la natura dell'evidenza: `observed` (rilevato
 direttamente da una fonte autorizzata), `reported` (segnalato ma non automaticamente
@@ -112,9 +115,15 @@ Riceve, quando disponibili e consentiti, stato del Journey (destinazione, segmen
 modalità, percorso, alternative, ETA e soste), contesto di guida (posizione,
 direzione, velocità, ruolo e Surface), eventi/traffico/meteo/Road Horizon qualificati,
 preferenze applicabili e memoria della conversazione/POI discussi. Restituisce a
-Voice Intent e use case una vista contestuale con provenienza, timestamp, Confidence
-e stato `verified`, `inferred` o `unavailable`; l'assenza non viene colmata con dati
-inventati. Voice Intent può leggerlo per risolvere riferimenti e ambiguità, poi
+Voice Intent e use case una vista in cui ogni elemento qualifica separatamente
+**Availability** (`available`, `unavailable`, `unknown`),
+**Provenance/Derivation** (`official`, `provider`, `community`, `observed`,
+`reported`, `inferred`, `simulated` o altra categoria canonica pertinente) e
+**Verification Status** (`unverified`, `corroborated`, `verified`, `disputed`,
+`expired`, `retracted`). Un elemento può essere insieme `available`, `inferred` e
+`corroborated` o `verified`. L'assenza è Availability, mai uno stato di verifica,
+e non viene colmata con dati inventati. Ogni elemento conserva anche timestamp e
+Confidence. Voice Intent può leggerlo per risolvere riferimenti e ambiguità, poi
 produce un Command che il Command Bus valida e instrada. Le Surface forniscono le
 proprie capability e ricevono soltanto la proiezione sicura; nessuna Surface o
 Voice Intent scrive direttamente stato autorevole. Il contesto di guida limita
@@ -222,9 +231,11 @@ review esplicita; questa PR da sola non li dichiara soddisfatti:
       Intent, Command Bus, dominio e Provider Adapter;
 - [ ] il contratto VEO Context definisce significato, responsabilità, input/output,
       relazioni con Voice Intent, Command Bus, Surface e contesto di guida, nonché
-      la distinzione fra contesto verificato, dedotto e non disponibile;
+      le dimensioni separate Availability, Provenance/Derivation e Verification
+      Status, senza trattare assenza, inferenza e verifica come alternative;
 - [ ] il Road Object Layer definisce tassonomia minima statica/dinamica, fonte,
-      posizione, direzione, corsia, timestamp, Confidence, Verification Status,
+      posizione, direzione, corsia condizionale, timestamp, Confidence,
+      Verification Status,
       evidenza observed/reported/inferred/simulated e compatibilità con Base Map e
       Live Road Layer;
 - [ ] il Multimodal Journey Model copre viaggio solo auto, piedi, soste,

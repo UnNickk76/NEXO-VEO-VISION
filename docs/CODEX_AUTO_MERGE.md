@@ -1,36 +1,40 @@
-# Auto-merge sicuro delle pull request Codex
+# Validazione sicura delle pull request Codex e merge manuale
 
-Il workflow `.github/workflows/codex-auto-merge.yml` abilita l'auto-merge soltanto
-per pull request Codex interne e dopo una validazione dedicata. La pull request che
-introduce il workflow deve essere revisionata e unita manualmente: i workflow
-`pull_request_target` vengono sempre caricati dal ramo base, quindi questa
-configurazione non può auto-approvare la propria introduzione.
+Il workflow `.github/workflows/codex-auto-merge.yml` è un workflow di
+**validazione in sola lettura** per pull request Codex interne. Non abilita
+l'auto-merge e non unisce pull request: dopo il completamento dei controlli e della
+Codex Review, ogni PR deve essere valutata e unita manualmente da un responsabile.
 
-## Condizioni di ammissione
+Questa scelta è fail-safe. Nell'integrazione attuale non è stato verificato un
+segnale machine-readable affidabile che distingua una Codex Review non ancora
+iniziata da una review conclusa senza rilievi e da una review conclusa con thread
+irrisolti. La momentanea assenza di commenti non è quindi considerata approvazione.
 
-Una pull request è ammessa soltanto quando tutte le condizioni seguenti sono vere:
+## Condizioni di ammissione alla validazione
+
+Una pull request viene validata soltanto quando tutte le condizioni seguenti sono
+vere:
 
 - non è una bozza;
 - è aperta da `UnNickk76`;
-- proviene dallo stesso repository del ramo base (mai da un fork);
+- proviene dallo stesso repository del ramo base, mai da un fork;
 - ha `main` come ramo di destinazione;
 - il branch di origine inizia con `codex/`;
-- contiene almeno un file e non modifica alcun percorso protetto;
-- il commit validato è ancora il commit in testa alla pull request;
-- GitHub dichiara la pull request unibile, senza conflitti;
-- installazione e tutti gli script di controllo realmente presenti terminano con
-  successo.
+- contiene almeno un file e non modifica alcun percorso protetto.
 
-Nel progetto attuale il solo `package.json` è `frontend/package.json`. Il workflow
-esegue `npm install` e rileva separatamente gli script `lint`, `typecheck`, `test` e
-`build`: esegue quelli definiti e segnala esplicitamente quelli non applicabili.
-Attualmente è definito soltanto `lint`. Il workflow TestFlight esistente è manuale
-(`workflow_dispatch`), usa credenziali Expo e pubblica una build: non viene richiamato
-dall'auto-merge e non è stato modificato.
+Nel progetto attuale il workflow installa le dipendenze di `frontend` e rileva
+separatamente gli script `lint`, `typecheck`, `test` e `build`: esegue quelli
+definiti e segnala esplicitamente quelli non applicabili. Un filtro non superato o
+un controllo fallito interrompe la validazione, ma un esito positivo non causa il
+merge.
 
-## Modifiche che richiedono sempre un merge manuale
+Il workflow TestFlight esistente è manuale (`workflow_dispatch`), usa credenziali
+Expo e pubblica una build: non viene richiamato da questa validazione e non è stato
+modificato.
 
-L'auto-merge viene bloccato se la pull request modifica:
+## Percorsi protetti
+
+La validazione viene bloccata se la pull request modifica:
 
 - workflow, configurazioni GitHub, `CODEOWNERS`, file o cartelle `SECURITY`;
 - file il cui nome indica segreti, token, credenziali, certificati o provisioning;
@@ -39,42 +43,52 @@ L'auto-merge viene bloccato se la pull request modifica:
   entitlements, chiavi, certificati e mobile provisioning);
 - Fastlane, firma o TestFlight.
 
-Un percorso protetto, un controllo fallito, una configurazione mancante, una PR
-vuota, un nuovo commit non ancora validato, un conflitto o uno stato non unibile
-interrompono il workflow senza eseguire il merge.
+Queste modifiche sensibili restano escluse dal percorso di validazione automatica
+e richiedono controllo e merge manuali. I filtri non sostituiscono branch
+protection, ruleset, CODEOWNERS o review umana.
 
 ## Permessi e modello di sicurezza
 
-I job di selezione e validazione hanno soltanto accesso in lettura. Il checkout del
-commit della pull request disabilita la persistenza delle credenziali. Soltanto il
-job finale, che non esegue codice della pull request, riceve `contents: write` e
-`pull-requests: write`. Il workflow usa esclusivamente `GITHUB_TOKEN`, GitHub CLI e
-azioni ufficiali GitHub; non richiede PAT o segreti esterni.
+Il workflow dichiara `permissions: {}` a livello globale. Il job di ammissibilità
+riceve soltanto `contents: read` e `pull-requests: read`; il job di validazione
+riceve soltanto `contents: read`. Il checkout usa lo SHA della pull request e
+`persist-credentials: false`.
 
-Il merge viene richiesto con modalità **squash** e con eliminazione del branch. La
-protezione di `main` resta l'autorità finale: l'auto-merge attende tutti i controlli
-richiesti e non aggira review o regole del branch.
+Non esiste un job finale con permessi `contents: write` o
+`pull-requests: write`. Il workflow non esegue `gh pr merge --auto`, non richiede
+uno squash merge, non elimina automaticamente il branch e non dispone di permessi
+di bypass. Il token in lettura usato per elencare i file non viene esposto al
+codice della pull request; il codice viene eseguito nel job separato in sola
+lettura e senza credenziali Git persistenti.
 
-## Configurazione manuale su GitHub
+## Procedura di merge manuale
 
-Dopo avere unito manualmente la pull request di configurazione:
+1. Attendere che la validazione applicabile sia terminata con successo.
+2. Attendere che la Codex Review sia realmente conclusa sullo SHA corrente.
+3. Esaminare e risolvere esplicitamente tutti i rilievi e thread aperti, inclusi
+   P1/P2, e rieseguire la review se il commit cambia.
+4. Verificare branch protection, review richieste e gli altri controlli configurati.
+5. Scegliere manualmente la strategia di merge consentita dalle policy del
+   repository e unire la PR senza bypassare protezioni.
+6. Gestire manualmente il branch di origine secondo la policy del repository.
 
-1. Aprire **Settings → General → Pull Requests**.
-2. Abilitare **Allow auto-merge**.
-3. Verificare che **Allow squash merging** sia abilitato.
-4. Facoltativo ma consigliato: abilitare **Automatically delete head branches**,
-   così GitHub elimina il branch anche quando la cancellazione richiesta dalla CLI
-   non può essere completata immediatamente.
-5. Aprire **Settings → Branches → Branch protection rules** (oppure **Settings →
-   Rules → Rulesets**, se il repository usa i ruleset) e modificare la regola di
-   `main` senza rimuovere alcuna protezione.
-6. Abilitare **Require status checks to pass before merging**, mantenere tutti i
-   controlli già richiesti e aggiungere **Codex PR validation** dopo che il workflow
-   è stato eseguito almeno una volta. Abilitare anche **Require branches to be up to
-   date before merging** se compatibile con il flusso del repository.
-7. Conservare le review obbligatorie e ogni altra protezione già attiva: il workflow
-   non deve avere autorizzazioni di bypass.
+Non è necessario abilitare **Allow auto-merge**, **Allow squash merging** o
+**Automatically delete head branches** per il funzionamento di questo workflow.
+Tali impostazioni possono esistere per altri processi del repository, ma non sono
+requisiti né effetti della validazione Codex descritta qui.
 
-Se **Allow auto-merge**, lo squash merge o i permessi del `GITHUB_TOKEN` non sono
-disponibili, il comando finale fallisce in modo sicuro e la pull request resta
-aperta per il merge manuale.
+## Condizioni per una futura riattivazione dell'auto-merge
+
+L'auto-merge potrà essere riprogettato soltanto dopo avere documentato, reso
+disponibile e verificato su GitHub un segnale machine-readable affidabile che:
+
+1. distingua review non iniziata, review conclusa senza rilievi e review conclusa
+   con osservazioni o thread irrisolti;
+2. sia associato inequivocabilmente allo SHA corrente della pull request;
+3. generi un evento affidabile che rivaluti la PR dopo la conclusione della review;
+4. blocchi fail-safe in caso di segnale assente, ambiguo, scaduto o contestato;
+5. non richieda bypass, non esponga credenziali scrivibili a codice non fidato e
+   continui a escludere i percorsi protetti.
+
+Fino alla verifica di tutte queste condizioni, l'assenza di rilievi visibili non è
+una review superata e tutte le pull request restano destinate al merge manuale.
