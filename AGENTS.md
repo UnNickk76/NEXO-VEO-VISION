@@ -65,6 +65,27 @@ correzioni, implementazioni, test e attività parzialmente fallite — Codex dev
     eventuali limiti o dipendenze dell'ambiente. Formule come “script Python”,
     “controllo terminologico” o “scansione segreti” non sono sufficienti.
 
+## Cruscotto di controllo di Fabio
+
+`Fabio/FABIO_CONTROLLO.md` è il cruscotto sintetico, in italiano semplice,
+destinato alla consultazione di Fabio.
+
+Al termine di ogni attività Codex deve aggiornare il cruscotto nella stessa pull
+request e indicare almeno:
+
+- data e ora UTC dell'ultimo aggiornamento;
+- attività e stato corrente;
+- cosa è stato realmente modificato;
+- test superati, falliti o non eseguibili;
+- problemi e review ancora aperti;
+- ramo, commit e pull request, quando disponibili;
+- prossimo passo richiesto a Fabio.
+
+Il cruscotto non sostituisce il rapporto tecnico storico né `LATEST.md`, non deve
+contenere segreti e non deve dichiarare completate verifiche non eseguite. Deve
+restare breve e comprensibile. Fabio lo usa come file di sola consultazione; Codex
+può modificarlo esclusivamente per mantenerlo aggiornato secondo queste regole.
+
 ## Chiusura dell'attività
 
 Il rapporto deve descrivere soltanto azioni ed esiti reali. Prima della consegna,
