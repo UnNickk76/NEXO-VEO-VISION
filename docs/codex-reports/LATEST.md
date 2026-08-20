@@ -1,115 +1,140 @@
-Rapporto storico: `docs/codex-reports/2026-08-20_212629_codex-review-pr6-auto-merge-sicuro.md`
+Rapporto storico: `docs/codex-reports/2026-08-20_221730_correzione-pr7-e-fabio-controllo.md`
 
-# Correzione integrale Codex Review PR #6 e auto-merge fail-safe
+# Correzione evidenza PR #7 e cruscotto Fabio Controllo
 
 ## Dati dell'attività
 
-- **Data e ora UTC:** 2026-08-20 21:26:29 UTC
-- **Obiettivo richiesto:** correggere P1/P2 della Codex Review PR #6, separare le tre dimensioni del VEO Context, rendere condizionale la corsia, rendere riproducibili i report e impedire merge automatici prima della review Codex.
-- **Stato finale:** completato
-- **Ramo utilizzato:** `work`
-- **Commit creati:** `c84f87c61d7c6172ddfb9d09241f34bfa5b7be4a`, successivamente aggiornato mediante amend per includere la correzione P2 della review; il nuovo hash non è disponibile nel contenuto del commit stesso.
-- **Pull request:** PR #7, titolo `fix(ci): require completed Codex review before safe auto-merge`; non draft e destinata al merge manuale perché modifica `.github/workflows/codex-auto-merge.yml`.
+- **Data e ora UTC:** 2026-08-20 22:17:30 UTC
+- **Obiettivo richiesto:** correggere senza alterare lo storico l'evidenza incompleta della PR #7 e creare un cruscotto permanente consultabile da Fabio.
+- **Stato finale:** parziale, in attesa di pull request e nuova Codex Review.
+- **Ramo utilizzato:** `codex/fabio-controllo-e-correzione-pr7`
+- **Commit creati:** disponibili nella cronologia del ramo; il rapporto è stato redatto prima del commit finale.
+- **Pull request:** non ancora disponibile al momento della redazione.
+- **Test runtime dell'app:** non eseguiti perché l'attività è esclusivamente documentale.
 
-## File creati, modificati o eliminati
+## File creati o modificati
 
 ### Creati
-- `scripts/check_codex_review_safety.py`
-- `docs/codex-reports/2026-08-20_212629_codex-review-pr6-auto-merge-sicuro.md`
+
+- `Fabio/FABIO_CONTROLLO.md`
+- `docs/codex-reports/2026-08-20_221730_correzione-pr7-e-fabio-controllo.md`
 
 ### Modificati
-- `.github/workflows/codex-auto-merge.yml`
+
 - `AGENTS.md`
-- `docs/architecture/adr/0001-f0-boundaries.md`
-- `docs/architecture/canonical-vocabulary.md`
-- `docs/CODEX_AUTO_MERGE.md`
 - `docs/codex-reports/LATEST.md`
 
-### Eliminati
-- Nessuno.
+### Non modificati intenzionalmente
+
+- `docs/codex-reports/2026-08-20_212629_codex-review-pr6-auto-merge-sicuro.md`: rapporto storico già unito e quindi immutabile secondo `AGENTS.md`.
 
 ## Modifiche concrete
 
-- VEO Context ora separa Availability, Provenance/Derivation e Verification Status; inferenza e verifica possono coesistere e l'assenza non è verifica.
-- Road Object richiede la corsia solo quando determinabile e vieta di inventarla.
-- `AGENTS.md` richiede comando/invocazione, input/pattern/assertion, exit code, risultato e limiti per ogni controllo. I vecchi rapporti non sono stati modificati; questo rapporto registra che le descrizioni generiche del rapporto PR #6 non erano riproducibili.
-- Il job con permessi `contents: write`/`pull-requests: write` e `gh pr merge --auto` è stato eliminato. Eligibility, filtro percorsi e validazioni lint/typecheck/test/build restano. In assenza di un segnale Codex verificabile, ogni merge è manuale.
-- Aggiunto uno script Python standard-library, non distruttivo, che verifica otto scenari, permessi read-only, assenza del comando di merge e conservazione delle protezioni.
-- `docs/CODEX_AUTO_MERGE.md` ora descrive fedelmente validazione read-only, merge manuale, permessi, filtri, controlli, percorsi protetti e condizioni rigorose per una futura riattivazione; sono state rimosse le istruzioni obsolete su job write, squash auto-merge, cancellazione branch e configurazione GitHub dedicata.
-- Lo script versionato controlla anche la coerenza normativa fra workflow, guida, ADR e vocabolario.
-- Non sono stati creati schemi runtime e F0 non è dichiarata completata.
+- Aggiunto il cruscotto `Fabio/FABIO_CONTROLLO.md` con stato, modifiche, controlli, problemi e prossimo passo in linguaggio semplice.
+- Aggiunta in `AGENTS.md` una regola permanente che obbliga Codex ad aggiornare il cruscotto nella stessa PR di ogni attività.
+- Registrata in questo nuovo rapporto l'evidenza completa mancante nel rapporto della PR #7, senza riscrivere il documento storico.
+- Aggiornato `LATEST.md` con la copia integrale di questo rapporto.
 
-## Analisi del segnale Codex e documentazione
+## Correzione riproducibile del rilievo P1 della PR #7
 
-Le API pubbliche REST hanno mostrato per PR #5 e #6 una review `COMMENTED` del bot e commenti inline P1/P2; le PR risultavano già unite. Il testo del bot afferma che in assenza di suggerimenti Codex aggiunge una reazione 👍, anziché una review. Non è stato verificato un check/status o evento Actions affidabile che distingua review non iniziata, review pulita e thread irrisolti. La REST Reviews API espone review, mentre lo stato `isResolved` dei thread appartiene al modello GraphQL; ciò non fornisce da solo un segnale di completamento pulito né un trigger verificato. Perciò l'unica implementazione dimostrabilmente fail-safe è disabilitare l'auto-merge e mantenere la validazione.
+Il rapporto storico della PR #7 abbreviava le verifiche REST con `$endpoint`,
+`jq ...` e `{5,6}`. La correzione preparata nella successiva attività Codex
+ha dichiarato exit code complessivo `0` e exit code individuale `0` per tutte
+le otto pipeline. Le invocazioni complete corrispondenti sono:
 
-Documentazione consultata: GitHub Actions `pull_request_target`, sintassi `permissions`, REST pull request reviews e oggetto GraphQL `PullRequestReviewThread`. Il download HTML ha avuto esito HTTP positivo, ma non è stato possibile certificare dall'ambiente un'integrazione specifica Codex/GitHub oltre ai dati API osservati.
+```bash
+set -o pipefail
+for number in 5 6; do
+  curl -fsSL "https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/pulls/$number/comments" |
+    jq -r '.[] | [.user.login, .path, (.line // .original_line // "null"), .created_at, .body] | @tsv'
+  curl -fsSL "https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/pulls/$number/reviews" |
+    jq -r '.[] | [.user.login, .state, .submitted_at, .commit_id, .body] | @tsv'
+  curl -fsSL "https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/issues/$number/comments" |
+    jq -r '.[] | [.user.login, .created_at, .updated_at, .body] | @tsv'
+  curl -fsSL "https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/pulls/$number" |
+    jq -r '[.number, .state, .merged, .merged_at, .base.ref, .head.ref, .head.sha] | @tsv'
+done
+```
 
-### Correzione P2 della Codex Review PR #7
+Risultati individuali registrati dall'attività correttiva Codex:
 
-La review ha rilevato che `docs/CODEX_AUTO_MERGE.md` descriveva ancora un job finale scrivibile, squash auto-merge, eliminazione branch e impostazioni dedicate, in contraddizione con il workflow. Il thread è stato letto tramite `curl -fsSL https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/pulls/7/comments | jq -r '.[] | [.user.login,.path,.line,.body] | @tsv'`. La guida e i controlli sono stati aggiornati nella stessa PR #7.
-
-## Comandi realmente eseguiti prima dei controlli conclusivi
-
-- Letture: `cat AGENTS.md`, `cat docs/codex-reports/LATEST.md`, `cat` di tutti i file restituiti da `find docs/architecture -type f -print | sort`, e `cat .github/workflows/codex-auto-merge.yml`.
-- Review: `curl -fsSL "https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/$endpoint" | jq ...` per `pulls/{5,6}/comments`, `pulls/{5,6}/reviews`, `issues/{5,6}/comments` e `pulls/{5,6}`.
-- Documentazione: `curl -LfsS` sugli URL ufficiali GitHub Actions/REST/GraphQL indicati sopra.
-- Review PR #7: `curl -fsSL https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/pulls/7/comments | jq -r '.[] | [.user.login,.path,.line,.body] | @tsv'`.
-- Actionlint: `url=$(curl -fsSL https://api.github.com/repos/rhysd/actionlint/releases/latest | jq -r '.assets[] | select(.name|test("_linux_amd64.tar.gz$")) | .browser_download_url'); curl -fsSL "$url" | tar -xz -C /tmp/actionlint; /tmp/actionlint/actionlint .github/workflows/codex-auto-merge.yml`.
-
-## Test e controlli conclusivi realmente eseguiti
-
-| Controllo (comando esatto) | Exit code | Risultato individuale / limiti |
+| Pipeline | Exit code | Risultato osservato |
 | --- | ---: | --- |
-| `ruby -e 'require "yaml"; doc=YAML.safe_load(File.read(".github/workflows/codex-auto-merge.yml"), aliases: true); abort "jobs missing" unless doc["jobs"].is_a?(Hash); puts "PASS: YAML parsed, #{doc["jobs"].size} jobs"'` | 0 | Superato: YAML valido, 2 job; Ruby/Psych 3.4.4. |
-| `/tmp/actionlint/actionlint .github/workflows/codex-auto-merge.yml` | 0 | Superato con actionlint 1.7.12; controllo statico, non esecuzione hosted. |
-| `python3 scripts/check_codex_review_safety.py` | 0 | Superato: assertion versionate complete su otto scenari, permissions, filtri, percorsi protetti, lint/typecheck/test/build, guida read-only/manuale, assenza di auto-merge, tre dimensioni VEO Context e corsia condizionale. Nessuna dipendenza esterna. |
-| `git diff --name-only HEAD^` | 0 | Superato: gli otto file della PR rispetto a `HEAD^` coincidono con l'elenco di questo rapporto. |
-| `! git diff HEAD^ --no-ext-diff -U0 | rg -ni '(BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|(api[_-]?key|token|password|secret)[[:space:]]*[:=][[:space:]]*[A-Za-z0-9_/-]{16,})'` | 0 | Superato: nessuna corrispondenza; scansione euristica sul diff completo della PR rispetto a `HEAD^`. |
-| `git diff HEAD^ --check` | 0 | Superato: nessun errore whitespace. |
-| `cmp -s <(tail -n +3 docs/codex-reports/LATEST.md) docs/codex-reports/2026-08-20_212629_codex-review-pr6-auto-merge-sicuro.md` | 0 | Superato: contenuto completo identico dopo l'intestazione di `LATEST.md`. |
-| `test "$(git diff --name-only HEAD^ | wc -l)" -eq 8 && git diff --name-only HEAD^ | diff -u - <(printf '%s\n' '.github/workflows/codex-auto-merge.yml' 'AGENTS.md' 'docs/CODEX_AUTO_MERGE.md' 'docs/architecture/adr/0001-f0-boundaries.md' 'docs/architecture/canonical-vocabulary.md' 'docs/codex-reports/2026-08-20_212629_codex-review-pr6-auto-merge-sicuro.md' 'docs/codex-reports/LATEST.md' 'scripts/check_codex_review_safety.py')` | 0 | Superato: perimetro esatto e rapporti inclusi insieme. |
+| `pulls/5/comments` | 0 | Commenti inline della PR #5 restituiti. |
+| `pulls/5/reviews` | 0 | Review Codex della PR #5 restituita. |
+| `issues/5/comments` | 0 | Commenti di conversazione della PR #5 restituiti. |
+| `pulls/5` | 0 | Metadati e stato di merge della PR #5 restituiti. |
+| `pulls/6/comments` | 0 | Commenti inline della PR #6 restituiti. |
+| `pulls/6/reviews` | 0 | Review Codex della PR #6 restituita. |
+| `issues/6/comments` | 0 | Commenti di conversazione della PR #6 restituiti. |
+| `pulls/6` | 0 | Metadati e stato di merge della PR #6 restituiti. |
+
+La verifica specifica dei commenti inline della PR #7 è stata registrata con:
+
+```bash
+set -o pipefail
+curl -fsSL "https://api.github.com/repos/UnNickk76/NEXO-VEO-VISION/pulls/7/comments" |
+  jq -r '.[] | [.user.login, .path, (.line // .original_line // "null"), .created_at, .body] | @tsv'
+```
+
+- **Exit code registrato:** `0`
+- **Risultato osservato:** restituiti il precedente rilievo P2 e il rilievo P1 sui comandi incompleti.
+- **Limite:** la REST API dei commenti non espone lo stato GraphQL `isResolved` dei thread.
+
+Questi comandi sono riportati come evidenza della precedente attività Codex. Non
+sono stati rieseguiti da questa sessione Work mediante shell; lo stato corrente
+della PR #7 e i thread sono stati invece letti direttamente tramite
+l'integrazione GitHub autenticata.
+
+## Operazioni e controlli realmente eseguiti in questa attività
+
+| Operazione o controllo | Esito | Risultato individuale / limite |
+| --- | --- | --- |
+| Lettura PR #7 tramite integrazione GitHub, repository `UnNickk76/NEXO-VEO-VISION` | Superato | PR chiusa e unita; merge commit `13a5e9f9fb3267414f584ce7442af3be48dcf04c`. |
+| Lettura dei review thread della PR #7 tramite integrazione GitHub | Superato | P1 e P2 ancora formalmente irrisolti nella PR chiusa. |
+| Lettura su `main` del rapporto storico PR #7 | Superato | Presenti i segnaposto `$endpoint`, `jq ...` e `{5,6}`. |
+| Lettura di `AGENTS.md`, `LATEST.md` e `docs/CODEX_AUTO_MERGE.md` su `main` | Superato | Confermate immutabilità dei rapporti storici e documentazione del merge manuale. |
+| Creazione ramo `codex/fabio-controllo-e-correzione-pr7` da `main` | Superato | Ramo creato tramite integrazione GitHub. |
+| Aggiornamento `AGENTS.md` sul ramo | Superato | Commit `136c68e3625ea7335d840747f6c6152fe0c1dffa`. |
+| Creazione `Fabio/FABIO_CONTROLLO.md` sul ramo | Superato | Commit `147bf73d9819e733580b29f7ce12b67a35424030`. |
+| Test applicativi, lint, build e TestFlight | Non eseguiti | Non applicabili alle sole modifiche documentali. |
+| Nuova Codex Review sul commit finale | Non ancora eseguita | Da richiedere dopo la creazione della pull request. |
 
 ## Verificato realmente
 
-- Thread completi accessibili PR #5/#6, timestamp di merge e review REST del bot.
-- Workflow finale parsabile, validato staticamente, senza permessi write o comando auto-merge.
-- Filtri su draft, autore, fork/repository, base/ramo e percorsi protetti conservati; controlli frontend disponibili conservati.
-- Coerenza ADR/vocabolario, corsia condizionale, tre dimensioni VEO Context, file staged, segreti euristici, whitespace e identità dei rapporti.
-- Coerenza tra workflow e `docs/CODEX_AUTO_MERGE.md`: sola lettura, nessun merge/squash/cancellazione automatica, merge manuale, filtri e controlli preservati.
+- La PR #7 è stata unita senza la successiva correzione locale `bac05a61d8e2cb3241d4bb46d6bf389045254673`.
+- Il rapporto storico presente su `main` contiene ancora l'evidenza abbreviata.
+- `docs/CODEX_AUTO_MERGE.md` descrive correttamente validazione in sola lettura e merge manuale.
+- Il cruscotto e la regola permanente sono stati creati sul ramo dedicato.
 
 ## Dedotto
 
-- L'assenza del job di merge impedisce a questo workflow di unire PR; altre automazioni o utenti con privilegi restano fuori dal suo controllo.
-- Un futuro segnale potrebbe consentire riattivazione sicura solo se documenta commit revisionato, completamento pulito e zero thread Codex irrisolti, e genera un evento affidabile per rivalutare lo stesso SHA.
+- La nuova evidenza completa dovrebbe risolvere il problema sostanziale del P1 senza violare l'immutabilità dello storico, ma soltanto una nuova Codex Review può confermarlo.
+- I vecchi thread della PR #7 non possono rappresentare da soli lo stato della nuova PR correttiva.
 
 ## Non è stato possibile verificare
 
-- Un segnale Codex machine-readable affidabile per tutti e tre gli stati richiesti: non individuato né documentato nell'ambiente.
-- Esecuzione reale su runner GitHub e branch protection del repository.
-- Esito della nuova iterazione Codex Review della PR #7 dopo l’amend e merge manuale finale.
+- Esito della nuova Codex Review, perché la pull request non era ancora disponibile durante la redazione.
+- Comportamento runtime, build Expo/EAS o TestFlight, non pertinenti a questa attività.
+- Protezioni GitHub esterne ai file del repository.
 
-## Errori e warning rilevati
+## Errori e warning
 
-- La ricerca web integrata ha restituito HTTP 401; sono state usate API pubbliche e documentazione ufficiale via `curl`.
-- Il primo tentativo di download actionlint cercava erroneamente un asset con pattern `linux_x86_64` e ha fallito; corretto a `_linux_amd64`, poi actionlint è stato eseguito con exit 0.
-- PyYAML non è installato; il parsing YAML usa Ruby/Psych già disponibile.
-- Le prime due esecuzioni estese di `python3 scripts/check_codex_review_safety.py` hanno restituito exit 1: prima un’assertion non normalizzava il ritorno a capo tra “richiede” e “uno squash merge”, poi cercava il plurale “unite manualmente” invece del testo normativo singolare. Le assertion sono state corrette e l’intera suite finale è stata rieseguita sulla versione definitiva con exit 0.
+- La correzione `bac05a61d8e2cb3241d4bb46d6bf389045254673` era rimasta nell'ambiente isolato Codex e non era stata pubblicata prima del merge manuale della PR #7.
+- I rapporti storici non possono essere sovrascritti; la rettifica viene quindi conservata in questo nuovo rapporto.
 
-## Problemi non risolti, dipendenze e credenziali
+## Problemi non risolti e rischi tecnici
 
-L'auto-merge rimane volutamente disabilitato. Per riattivarlo servono un contratto ufficiale verificabile del segnale Codex, un trigger affidabile, binding allo SHA e interrogazione dei thread irrisolti, più test su GitHub. Nessun segreto è richiesto dalle modifiche. Pubblicare la PR richiede l'integrazione dell'ambiente; GitHub CLI locale non è autenticata.
-
-## Rischi tecnici
-
-- I controlli sono statici e non provano comportamento hosted o protezioni configurate fuori Git.
-- La scansione segreti è euristica.
-- Il workflow `pull_request_target` resta sicuro rispetto al codice non fidato perché il job con token PR legge solo metadati e il checkout dello SHA della PR avviene nel job con solo `contents: read` e `persist-credentials: false`.
+- La nuova PR deve ancora essere revisionata.
+- Il cruscotto è “di sola consultazione” come regola operativa, non come permesso GitHub per singolo file.
+- L'auto-merge resta disabilitato; un merge anticipato può ancora essere effettuato manualmente da un utente autorizzato.
 
 ## Prossimo passo consigliato
 
-Aggiornare la PR #7 non draft e lasciarla al merge manuale dopo Codex Review e risoluzione esplicita dei thread. Valutare la riattivazione automatica solo dopo disponibilità e test del segnale completo sopra descritto.
+Aprire la pull request correttiva, richiedere `@codex review`, correggere eventuali
+nuovi rilievi e unire soltanto dopo una review pulita sullo SHA corrente.
 
 ## Decisioni richieste a Fabio
 
-Nessuna per applicare il blocco fail-safe. Fabio dovrà approvare esplicitamente una futura integrazione machine-readable prima di riabilitare l'auto-merge; F0 resta aperta.
+Autorizzare il merge soltanto dopo la conferma esplicita che la nuova review è
+pulita. Nessun'altra decisione è richiesta per creare il cruscotto.
