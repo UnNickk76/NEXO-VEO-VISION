@@ -9,7 +9,7 @@
 - **Attività:** correzione documentale successiva alla PR #7 e creazione del cruscotto permanente.
 - **Stato:** in preparazione su ramo dedicato.
 - **Ramo:** `codex/fabio-controllo-e-correzione-pr7`
-- **Pull request:** non ancora disponibile al momento di questo aggiornamento.
+- **Pull request:** [PR #8](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/8), aperta come bozza e non ancora autorizzata al merge.
 
 ## Cosa è stato fatto realmente
 
