@@ -58,6 +58,12 @@ correzioni, implementazioni, test e attività parzialmente fallite — Codex dev
     esito ottenuto su una versione precedente non vale come verifica conclusiva.
 14. Indicare esplicitamente nel rapporto ogni controllo non ripetibile e ogni dato
     non disponibile, con la relativa causa, senza dedurre o inventare un esito.
+15. Per ogni controllo dichiarato, riportare una forma direttamente riproducibile:
+    il comando esatto realmente eseguito oppure il percorso di uno script
+    versionato e la sua invocazione esatta. Includere tutti gli input, pattern,
+    allowlist e assertion necessari, l'exit code, il risultato individuale e gli
+    eventuali limiti o dipendenze dell'ambiente. Formule come “script Python”,
+    “controllo terminologico” o “scansione segreti” non sono sufficienti.
 
 ## Chiusura dell'attività
 

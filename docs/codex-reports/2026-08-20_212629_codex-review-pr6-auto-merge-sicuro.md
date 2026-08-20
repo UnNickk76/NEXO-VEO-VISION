@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-20_212629_codex-review-pr6-auto-merge-sicuro.md`
-
 # Correzione integrale Codex Review PR #6 e auto-merge fail-safe
 
 ## Dati dell'attività
