@@ -49,6 +49,15 @@ correzioni, implementazioni, test e attività parzialmente fallite — Codex dev
     comunque una pull request contenente soltanto il rapporto.
 11. Non sovrascrivere né eliminare i rapporti storici. Soltanto `LATEST.md` deve
     essere sostituito con il rapporto più recente.
+12. Eseguire realmente i controlli conclusivi prima della consegna e registrarli
+    nel rapporto storico, indicando per ciascuno il comando esatto e il relativo
+    esito individuale. Gli esiti essenziali non possono essere demandati soltanto
+    al testo temporaneo della consegna.
+13. Se dopo un controllo vengono modificati file che possono influenzarne l'esito,
+    ripetere il controllo sulla versione finale prima di dichiararlo superato. Un
+    esito ottenuto su una versione precedente non vale come verifica conclusiva.
+14. Indicare esplicitamente nel rapporto ogni controllo non ripetibile e ogni dato
+    non disponibile, con la relativa causa, senza dedurre o inventare un esito.
 
 ## Chiusura dell'attività
 
@@ -57,3 +66,10 @@ Codex deve verificare che il rapporto storico e `LATEST.md` siano inclusi nella
 stessa pull request dell'attività. Se dati finali come URL o numero della pull
 request non sono ancora disponibili al momento della creazione del rapporto,
 deve dichiararlo esplicitamente senza inventarli.
+
+La verifica conclusiva deve essere svolta sul contenuto destinato al commit. Dopo
+la sua esecuzione sono ammesse soltanto modifiche al rapporto che ne registrano
+fedelmente comandi ed esiti; se tali modifiche possono incidere su un controllo
+(per esempio whitespace, segreti o perimetro), quel controllo deve essere ripetuto
+e il nuovo esito deve sostituire quello precedente sia nel rapporto storico sia in
+`LATEST.md` prima del commit.

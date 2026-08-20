@@ -84,8 +84,86 @@ freshness e provenienza distinti.
 
 Un evento live non modifica automaticamente la Base Map. Un cambiamento persistente
 può soltanto generare una proposta sottoposta a verifica/processo autorizzato. Il
-`Road Object Layer` citato nell'espansione concettuale è un futuro layer distinto,
-previsto ma non definito né implementato in questa PR.
+`Road Object Layer` è un layer concettuale distinto, previsto ma non implementato
+in questa PR. La sua tassonomia minima comprende segnaletica e regole, semafori e
+attraversamenti, geometria/accessi, limiti e restrizioni, condizioni fisiche,
+ostacoli e veicoli. Classifica ogni oggetto come statico (`permanent` o
+`temporary`) oppure dinamico (`dynamic`) e ne registra almeno fonte, posizione,
+direzione, corsia quando applicabile, timestamp, Confidence e Verification Status.
+
+Ogni Road Object dichiara inoltre la natura dell'evidenza: `observed` (rilevato
+direttamente da una fonte autorizzata), `reported` (segnalato ma non automaticamente
+vero), `inferred` (dedotto e tracciabile) o `simulated` (solo test/demo, isolato dai
+dati reali). Gli oggetti permanenti verificati possono riferirsi a entità della
+Base Map senza riscriverla; quelli temporanei o dinamici alimentano il Live Road
+Layer secondo freshness e time decay. Conflitti e correzioni seguono verifica e
+provenance, mai promozione automatica tra layer.
+
+## Contratti fondamentali aggiuntivi
+
+### VEO Context
+
+Il **VEO Context** è il contratto versionato del contesto di sessione condiviso
+dall'unico assistente generale e di navigazione. Ha la responsabilità di offrire
+una vista coerente e minimizzata del viaggio corrente e della conversazione, non
+di eseguire azioni, autorizzare Command o determinare la verità stradale.
+
+Riceve, quando disponibili e consentiti, stato del Journey (destinazione, segmenti,
+modalità, percorso, alternative, ETA e soste), contesto di guida (posizione,
+direzione, velocità, ruolo e Surface), eventi/traffico/meteo/Road Horizon qualificati,
+preferenze applicabili e memoria della conversazione/POI discussi. Restituisce a
+Voice Intent e use case una vista contestuale con provenienza, timestamp, Confidence
+e stato `verified`, `inferred` o `unavailable`; l'assenza non viene colmata con dati
+inventati. Voice Intent può leggerlo per risolvere riferimenti e ambiguità, poi
+produce un Command che il Command Bus valida e instrada. Le Surface forniscono le
+proprie capability e ricevono soltanto la proiezione sicura; nessuna Surface o
+Voice Intent scrive direttamente stato autorevole. Il contesto di guida limita
+contenuto e azioni prima della presentazione.
+
+### Multimodal Journey Model
+
+Il **Multimodal Journey Model** rappresenta un solo Journey continuo come sequenza
+ordinata di segmenti e transizioni. Deve esprimere un viaggio interamente in auto,
+segmenti a piedi, soste, parcheggio e passaggi auto → parcheggio → piedi; prevede
+segmenti di trasporto pubblico e altre modalità future senza dichiararli disponibili.
+Ogni segmento conserva modalità, estremi, ordine, stato e vincoli applicabili; una
+transizione conserva il motivo e il punto di handoff. Cambiare modalità non crea
+automaticamente un nuovo Journey: identità, destinazione, contesto e progresso
+restano continui, mentre routing ed ETA possono essere ricalcolati. Questa PR
+definisce soltanto il confine concettuale: nessun provider o runtime multimodale.
+
+### Driver/Passenger roles e Surface
+
+`driver` e `passenger` sono ruoli d'interazione, non identità. Durante la guida il
+Driver riceve contenuto essenziale, voice-first, azioni brevi e touch ridotto;
+ricerche, analisi, dettagli e interazioni complesse sono limitati o rinviati. Il
+Passenger può usare funzioni più ricche solo se consentite dalla Surface e senza
+compromettere la guida. Il passaggio di ruolo deve essere esplicito e reversibile,
+aggiornare il VEO Context e rivalidare le capability; segnali automatici possono
+solo proporre un ruolo con incertezza visibile, mai attestarlo con falsa certezza.
+
+La Surface telefono applica il ruolo e può offrire esperienza completa da fermo;
+CarPlay e Android Auto applicano sempre anche i rispettivi template, entitlement e
+limiti OS, che prevalgono su quanto il ruolo consentirebbe. Nessuna Surface decide
+da sola autorizzazione o safety policy, e il ruolo Passenger non sblocca funzioni
+vietate su una Surface automotive.
+
+### SNV come sistema evolutivo
+
+Nel repository **SNV significa esclusivamente Smart Navigation View**. È un sistema
+di presentazione evolutivo che decide quale porzione di strada mostrare e con quale
+scala/prospettiva usando distanza dalla manovra, velocità, tipo di strada, corsie,
+complessità, traffico, eventi, Road Horizon, condizioni, VEO Context e capability
+della Surface. Mantiene controllo manuale e ricentraggio, non sostituisce dominio,
+routing, Base Map o Live Road Layer e non possiede dati/provider.
+
+Il contratto SNV evolve con versioni esplicite. Nuovi input e comportamenti devono
+avere default conservativi e restare compatibili con consumer precedenti; campi
+rimossi, semantica mutata, fallback safety degradato o dipendenze da tipi proprietari
+sono modifiche incompatibili e richiedono nuova versione maggiore, migrazione,
+ADR e test di compatibilità documentati. Sono vietate modifiche incompatibili
+silenziose o non documentate e l'integrazione diretta di un provider: gli input
+arrivano soltanto da contratti/porte neutrali.
 
 ## Frontend, backend e shared
 
@@ -142,6 +220,22 @@ review esplicita; questa PR da sola non li dichiara soddisfatti:
       inferred, provenance, freshness e official precedence sono accettati;
 - [ ] sono approvati confini e direzione delle dipendenze fra Surface, Voice
       Intent, Command Bus, dominio e Provider Adapter;
+- [ ] il contratto VEO Context definisce significato, responsabilità, input/output,
+      relazioni con Voice Intent, Command Bus, Surface e contesto di guida, nonché
+      la distinzione fra contesto verificato, dedotto e non disponibile;
+- [ ] il Road Object Layer definisce tassonomia minima statica/dinamica, fonte,
+      posizione, direzione, corsia, timestamp, Confidence, Verification Status,
+      evidenza observed/reported/inferred/simulated e compatibilità con Base Map e
+      Live Road Layer;
+- [ ] il Multimodal Journey Model copre viaggio solo auto, piedi, soste,
+      parcheggio, trasporto pubblico/modalità future e continuità tra modalità,
+      senza integrazioni runtime o provider implicite;
+- [ ] i ruoli Driver/Passenger definiscono differenze, funzioni consentite o
+      limitate in guida, voice-first, riduzione distrazioni, cambio ruolo,
+      responsabilità di telefono/CarPlay/Android Auto e incertezza del rilevamento;
+- [ ] SNV è definito esclusivamente come Smart Navigation View evolutiva, con
+      responsabilità/confini, evoluzione versionata, retrocompatibilità,
+      separazione dai provider e gate contro modifiche incompatibili o non documentate;
 - [ ] frontend/backend/shared e Base Map/Live Road Layer hanno ownership e
       lifecycle non ambigui;
 - [ ] tutte le classi dati hanno finalità, consenso, retention, condivisione,

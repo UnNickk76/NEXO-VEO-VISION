@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-20_210954_correzioni-review-pr5.md`
-
 # Correzioni P1 e P2 della Codex Review della PR #5
 
 ## Dati dell'attività
