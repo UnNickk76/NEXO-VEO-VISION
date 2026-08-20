@@ -1,0 +1,128 @@
+name: Codex auto-merge
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: codex-auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  eligibility:
+    name: Codex PR eligibility
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.user.login == 'UnNickk76' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.base.ref == 'main' &&
+      startsWith(github.event.pull_request.head.ref, 'codex/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      safe: ${{ steps.paths.outputs.safe }}
+    steps:
+      - name: Reject protected paths
+        id: paths
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          files="$(gh api --paginate \
+            "repos/${GH_REPO}/pulls/${PR_NUMBER}/files" \
+            --jq '.[].filename')"
+
+          if [ -z "$files" ]; then
+            echo "Pull request senza file modificati: auto-merge bloccato."
+            exit 1
+          fi
+
+          protected_pattern='(^|/)(\.github/|security/|SECURITY(\.md)?$|CODEOWNERS$|[^/]*(credential|secret|token|certificate|provision)[^/]*$|eas\.json$|app\.json$|app\.config\.[^/]+$|Expo\.plist$|Podfile(\.lock)?$|[^/]*\.entitlements$|[^/]*\.(p8|p12|pem|key|mobileprovision)$|fastlane/|ios/)|(^|/)[^/]*(testflight|signing)[^/]*$'
+          blocked="$(printf '%s\n' "$files" | grep -Ei "$protected_pattern" || true)"
+
+          if [ -n "$blocked" ]; then
+            echo "Auto-merge vietato: la pull request modifica percorsi protetti:"
+            printf '%s\n' "$blocked"
+            exit 1
+          fi
+
+          echo "safe=true" >> "$GITHUB_OUTPUT"
+
+  validation:
+    name: Codex PR validation
+    needs: eligibility
+    if: needs.eligibility.outputs.safe == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout pull request commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Run available frontend checks
+        working-directory: frontend
+        shell: bash
+        run: |
+          set -euo pipefail
+          for check in lint typecheck test build; do
+            if node -e "const s=require('./package.json').scripts||{}; process.exit(Object.hasOwn(s, '$check') ? 0 : 1)"; then
+              echo "Esecuzione dello script: $check"
+              npm run "$check"
+            else
+              echo "Script $check non definito: controllo non applicabile."
+            fi
+          done
+
+  enable-auto-merge:
+    name: Enable Codex squash auto-merge
+    needs: [eligibility, validation]
+    if: >-
+      needs.eligibility.result == 'success' &&
+      needs.validation.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Revalidate pull request and enable auto-merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pr="$(gh api "repos/${GH_REPO}/pulls/${PR_NUMBER}")"
+
+          test "$(jq -r '.state' <<< "$pr")" = "open"
+          test "$(jq -r '.draft' <<< "$pr")" = "false"
+          test "$(jq -r '.user.login' <<< "$pr")" = "UnNickk76"
+          test "$(jq -r '.base.ref' <<< "$pr")" = "main"
+          [[ "$(jq -r '.head.ref' <<< "$pr")" == codex/* ]]
+          test "$(jq -r '.head.repo.full_name' <<< "$pr")" = "$GH_REPO"
+          test "$(jq -r '.head.sha' <<< "$pr")" = "$EXPECTED_SHA"
+          test "$(jq -r '.mergeable' <<< "$pr")" = "true"
+
+          gh pr merge "$PR_NUMBER" --repo "$GH_REPO" --auto --squash --delete-branch
