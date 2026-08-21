@@ -99,7 +99,7 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `V02` | NEXO + VEO — un solo assistente | concettuale | — | memory/NEXO_VEO_VISION.md §2 |
 | [ ] | `V03` | Voice-First | concettuale | — | memory/NEXO_VEO_VISION.md §3 |
 | [ ] | `V04` | Audio / Radio / Musica / Telefonate | concettuale | — | memory/NEXO_VEO_VISION.md §4 |
-| [ ] | `V05` | CarPlay & Android Auto (requisiti fondamentali, non opzionali) | parziale | PR #20 — contratto Surface provider-neutral + checker; nessun runtime automotive | memory/NEXO_VEO_VISION.md §5 |
+| [ ] | `V05` | CarPlay & Android Auto (requisiti fondamentali, non opzionali) | parziale | PR #20; fix `3541d2f`; test `a69af56`; checker `frontend/scripts/check-surface-capabilities.ts`; nessun runtime automotive | memory/NEXO_VEO_VISION.md §5 |
 | [ ] | `V06` | Cartografia & Motore di navigazione | concettuale | — | memory/NEXO_VEO_VISION.md §6 |
 | [ ] | `V07` | Eventi stradali realtime | concettuale | — | memory/NEXO_VEO_VISION.md §7 |
 | [ ] | `V08` | Eventi a livello di corsia | concettuale | — | memory/NEXO_VEO_VISION.md §8 |
@@ -138,9 +138,9 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `V41` | Smart Emergency | concettuale | — | memory/NEXO_VEO_VISION.md §41 |
 | [ ] | `V42` | Road History | concettuale | — | memory/NEXO_VEO_VISION.md §42 |
 | [ ] | `V43` | Map Alive | concettuale | — | memory/NEXO_VEO_VISION.md §43 |
-| [ ] | `V44` | Interfaccia pulita e intuitiva | parziale | PR #20 — vincoli Surface moving/stopped, senza UI finale | memory/NEXO_VEO_VISION.md §44 |
-| [ ] | `V45` | Priorità delle informazioni | parziale | PR #20 — capability/policy Surface, senza presentazione runtime | memory/NEXO_VEO_VISION.md §45 |
-| [ ] | `V46` | Attenzione del guidatore | parziale | PR #20 — touch budget/free-text/rich-detail constraints, senza test in auto | memory/NEXO_VEO_VISION.md §46 |
+| [ ] | `V44` | Interfaccia pulita e intuitiva | parziale | PR #20; fix `3541d2f`; test `a69af56`; checker Surface moving/stopped; nessuna UI finale | memory/NEXO_VEO_VISION.md §44 |
+| [ ] | `V45` | Priorità delle informazioni | parziale | PR #20; fix `3541d2f`; test `a69af56`; capability/policy checker; nessuna presentazione runtime | memory/NEXO_VEO_VISION.md §45 |
+| [ ] | `V46` | Attenzione del guidatore | parziale | PR #20; fix `3541d2f`; test `a69af56`; touch/free-text/rich-detail checker; nessun test in auto | memory/NEXO_VEO_VISION.md §46 |
 | [ ] | `V47` | Privacy (by design) | concettuale | — | memory/NEXO_VEO_VISION.md §47 |
 | [ ] | `V48` | Ruolo dell'AI | concettuale | — | memory/NEXO_VEO_VISION.md §48 |
 | [ ] | `V49` | Dati reali, inferenze e demo | concettuale | — | memory/NEXO_VEO_VISION.md §49 |
