@@ -7,7 +7,7 @@
 
 - **Data:** 21 agosto 2026, 09:35 UTC
 - **Attività:** sblocco di Expo Doctor per riavviare la prima pipeline TestFlight.
-- **Stato:** PR #13 aperta; Expo Doctor e lint remoti superati; in attesa della Codex Review sul nuovo SHA prima del merge.
+- **Stato:** PR #13 aperta; corretti anche i rilievi della prima review; Expo Doctor e lint remoti superati sulla coppia finale package/lock; in attesa della nuova Codex Review prima del merge.
 - **Branch:** `codex/fix-expo-sdk54-testflight`
 - **Pull request:** [PR #13](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/13)
 - **Costi:** nessuna spesa.
@@ -17,6 +17,7 @@
 - Letto il log completo della run fallita: Expo Doctor era il blocco e la build iOS non era ancora partita.
 - Aggiornati `expo` a `54.0.37` ed `expo-constants` a `18.0.14`, le versioni richieste dalla matrice Expo SDK 54.
 - Creato un lockfile npm coerente con il comando usato dal workflow.
+- Reso il lockfile npm coerente anche con tutte le `resolutions` Yarn già imposte dal progetto tramite `overrides` equivalenti.
 - Verificata un'installazione pulita dal lockfile.
 
 ## Controlli
@@ -24,9 +25,10 @@
 - `expo install --check`: superato, dipendenze aggiornate.
 - `npm ci`: superato.
 - Lint `app` e `src`: superato con zero errori e un warning preesistente.
-- Expo Doctor remoto: superato nella [run #8](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32470136178), `18/18 checks passed`.
+- Expo Doctor remoto: superato sulla coppia finale package/lock nella [run #10](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32470746191), `18/18 checks passed`.
 - Lint remoto: superato, zero errori e un warning preesistente.
 - Il ramo di verifica si è fermato prima di EAS Build: nessuna spesa e nessun invio TestFlight avviato.
+- Il contenuto finale di `package.json` e `package-lock.json` verificato dalla run è byte-per-byte identico a quello della PR #13.
 - Codex Review sul nuovo SHA, merge e nuova pipeline TestFlight su `main`: ancora da concludere.
 
 ## Isolamento
