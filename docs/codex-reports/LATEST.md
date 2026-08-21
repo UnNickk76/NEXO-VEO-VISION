@@ -1,15 +1,15 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_072440_correzione-finale-registro-concettuale.md`
+Rapporto storico: `docs/codex-reports/2026-08-21_093200_correzione-motivazioni-registro.md`
 
-# Correzione finale della validazione del registro concettuale
+# Correzione del riconoscimento delle motivazioni nel registro concettuale
 
 ## Dati dell'attività
 
-- **Data e ora UTC:** 2026-08-21 07:24:40 UTC
-- **Obiettivo:** correggere i due P1 della Codex Review sullo SHA `8a280a7942f2de08374c868edb7ce27e671a8363`.
+- **Data e ora UTC:** 2026-08-21 09:32:00 UTC
+- **Obiettivo richiesto:** controllare la nuova Codex Review della PR #10 e correggere i rilievi reali.
 - **Stato finale:** completato sul ramo; in attesa di nuova review.
-- **Ramo:** `codex/luoghi-salvati-concetto`
+- **Ramo utilizzato:** `codex/luoghi-salvati-concetto`
+- **Commit creati prima del rapporto:** `1442dbb9aaab75e659ef08a7007c8cbb068805fb`, `8c8a68a07a434b60025ae8ce320eaf341996230b`
 - **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10)
-- **Commit creati prima del rapporto:** `6dd4807ae1b9198f781e8588b9cddd9e7c011601`, `3b6be5d07d5106bde9262f06f075628c505f41c7`
 - **Costi:** nessuna spesa.
 
 ## File modificati
@@ -20,40 +20,23 @@ Rapporto storico: `docs/codex-reports/2026-08-21_072440_correzione-finale-regist
 
 ## File creato
 
-- `docs/codex-reports/2026-08-21_072440_correzione-finale-registro-concettuale.md`
+- `docs/codex-reports/2026-08-21_093200_correzione-motivazioni-registro.md`
 
-## Rilievi corretti
+## Modifica concreta
 
-1. **P1 — stati non spuntati:** tutte le righe vengono ora validate prima di distinguere tra `[ ]` e `[x]`.
-2. **P1 — comando temporaneo:** la verifica finale usa il percorso versionato del repository, `scripts/check_conceptual_master.py`, ed è rieseguibile dalla radice di qualsiasi checkout della PR.
+La review sul commit `4c1977d983c46e3ac4618332ae8dbd6bfcb5ea64` ha rilevato che il pattern `\b(motiv|decision|adr|issue|pr\s*#\d+)\b` riconosceva soltanto le parole esatte `motiv` e `decision`, non le forme italiane previste `motivazione` e `decisione`.
 
-## Modifiche concrete
-
-- Stati ammessi: `concettuale`, `in corso`, `parziale`, `implementata`, `rinviata`, `sostituita`, `scartata`.
-- Uno stato non ammesso produce errore con l'ID della riga.
-- `sostituita` e `scartata` richiedono evidenza non vuota e un riferimento riconoscibile a motivazione o decisione.
-- Una riga non spuntata non può avere stato `implementata`.
-- Restano attivi i controlli delle spunte: stato `implementata`, PR, SHA e test.
-- Restano attivi i confronti esatti degli ID permanenti.
+Il pattern è stato sostituito con `\b(motivazion\w*|decision\w*|adr|issue|pr\s*#\d+)\b`. In questo modo accetta le forme italiane singolari e plurali, continuando ad accettare ADR, issue e riferimenti PR e a rifiutare testo generico privo di decisione o motivazione.
 
 ## Comandi realmente eseguiti
 
-### Ispezione GitHub
-
-- `github_fetch_pr(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
-- `github_list_pull_request_reviews(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
-- `github_list_pull_request_review_threads(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
-
-Esito: review presente sullo SHA corrente, PR aperta e unibile, due nuovi thread P1 aperti.
-
-### Verifica conclusiva riproducibile
-
-Comando esatto realmente eseguito dalla radice della struttura del repository contenente i file correnti della PR:
+### Verifica completa del registro
 
 ```bash
 python3 scripts/check_conceptual_master.py .
 ```
 
+- **Directory di lavoro:** radice della struttura materializzata della PR.
 - **Exit code:** `0`
 - **Output individuale:**
 
@@ -72,37 +55,56 @@ PASS assertion: README discovery
 PASS: conceptual master registry is coherent
 ```
 
-Il comando non dipende da percorsi temporanei, file esterni o parametri omessi: è direttamente eseguibile dalla radice di qualsiasi checkout dello SHA della PR.
+### Test mirato del pattern
+
+```bash
+python3 - <<'PY'
+import re
+pattern = re.compile(r'\b(motivazion\w*|decision\w*|adr|issue|pr\s*#\d+)\b', re.I)
+cases = {
+    'Motivazione: requisito obsoleto': True,
+    'Decisione documentata': True,
+    'ADR-004': True,
+    'issue #12': True,
+    'PR #10': True,
+    'testo generico': False,
+}
+for value, expected in cases.items():
+    actual = bool(pattern.search(value))
+    print(f"{'PASS' if actual == expected else 'FAIL'} regex: {value!r} -> {actual}")
+    assert actual == expected
+PY
+```
+
+- **Exit code:** `0`
+- **Risultati individuali:** tutti i cinque casi validi riconosciuti; il caso generico rifiutato.
 
 ## Verificato realmente
 
-- I due rilievi appartengono alla review dello SHA `8a280a7942`.
-- Il controllo aggiornato termina con exit code `0` sui contenuti correnti.
-- Tutte le 135 righe prodotto hanno uno stato ammesso.
-- Nessuna funzione è attualmente spuntata.
-- Gli insiemi esatti degli ID restano validi.
-- Il comando documentato usa lo script versionato.
+- La nuova review è ancorata allo SHA `4c1977d983c46e3ac4618332ae8dbd6bfcb5ea64`.
+- Esiste un solo nuovo thread aperto, priorità P2, sul pattern delle motivazioni.
+- La PR era aperta e GitHub la indicava unibile prima della nuova correzione.
+- Il controllo completo e il test mirato terminano entrambi con exit code `0`.
 
 ## Dedotto
 
-- Una futura modifica con stato arbitrario non potrà superare il controllo.
-- Una voce sostituita o scartata senza motivazione non potrà superare il controllo.
-- Il comando potrà essere ripetuto in CI o localmente senza ricostruire la sessione che lo ha originato.
+- Le evidenze conformi che usano `Motivazione`, `Motivazioni`, `Decisione` o `Decisioni` non saranno più respinte per il precedente errore di confine parola.
 
 ## Non verificato
 
-- Nessuna funzione runtime dell'app.
+- La nuova Codex Review sul commit finale non è ancora disponibile.
+- Nessuna funzione runtime dell'app è stata modificata o verificata.
 - Build iOS, EAS e TestFlight non sono applicabili a questa PR documentale.
-- La nuova Codex Review sul futuro SHA finale non è ancora disponibile.
 
 ## Errori e warning
 
-Nessun errore nel controllo conclusivo.
+- Rilievo P2 reale trovato e corretto.
+- Nessun errore nei controlli locali conclusivi.
 
 ## Problemi non risolti
 
-- I due thread restano aperti fino alla pubblicazione della correzione e delle risposte.
-- Serve una review pulita sul nuovo SHA prima dello squash merge.
+- Il thread P2 deve ricevere risposta ed essere risolto.
+- Serve una Codex Review pulita sul nuovo SHA finale prima dello squash merge.
 
 ## Dipendenze o credenziali
 
@@ -110,12 +112,12 @@ Nessuna.
 
 ## Rischi tecnici
 
-- Il formato Markdown delle tabelle è parte del contratto del checker; una modifica strutturale richiederà aggiornamento e test dello script nella stessa PR.
+- Il pattern accetta suffissi alfanumerici dopo gli stem italiani; resta intenzionalmente limitato alle famiglie di parole previste.
 - La documentazione non equivale a implementazione runtime.
 
 ## Prossimo passo consigliato
 
-Aggiornare `LATEST.md`, rispondere e risolvere i due thread, richiedere Codex Review sullo SHA finale e fare squash merge soltanto dopo review pulita.
+Pubblicare rapporto e `LATEST.md`, rispondere e risolvere il thread P2, richiedere Codex Review sullo SHA finale e fare squash merge soltanto dopo review pulita e controlli applicabili superati.
 
 ## Decisioni richieste a Fabio
 
