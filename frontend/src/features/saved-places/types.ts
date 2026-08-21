@@ -44,7 +44,17 @@ export interface SavedPlacesStorage {
   writeItem(key: string, value: string): Promise<boolean>;
 }
 
+export type SavedPlacesMutation<T> = Readonly<{
+  places: readonly SavedPlace[];
+  result: T;
+}>;
+
 export interface SavedPlacesRepository {
   list(): Promise<readonly SavedPlace[]>;
   replaceAll(places: readonly SavedPlace[]): Promise<void>;
+  mutate<T>(
+    operation: (
+      places: readonly SavedPlace[],
+    ) => Promise<SavedPlacesMutation<T>> | SavedPlacesMutation<T>,
+  ): Promise<T>;
 }
