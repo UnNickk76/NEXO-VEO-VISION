@@ -23,21 +23,25 @@ export type UpdateSavedPlaceInput = Readonly<{
   icon?: string | null;
 }>;
 
+export type SavedPlaceNavigationConfirmation = Readonly<{
+  savedPlaceId: string;
+  destinationText: string;
+  updatedAt: string;
+}>;
+
 export type SavedPlaceNavigationRequest = Readonly<{
   source: "saved-place";
   savedPlaceId: string;
   destinationText: string;
 }>;
 
+export type SavedPlacesStorageReadResult =
+  | Readonly<{ ok: true; value: string | null }>
+  | Readonly<{ ok: false }>;
+
 export interface SavedPlacesStorage {
-  getItem<Fallback extends string | number | boolean | null>(
-    key: string,
-    fallback: Fallback,
-  ): Promise<Fallback | null>;
-  setItem<Value extends string | number | boolean | null>(
-    key: string,
-    value: Value,
-  ): Promise<boolean>;
+  readItem(key: string): Promise<SavedPlacesStorageReadResult>;
+  writeItem(key: string, value: string): Promise<boolean>;
 }
 
 export interface SavedPlacesRepository {

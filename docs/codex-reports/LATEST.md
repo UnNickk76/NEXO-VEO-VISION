@@ -5,28 +5,26 @@ Rapporto storico: `docs/codex-reports/2026-08-21_204600_nexo1-pr12-realign.md`
 ## Dati attività
 - Data e ora UTC: 2026-08-21 20:46 UTC.
 - Obiettivo: riprendere PR #12 `feat(f1): saved places local-first core`, riallinearne il contenuto alla main corrente e preservare il core Casa/Lavoro/preferiti senza perdere i lavori successivi.
-- Stato finale: parziale — riallineamento, test e reporting completati; PR mantenuta DRAFT e consegnata a NEXO REVIEW. Nessun merge eseguito.
+- Stato finale: parziale — riallineamento e correzioni P1 completati; PR mantenuta DRAFT e consegnata a NEXO REVIEW. Nessun merge eseguito.
 - Branch: `nexo1/f1-saved-places-core`.
 - Pull request: PR #12.
 - Base verificata: `main` `213fb129201230c3875e5fb8fc157260f995fe04`.
 - Backup precedente head: `backup/nexo1-pr12-before-realign-20260821` → `7bdb7677659e0f2774da3291f5fdebc392d7527a`.
 
-## READ
+## READ / PLAN
 - `AGENTS.md` letto integralmente.
 - Issue #11 e aggiornamenti successivi alla precedente attività letti.
 - Incarico NEXO 1 verificato: chiusura PR #12 con riallineamento controllato.
 - Vincolo Coordinatore rispettato: nessuna modifica o rilancio iOS/EAS/TestFlight, credenziali, `app.json`, `eas.json`, workflow TestFlight, voice core, surface contracts o Android build config.
-- `main` verificata a `213fb129201230c3875e5fb8fc157260f995fe04`.
-- Unica PR aperta verificata al momento del PLAN: PR #12.
+- Vecchio head salvato prima del riallineamento.
+- Branch ricostruito direttamente sopra la main corrente, preservando solo core saved-places, checker, registro concettuale e reporting aggiornato.
 
-## PLAN
-- Salvare il vecchio head in backup.
-- Ricostruire il branch direttamente sopra la main corrente.
-- Preservare esclusivamente il core saved-places, checker dedicato e stato concettuale parziale.
-- Sostituire reporting obsoleto con un nuovo rapporto di riallineamento basato sulla main corrente.
-- Mantenere PR #12 DRAFT secondo la direttiva fallback review e richiedere NEXO REVIEW sul nuovo SHA.
+## Correzioni P1 applicate
+1. **Read failure non più confuso con lista vuota.** Il feature adapter usa AsyncStorage direttamente e restituisce un risultato `ok/value`; `LocalSavedPlacesRepository.list()` lancia `SavedPlacesStorageReadError` su failure e blocca qualsiasi successiva mutazione basata su fallback.
+2. **Mutazioni serializzate.** `SavedPlacesService` usa una queue interna per serializzare create/update/remove/reorder e impedire lost update da snapshot concorrenti.
+3. **Conferma destinazione versionata.** `confirmNavigation(id)` produce una conferma con `savedPlaceId`, `destinationText`, `updatedAt`; `navigationRequest()` rifiuta con `SavedPlaceStaleConfirmationError` se il luogo è cambiato dopo la conferma.
 
-## File funzionali preservati
+## File funzionali
 - `frontend/src/features/saved-places/types.ts`
 - `frontend/src/features/saved-places/codec.ts`
 - `frontend/src/features/saved-places/repository.ts`
@@ -35,35 +33,35 @@ Rapporto storico: `docs/codex-reports/2026-08-21_204600_nexo1-pr12-realign.md`
 - `frontend/scripts/check-saved-places.mjs`
 
 ## Registro concettuale
-- `C001`: resta `[ ]`, stato `parziale` — core locale presente, UI non integrata.
-- `C002`: resta `[ ]`, stato `parziale` — CRUD/reorder locale presente, UI non integrata.
-- `C003`: resta `concettuale`, fuori perimetro funzionale.
-- `C005`: resta `[ ]`, stato `parziale` — guardia core presente, integrazione suggerimenti/UI assente.
+- `C001`: `[ ]`, `parziale` — core locale presente, UI non integrata.
+- `C002`: `[ ]`, `parziale` — CRUD/reorder locale presente, UI non integrata.
+- `C003`: `concettuale`, fuori perimetro funzionale.
+- `C005`: `[ ]`, `parziale` — guardia core presente, integrazione suggerimenti/UI assente.
 
 ## VERIFY realmente eseguito
-### Compilazione TypeScript strict
-Comando:
+### TypeScript strict
+Working directory ricostruita dal contenuto letto via GitHub connector.
 ```sh
 tsc --strict --target ES2022 --module commonjs --moduleResolution node --skipLibCheck --outDir out/features/saved-places src/features/saved-places/*.ts
 ```
 Esito: PASS, exit code 0.
 
 ### Checker comportamentale
-Comando:
 ```sh
 node scripts/check-saved-places.mjs
 ```
 Esito: PASS, exit code 0. Output: `saved-places checks: PASS`.
-Scenari coperti: unicità Home, icone rapide, persistenza, caratteri speciali/newline, update, reorder, reorder incompleto rifiutato, conferma navigazione, delete, failure write storage.
+Copertura: create Home/Work concorrenti senza lost update, unicità Home, persistenza, caratteri speciali/newline, icone rapide, stale confirmation rifiutata, conferma fresca accettata, reorder, read failure senza perdita dati, delete, write failure.
 
 ### Limite ambiente
-Il tentativo di clonare direttamente GitHub nell'ambiente shell è fallito con `Could not resolve host: github.com`; i file usati nel test sono stati ricostruiti dai contenuti letti direttamente tramite il connettore GitHub. Non viene dichiarato alcun test dipendente da clone/rete.
+Il clone diretto del repository nell'ambiente shell è fallito con `Could not resolve host: github.com`. I test sopra sono stati eseguiti su file ricostruiti dai contenuti letti direttamente tramite il connettore GitHub. Il validatore globale `scripts/check_conceptual_master.py` non è stato eseguito perché l'ambiente non dispone di un checkout completo e il clone di rete non è disponibile; non viene dichiarato PASS.
 
 ## Verificato
 - main corrente e head PR precedente;
 - backup del vecchio head;
-- isolamento funzionale del core saved-places;
-- compilazione strict e checker comportamentale;
+- branch riallineato alla main corrente;
+- correzioni dei 3 P1 funzionali;
+- compilazione strict e checker comportamentale post-correzione;
 - nessuna modifica a iOS/EAS/TestFlight o credenziali;
 - stato concettuale conservativo.
 
@@ -71,11 +69,12 @@ Il tentativo di clonare direttamente GitHub nell'ambiente shell è fallito con `
 - UI reale e test su device;
 - map/search/voice/routing;
 - comportamento reale AsyncStorage su device;
-- EAS Build, TestFlight, firma Apple e credenziali.
+- EAS Build, TestFlight, firma Apple e credenziali;
+- validatore globale del registro, per limite ambiente sopra descritto.
 
 ## Rischi residui
-- PR #12 condivide i file di reporting con attività successive già confluite: per questo il branch viene ricostruito sulla main corrente anziché fondere reporting obsoleto.
-- Il wrapper storage condiviso non distingue miss da errore read quando restituisce il fallback; resta debito successivo, non viene modificato in questo task.
+- Il core non è ancora integrato nella UI; C001/C002/C005 restano correttamente parziali.
+- Review indipendente ancora necessaria sullo SHA finale.
 
 ## Prossimo passo
-Mantenere PR #12 DRAFT e richiedere NEXO REVIEW indipendente sul nuovo SHA. Solo il Coordinatore potrà renderla ready e decidere il merge dopo verdetto CLEAN. Nessun `@codex review`.
+PR #12 resta DRAFT. Richiedere NEXO REVIEW indipendente sullo SHA esatto finale. Solo il Coordinatore potrà renderla ready e decidere il merge dopo verdetto CLEAN. Nessun `@codex review`.

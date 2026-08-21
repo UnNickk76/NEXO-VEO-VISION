@@ -2,6 +2,7 @@ import {
   CreateSavedPlaceInput,
   SavedPlace,
   SavedPlaceKind,
+  SavedPlaceNavigationConfirmation,
   SavedPlaceNavigationRequest,
   SavedPlacesRepository,
   UpdateSavedPlaceInput,
@@ -25,6 +26,13 @@ export class SavedPlaceKindConflictError extends Error {
   constructor(kind: Exclude<SavedPlaceKind, "favorite">) {
     super(`Only one ${kind} saved place is allowed`);
     this.name = "SavedPlaceKindConflictError";
+  }
+}
+
+export class SavedPlaceStaleConfirmationError extends Error {
+  constructor(id: string) {
+    super(`Saved place changed after confirmation: ${id}`);
+    this.name = "SavedPlaceStaleConfirmationError";
   }
 }
 
@@ -67,6 +75,7 @@ function iconForUpdate(
 export class SavedPlacesService {
   private readonly idFactory: () => string;
   private readonly now: () => string;
+  private mutationQueue: Promise<void> = Promise.resolve();
 
   constructor(
     private readonly repository: SavedPlacesRepository,
@@ -80,89 +89,126 @@ export class SavedPlacesService {
     return this.repository.list();
   }
 
-  async create(input: CreateSavedPlaceInput): Promise<SavedPlace> {
-    const places = [...(await this.repository.list())];
-    this.assertKindAvailable(places, input.kind);
+  create(input: CreateSavedPlaceInput): Promise<SavedPlace> {
+    return this.runMutation(async () => {
+      const places = [...(await this.repository.list())];
+      this.assertKindAvailable(places, input.kind);
 
-    const timestamp = this.now();
-    const place: SavedPlace = {
-      id: requiredTrimmed(this.idFactory(), "id"),
-      kind: input.kind,
-      name: requiredTrimmed(input.name, "name"),
-      destinationText: requiredTrimmed(input.destinationText, "destinationText"),
-      icon: normalizeIcon(input.icon) ?? defaultIconForKind(input.kind),
-      createdAt: timestamp,
-      updatedAt: timestamp,
-    };
+      const timestamp = this.now();
+      const place: SavedPlace = {
+        id: requiredTrimmed(this.idFactory(), "id"),
+        kind: input.kind,
+        name: requiredTrimmed(input.name, "name"),
+        destinationText: requiredTrimmed(input.destinationText, "destinationText"),
+        icon: normalizeIcon(input.icon) ?? defaultIconForKind(input.kind),
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      };
 
-    if (places.some((existing) => existing.id === place.id)) {
-      throw new SavedPlaceValidationError(`Duplicate generated id: ${place.id}`);
-    }
+      if (places.some((existing) => existing.id === place.id)) {
+        throw new SavedPlaceValidationError(`Duplicate generated id: ${place.id}`);
+      }
 
-    await this.repository.replaceAll([...places, place]);
-    return place;
-  }
-
-  async update(id: string, patch: UpdateSavedPlaceInput): Promise<SavedPlace> {
-    const places = [...(await this.repository.list())];
-    const index = places.findIndex((place) => place.id === id);
-    if (index < 0) throw new SavedPlaceNotFoundError(id);
-
-    const current = places[index];
-    const updated: SavedPlace = {
-      ...current,
-      name: patch.name === undefined ? current.name : requiredTrimmed(patch.name, "name"),
-      destinationText:
-        patch.destinationText === undefined
-          ? current.destinationText
-          : requiredTrimmed(patch.destinationText, "destinationText"),
-      icon: iconForUpdate(current.kind, current.icon, patch.icon),
-      updatedAt: this.now(),
-    };
-
-    places[index] = updated;
-    await this.repository.replaceAll(places);
-    return updated;
-  }
-
-  async remove(id: string): Promise<void> {
-    const places = [...(await this.repository.list())];
-    const next = places.filter((place) => place.id !== id);
-    if (next.length === places.length) throw new SavedPlaceNotFoundError(id);
-    await this.repository.replaceAll(next);
-  }
-
-  async reorder(orderedIds: readonly string[]): Promise<readonly SavedPlace[]> {
-    const places = [...(await this.repository.list())];
-    if (orderedIds.length !== places.length || new Set(orderedIds).size !== orderedIds.length) {
-      throw new SavedPlaceValidationError("Reorder must contain every saved place id exactly once");
-    }
-
-    const byId = new Map(places.map((place) => [place.id, place] as const));
-    const reordered = orderedIds.map((id) => {
-      const place = byId.get(id);
-      if (!place) throw new SavedPlaceValidationError(`Unknown saved place id in reorder: ${id}`);
+      await this.repository.replaceAll([...places, place]);
       return place;
     });
+  }
 
-    await this.repository.replaceAll(reordered);
-    return reordered;
+  update(id: string, patch: UpdateSavedPlaceInput): Promise<SavedPlace> {
+    return this.runMutation(async () => {
+      const places = [...(await this.repository.list())];
+      const index = places.findIndex((place) => place.id === id);
+      if (index < 0) throw new SavedPlaceNotFoundError(id);
+
+      const current = places[index];
+      const updated: SavedPlace = {
+        ...current,
+        name: patch.name === undefined ? current.name : requiredTrimmed(patch.name, "name"),
+        destinationText:
+          patch.destinationText === undefined
+            ? current.destinationText
+            : requiredTrimmed(patch.destinationText, "destinationText"),
+        icon: iconForUpdate(current.kind, current.icon, patch.icon),
+        updatedAt: this.now(),
+      };
+
+      places[index] = updated;
+      await this.repository.replaceAll(places);
+      return updated;
+    });
+  }
+
+  remove(id: string): Promise<void> {
+    return this.runMutation(async () => {
+      const places = [...(await this.repository.list())];
+      const next = places.filter((place) => place.id !== id);
+      if (next.length === places.length) throw new SavedPlaceNotFoundError(id);
+      await this.repository.replaceAll(next);
+    });
+  }
+
+  reorder(orderedIds: readonly string[]): Promise<readonly SavedPlace[]> {
+    return this.runMutation(async () => {
+      const places = [...(await this.repository.list())];
+      if (orderedIds.length !== places.length || new Set(orderedIds).size !== orderedIds.length) {
+        throw new SavedPlaceValidationError("Reorder must contain every saved place id exactly once");
+      }
+
+      const byId = new Map(places.map((place) => [place.id, place] as const));
+      const reordered = orderedIds.map((id) => {
+        const place = byId.get(id);
+        if (!place) throw new SavedPlaceValidationError(`Unknown saved place id in reorder: ${id}`);
+        return place;
+      });
+
+      await this.repository.replaceAll(reordered);
+      return reordered;
+    });
+  }
+
+  async confirmNavigation(id: string): Promise<SavedPlaceNavigationConfirmation> {
+    const place = (await this.repository.list()).find((candidate) => candidate.id === id);
+    if (!place) throw new SavedPlaceNotFoundError(id);
+    return {
+      savedPlaceId: place.id,
+      destinationText: place.destinationText,
+      updatedAt: place.updatedAt,
+    };
   }
 
   async navigationRequest(
-    id: string,
-    confirmed: boolean,
-  ): Promise<SavedPlaceNavigationRequest | null> {
-    if (!confirmed) return null;
-
-    const place = (await this.repository.list()).find((candidate) => candidate.id === id);
-    if (!place) throw new SavedPlaceNotFoundError(id);
+    confirmation: SavedPlaceNavigationConfirmation,
+  ): Promise<SavedPlaceNavigationRequest> {
+    const place = (await this.repository.list()).find(
+      (candidate) => candidate.id === confirmation.savedPlaceId,
+    );
+    if (!place) throw new SavedPlaceNotFoundError(confirmation.savedPlaceId);
+    if (
+      place.destinationText !== confirmation.destinationText ||
+      place.updatedAt !== confirmation.updatedAt
+    ) {
+      throw new SavedPlaceStaleConfirmationError(place.id);
+    }
 
     return {
       source: "saved-place",
       savedPlaceId: place.id,
       destinationText: place.destinationText,
     };
+  }
+
+  private async runMutation<T>(operation: () => Promise<T>): Promise<T> {
+    const previous = this.mutationQueue;
+    let release!: () => void;
+    this.mutationQueue = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await previous;
+    try {
+      return await operation();
+    } finally {
+      release();
+    }
   }
 
   private assertKindAvailable(places: readonly SavedPlace[], kind: SavedPlaceKind): void {
