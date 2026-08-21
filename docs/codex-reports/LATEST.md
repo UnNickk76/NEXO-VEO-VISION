@@ -1,16 +1,15 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_071443_correzione-controlli-concettuali.md`
+Rapporto storico: `docs/codex-reports/2026-08-21_072440_correzione-finale-registro-concettuale.md`
 
-# Correzione dei controlli permanenti del quadro concettuale
+# Correzione finale della validazione del registro concettuale
 
 ## Dati dell'attività
 
-- **Data e ora UTC:** 2026-08-21 07:14:43 UTC
-- **Obiettivo:** verificare la nuova Codex Review della PR #10 e correggere i rilievi reali prima del merge.
-- **Stato finale:** completato sul ramo; nuova review ancora da richiedere.
+- **Data e ora UTC:** 2026-08-21 07:24:40 UTC
+- **Obiettivo:** correggere i due P1 della Codex Review sullo SHA `8a280a7942f2de08374c868edb7ce27e671a8363`.
+- **Stato finale:** completato sul ramo; in attesa di nuova review.
 - **Ramo:** `codex/luoghi-salvati-concetto`
 - **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10)
-- **SHA revisionato da Codex:** `1566537ac6c71559efd9fd8207c8002d873bd5be`
-- **Commit creati prima di questo rapporto:** `d7a78835d7fde68a395f4a5d590eb35f92c6278f`, `ebe0b2b2dd640319a3367169b105a34ea06ff516`
+- **Commit creati prima del rapporto:** `6dd4807ae1b9198f781e8588b9cddd9e7c011601`, `3b6be5d07d5106bde9262f06f075628c505f41c7`
 - **Costi:** nessuna spesa.
 
 ## File modificati
@@ -21,49 +20,40 @@ Rapporto storico: `docs/codex-reports/2026-08-21_071443_correzione-controlli-con
 
 ## File creato
 
-- `docs/codex-reports/2026-08-21_071443_correzione-controlli-concettuali.md`
+- `docs/codex-reports/2026-08-21_072440_correzione-finale-registro-concettuale.md`
 
-## Rilievi della review
+## Rilievi corretti
 
-1. **P1 — spunte:** lo script rifiutava ogni `[x]`, anche quando accompagnato da implementazione ed evidenze valide.
-2. **P1 — ID:** lo script verificava soltanto quantità e unicità, quindi una rinumerazione poteva sostituire una voce senza cambiare il conteggio.
+1. **P1 — stati non spuntati:** tutte le righe vengono ora validate prima di distinguere tra `[ ]` e `[x]`.
+2. **P1 — comando temporaneo:** la verifica finale usa il percorso versionato del repository, `scripts/check_conceptual_master.py`, ed è rieseguibile dalla radice di qualsiasi checkout della PR.
 
 ## Modifiche concrete
 
-- Gli ID vengono confrontati con gli insiemi esatti `V01–V51`, `E01–E47`, `U01–U31` e `C001–C006`.
-- Una riga `[x]` è accettata soltanto se:
-  - lo stato è `implementata`;
-  - l'evidenza non è vuota;
-  - contiene un riferimento `PR #numero`;
-  - contiene uno SHA Git valido da 7 a 40 caratteri;
-  - contiene un riferimento riconoscibile ai test.
-- Una riga incompleta fallisce indicando ID e prove mancanti.
-- Il cruscotto Fabio registra review, correzioni, SHA e prossimo passo.
+- Stati ammessi: `concettuale`, `in corso`, `parziale`, `implementata`, `rinviata`, `sostituita`, `scartata`.
+- Uno stato non ammesso produce errore con l'ID della riga.
+- `sostituita` e `scartata` richiedono evidenza non vuota e un riferimento riconoscibile a motivazione o decisione.
+- Una riga non spuntata non può avere stato `implementata`.
+- Restano attivi i controlli delle spunte: stato `implementata`, PR, SHA e test.
+- Restano attivi i confronti esatti degli ID permanenti.
 
-## Operazioni realmente eseguite
+## Comandi realmente eseguiti
 
-### Lettura dello stato remoto
+### Ispezione GitHub
 
 - `github_fetch_pr(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
 - `github_list_pull_request_reviews(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
 - `github_list_pull_request_review_threads(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
-- `github_fetch_commit_workflow_runs(repo_full_name="UnNickk76/NEXO-VEO-VISION", commit_sha="1566537ac6c71559efd9fd8207c8002d873bd5be")`
 
-Risultato: PR aperta e unibile, review sullo SHA corretto, due thread P1 aperti, nessun workflow PR associato allo SHA.
+Esito: review presente sullo SHA corrente, PR aperta e unibile, due nuovi thread P1 aperti.
 
-### Verifica conclusiva locale
+### Verifica conclusiva riproducibile
 
-I sette file precedentemente materializzati senza trasformazioni in
-`/workspace/scratch/40abb2bd44cb/verify-conceptual/` sono stati controllati
-usando la versione corretta dello script in `fix-pr10/check_conceptual_master.py`.
-
-Comando esatto:
+Comando esatto realmente eseguito dalla radice della struttura del repository contenente i file correnti della PR:
 
 ```bash
-python3 fix-pr10/check_conceptual_master.py verify-conceptual
+python3 scripts/check_conceptual_master.py .
 ```
 
-- **Directory di esecuzione:** `/workspace/scratch/40abb2bd44cb`
 - **Exit code:** `0`
 - **Output individuale:**
 
@@ -82,35 +72,37 @@ PASS assertion: README discovery
 PASS: conceptual master registry is coherent
 ```
 
+Il comando non dipende da percorsi temporanei, file esterni o parametri omessi: è direttamente eseguibile dalla radice di qualsiasi checkout dello SHA della PR.
+
 ## Verificato realmente
 
-- La review riguarda lo SHA `1566537ac6`.
-- I due nuovi P1 sono presenti e non sono falsi positivi.
-- La versione corretta dello script termina con exit code 0 sui file correnti.
-- Gli insiemi esatti degli ID correnti sono preservati.
-- Nessuna riga è attualmente marcata `[x]`.
-- Il parser è predisposto ad accettare future spunte solo con tutte le prove richieste.
+- I due rilievi appartengono alla review dello SHA `8a280a7942`.
+- Il controllo aggiornato termina con exit code `0` sui contenuti correnti.
+- Tutte le 135 righe prodotto hanno uno stato ammesso.
+- Nessuna funzione è attualmente spuntata.
+- Gli insiemi esatti degli ID restano validi.
+- Il comando documentato usa lo script versionato.
 
 ## Dedotto
 
-- Il nuovo controllo impedisce la sostituzione silenziosa di un ID mantenendo invariato il numero di righe.
-- Le future implementazioni potranno essere spuntate senza disabilitare il controllo, purché la riga contenga evidenza completa.
+- Una futura modifica con stato arbitrario non potrà superare il controllo.
+- Una voce sostituita o scartata senza motivazione non potrà superare il controllo.
+- Il comando potrà essere ripetuto in CI o localmente senza ricostruire la sessione che lo ha originato.
 
 ## Non verificato
 
-- Nessuna funzione runtime dell'app è stata implementata o verificata.
-- Non sono stati eseguiti build, lint applicativo o TestFlight perché la PR è documentale.
-- La nuova Codex Review sullo SHA finale non è ancora disponibile.
+- Nessuna funzione runtime dell'app.
+- Build iOS, EAS e TestFlight non sono applicabili a questa PR documentale.
+- La nuova Codex Review sul futuro SHA finale non è ancora disponibile.
 
 ## Errori e warning
 
-- Il primo tentativo locale della versione corretta ha restituito exit code `1` con `ValueError: not enough values to unpack (expected 7, got 6)`; il parser è stato corretto per le sei colonne catturate e il controllo è stato ripetuto con exit `0`.
-- Nessun workflow GitHub PR risultava associato allo SHA revisionato.
+Nessun errore nel controllo conclusivo.
 
 ## Problemi non risolti
 
-- I due nuovi thread P1 restano aperti fino alla pubblicazione completa della correzione e della risposta.
-- La PR non può essere unita fino a una Codex Review pulita sul nuovo SHA finale.
+- I due thread restano aperti fino alla pubblicazione della correzione e delle risposte.
+- Serve una review pulita sul nuovo SHA prima dello squash merge.
 
 ## Dipendenze o credenziali
 
@@ -118,12 +110,12 @@ Nessuna.
 
 ## Rischi tecnici
 
-- Il riconoscimento dell'evidenza usa pattern testuali; se in futuro cambia il formato delle colonne, script e protocollo devono essere aggiornati nella stessa PR.
-- Un documento concettuale non dimostra l'implementazione runtime.
+- Il formato Markdown delle tabelle è parte del contratto del checker; una modifica strutturale richiederà aggiornamento e test dello script nella stessa PR.
+- La documentazione non equivale a implementazione runtime.
 
 ## Prossimo passo consigliato
 
-Sincronizzare `LATEST.md`, rispondere e risolvere i due thread, richiedere Codex Review sullo SHA finale e fare squash merge soltanto se la review è pulita e la PR resta unibile.
+Aggiornare `LATEST.md`, rispondere e risolvere i due thread, richiedere Codex Review sullo SHA finale e fare squash merge soltanto dopo review pulita.
 
 ## Decisioni richieste a Fabio
 
