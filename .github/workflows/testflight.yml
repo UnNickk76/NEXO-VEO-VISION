@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - codex/verify-pr13-expo-doctor
     paths:
       - ".github/workflows/testflight.yml"
       - "frontend/**"
