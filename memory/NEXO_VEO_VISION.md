@@ -173,6 +173,15 @@
 ## 35. POI contestuali
 - POI in relazione al viaggio (aperto all'arrivo, deviazione max, con parcheggio, prima dell'autostrada).
 
+### 35A. Casa, Lavoro e luoghi salvati
+- **Casa** e **Lavoro** sono luoghi rapidi dedicati, opzionali, rinominabili e rappresentati da icone riconoscibili.
+- L'utente può salvare altri luoghi con nome e icona personalizzati, riordinarli, modificarli ed eliminarli facilmente.
+- I luoghi salvati sono raggiungibili dalla mappa, dalla ricerca, da un menu rapido fuori navigazione e tramite voce.
+- NEXO può proporre Casa, Lavoro o un altro luogo in base a posizione, orario, viaggio corrente e abitudini soltanto con consenso e con motivazione comprensibile.
+- I suggerimenti contestuali non avviano mai autonomamente la navigazione: l'utente conferma sempre la destinazione.
+- Se il contesto non è sufficiente NEXO mostra i preferiti manuali senza inventare un'abitudine.
+- Posizione precisa, etichette e abitudini sono dati personali: minimizzazione, controllo utente, cancellazione ed elaborazione locale quando possibile sono requisiti by design.
+
 ## 36. Journey Points
 - Categorie: Food, Fuel, Charge, Rest, View, Visit, Emergency, Meet Point (permanenti o contestuali).
 
