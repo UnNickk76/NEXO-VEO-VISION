@@ -9,7 +9,7 @@
 - **Attività:** aggiunta concettuale di Casa, Lavoro e luoghi salvati.
 - **Stato:** specifica completata su ramo separato; non è ancora implementata nell'app.
 - **Ramo:** `codex/luoghi-salvati-concetto`
-- **Pull request:** da creare.
+- **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10), aperta e in attesa di Codex Review.
 - **Priorità principale invariata:** prima build visibile su TestFlight tramite PR #9.
 - **Costi:** nessuna spesa.
 
@@ -42,4 +42,4 @@
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. La specifica verrà proposta in una PR documentale separata. Il lavoro sulla PR #9 verso TestFlight continua indipendentemente.
+Nulla. Attendere la Codex Review della PR #10. Il lavoro sulla PR #9 verso TestFlight continua indipendentemente.
