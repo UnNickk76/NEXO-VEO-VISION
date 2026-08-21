@@ -48,6 +48,21 @@ export class AsyncStorageSavedPlacesStorage implements SavedPlacesStorage {
   }
 }
 
+const mutationQueues = new WeakMap<SavedPlacesStorage, Map<string, Promise<void>>>();
+
+function queueFor(storage: SavedPlacesStorage, storageKey: string): Promise<void> {
+  return mutationQueues.get(storage)?.get(storageKey) ?? Promise.resolve();
+}
+
+function setQueue(storage: SavedPlacesStorage, storageKey: string, queue: Promise<void>): void {
+  let queues = mutationQueues.get(storage);
+  if (!queues) {
+    queues = new Map<string, Promise<void>>();
+    mutationQueues.set(storage, queues);
+  }
+  queues.set(storageKey, queue);
+}
+
 export class LocalSavedPlacesRepository implements SavedPlacesRepository {
   constructor(
     private readonly storage: SavedPlacesStorage,
@@ -63,5 +78,29 @@ export class LocalSavedPlacesRepository implements SavedPlacesRepository {
   async replaceAll(places: readonly SavedPlace[]): Promise<void> {
     const persisted = await this.storage.writeItem(this.storageKey, encodeSavedPlaces(places));
     if (!persisted) throw new SavedPlacesStorageWriteError();
+  }
+
+  async mutate<T>(
+    operation: (places: readonly SavedPlace[]) => Promise<Readonly<{ places: readonly SavedPlace[]; result: T }>> | Readonly<{ places: readonly SavedPlace[]; result: T }>,
+  ): Promise<T> {
+    const previous = queueFor(this.storage, this.storageKey);
+    let release!: () => void;
+    const current = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    setQueue(this.storage, this.storageKey, current);
+
+    await previous;
+    try {
+      const places = await this.list();
+      const mutation = await operation(places);
+      await this.replaceAll(mutation.places);
+      return mutation.result;
+    } finally {
+      release();
+      if (queueFor(this.storage, this.storageKey) === current) {
+        mutationQueues.get(this.storage)?.delete(this.storageKey);
+      }
+    }
   }
 }
