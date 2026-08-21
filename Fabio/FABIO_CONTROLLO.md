@@ -5,40 +5,34 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 14:00 UTC
-- **Attività:** correzione repository del blocco Apple Team ID emerso nella TestFlight run #13.
-- **Stato:** PR #15 creata come DRAFT; fix applicato e verificato staticamente; in attesa di review indipendente NEXO REVIEW. Nessun merge e nessuna nuova pipeline TestFlight avviati.
-- **Branch:** `nexo-codex/fix-apple-team-id-testflight-run13`
-- **Pull request:** PR #15
-- **Base:** `main` `2679343a9e0766097cbc89263ecccca9861b97e7`.
+- **Data:** 21 agosto 2026, 19:45 UTC
+- **Attività:** test diagnostico EAS con Xcode 16.4.
+- **Stato:** modifica repository minima applicata; PR DRAFT in preparazione/review. Nessun merge e nessuna nuova pipeline TestFlight avviati.
+- **Branch:** `nexo-codex/diagnostic-xcode-16-4-testflight`
+- **Base:** `main` `d3170fd874461c3734954f8f2d208350599673ca`.
 
 ## Cosa è stato modificato realmente
 
-- `frontend/app.json`: aggiunto `expo.ios.appleTeamId = "853F5S8843"`.
-- `frontend/eas.json`: mantenuto `submit.production.ios.ascAppId = "6803879211"` e aggiunto `submit.production.ios.appleTeamId = "853F5S8843"`.
-- Bundle identifier invariato: `com.fabioandreola.nexoveovision`.
-- Nessun `build.production.ios.appleTeamId`.
-- `.github/workflows/testflight.yml` non modificato.
-- Nessuna credenziale Apple/EAS modificata, cancellata o rigenerata.
+- `frontend/eas.json`: aggiunto esclusivamente `build.production.ios.image = "macos-sequoia-15.6-xcode-16.4"`.
+- `autoIncrement` preservato.
+- `submit.production.ios.ascAppId = "6803879211"` preservato.
+- `submit.production.ios.appleTeamId = "853F5S8843"` preservato.
+- Nessuna modifica ad `app.json`, workflow TestFlight, dipendenze, codice o credenziali.
 
 ## Controlli
 
-- `frontend/app.json` JSON valido: PASS.
-- `frontend/eas.json` JSON valido: PASS.
-- Assertion Team ID in app config: PASS.
-- Assertion bundle identifier invariato: PASS.
-- Assertion `ascAppId` invariato: PASS.
-- Assertion Team ID nel submit profile: PASS.
-- Assertion assenza Team ID sotto `build.production`: PASS.
-- Diff funzionale prima del reporting: esclusivamente `frontend/app.json` e `frontend/eas.json`.
-- TestFlight run #13 già verificata: Expo Doctor 18/18 PASS; lint 0 errori e 1 warning preesistente; blocco reale sul prompt non-interattivo Apple Team ID.
+- Percorso EAS `build.production.ios.image`: supportato dalla documentazione Expo corrente.
+- Immagine `macos-sequoia-15.6-xcode-16.4`: supportata e raccomandata per SDK 54 se non si vuole usare Xcode 26.
+- JSON e valori invarianti verificati staticamente: PASS.
+- Nessuna nuova EAS Build/TestFlight eseguita in questa attività.
 
 ## Problemi e review
 
-- Il fix repository non dimostra ancora che TestFlight funzioni: serve review CLEAN, merge autorizzato e nuova pipeline reale.
-- Se la nuova pipeline mostra ancora `Failed to display prompt: Apple Team ID:`, il repository non va ulteriormente modificato in modo speculativo: il blocco va trattato come associazione remota credenziale EAS.
-- PR #12 resta concorrente sui soli file di reporting e dovrà essere riallineata/serializzata prima del proprio merge.
+- Il cambio immagine è solo diagnostico: non dimostra ancora che il problema di importazione del Distribution Certificate dipenda da Xcode 26.
+- Dopo review CLEAN e merge autorizzato, la pipeline dovrà mostrare realmente Xcode 16.4 e verificare Prepare credentials.
+- Se ricompare lo stesso identico errore del certificato, nessun altro workaround repository: stato BLOCKED e pista Xcode 26 esclusa come spiegazione.
+- PR #12 resta concorrente soltanto sui file di reporting e dovrà essere riallineata/serializzata prima di un proprio merge.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla durante la review. NEXO CODEX passa PR #15 a NEXO REVIEW sullo SHA finale esatto. Solo dopo verdetto CLEAN il Coordinatore potrà autorizzare Ready/merge e la successiva pipeline TestFlight.
+Nulla durante la review. NEXO CODEX passa la PR diagnostica a NEXO REVIEW sullo SHA esatto. Merge vietato fino a verdetto CLEAN.
