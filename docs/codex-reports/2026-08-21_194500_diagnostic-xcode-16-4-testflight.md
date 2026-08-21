@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_194500_diagnostic-xcode-16-4-testflight.md`
-
 # Test diagnostico EAS con Xcode 16.4
 
 ## Dati attività
