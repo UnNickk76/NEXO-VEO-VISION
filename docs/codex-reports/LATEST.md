@@ -6,8 +6,10 @@ Rapporto storico: `docs/codex-reports/2026-08-21_093545_fix-expo-sdk54-testfligh
 
 - **Data e ora UTC:** 2026-08-21 09:35:45 UTC
 - **Obiettivo:** correggere il mismatch Expo SDK 54 che ha bloccato la pipeline TestFlight dopo il merge della PR #9, senza disabilitare Expo Doctor.
-- **Stato:** in corso; dipendenze e lockfile corretti, verifica remota Expo Doctor ancora necessaria prima del merge.
+- **Stato:** in review; dipendenze e lockfile corretti, Expo Doctor remoto superato, merge ancora vietato fino a review pulita sullo SHA corrente.
 - **Branch:** `codex/fix-expo-sdk54-testflight`
+- **Pull request:** [PR #13](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/13)
+- **SHA PR esaminato:** `1bdfd4c6629a15bb6238152e6867910333be35d4`
 - **Base verificata:** `main` `1c66a29b24df20ce7bded3b514ce88e534077281`
 - **Run fallita esaminata:** [NEXO TestFlight 32465874331](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32465874331), job `96722214081`
 - **Costi:** nessuna spesa.
@@ -81,12 +83,21 @@ git diff --check
 
 - **Exit code:** `0`.
 
+### Expo Doctor e lint remoti senza build EAS
+
+- **Run:** [NEXO TestFlight #8](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32470136178)
+- **Job:** `96735005038`, conclusione `success`
+- **Commit di verifica:** `25e693ec645b527b5907cf8ca76a715939fa2eb8`
+- **Expo Doctor:** exit `0`, output `18/18 checks passed. No issues detected!`
+- **Lint:** exit `0`, zero errori e un warning preesistente.
+- **Guardia costi:** il workflow effimero si è arrestato dopo Doctor/lint; EAS Build non è stato eseguito.
+- **Identità del contenuto verificato:** i blob `frontend/package.json` (`127762b83448e4ea81f0b18599f3676c5178e65c`) e `frontend/package-lock.json` (`e21e663bc294ea6aff243c73e009c4f4ec1f2b82`) sono identici tra il commit di verifica e lo SHA della PR #13.
+
 ## Limiti e verifiche ancora obbligatorie
 
-- L'ambiente locale ha negato la rete richiesta da Expo Doctor prima dell'esecuzione; **Expo Doctor non viene dichiarato superato localmente**.
-- Prima del merge deve essere eseguito realmente su GitHub Actions sullo SHA finale e deve terminare con exit code `0`.
-- PR, SHA finale, Codex Review, merge e nuova run TestFlight verranno registrati quando esistono; non sono anticipati.
+- L'ambiente locale ha negato la rete richiesta da Expo Doctor prima dell'esecuzione; non viene dichiarato superato localmente, ma è superato nella run remota sopra documentata.
+- La Codex Review sullo SHA corrente, il merge e la nuova run TestFlight su `main` non sono ancora conclusi e non vengono anticipati.
 
 ## Prossimo passo
 
-Pubblicare la PR atomica, eseguire Expo Doctor in GitHub Actions senza avviare una build a pagamento, richiedere Codex Review e unire soltanto dopo entrambi gli esiti puliti. Dopo il merge, controllare il punto esatto raggiunto dalla nuova pipeline TestFlight.
+Attendere la Codex Review sullo SHA corrente e unire soltanto se è pulita e la PR è unibile. Dopo il merge, controllare il punto esatto raggiunto dalla nuova pipeline TestFlight.
