@@ -51,13 +51,34 @@ check(
   "automotive Surface rules must precede role policy",
 );
 
-check(
-  resolveSurfaceCapability(
-    context("carplay"),
-    "free-text-input",
-  ).availability === "unsupported",
-  "prohibited capability must resolve to unsupported even if runtime reports available",
+const prohibitedFreeText = resolveSurfaceCapability(
+  context("carplay"),
+  "free-text-input",
 );
+check(
+  prohibitedFreeText.availability === "available",
+  "runtime availability must remain reported even when product policy prohibits use",
+);
+check(
+  prohibitedFreeText.policy === "prohibited" && !prohibitedFreeText.usable,
+  "prohibited policy must remain orthogonal to runtime availability and make capability unusable",
+);
+
+const degradedAvailability: CapabilityAvailabilitySnapshot = {
+  ...available,
+  "free-text-input": "degraded",
+};
+const prohibitedDegradedFreeText = resolveSurfaceCapability(
+  context("carplay", { availability: degradedAvailability }),
+  "free-text-input",
+);
+check(
+  prohibitedDegradedFreeText.availability === "degraded" &&
+    prohibitedDegradedFreeText.policy === "prohibited" &&
+    !prohibitedDegradedFreeText.usable,
+  "policy must not rewrite degraded runtime availability",
+);
+
 check(
   !canUseFreeText(context("carplay")),
   "CarPlay baseline must not permit free text",
