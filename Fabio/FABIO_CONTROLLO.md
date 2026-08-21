@@ -5,9 +5,9 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 05:30 UTC
+- **Data:** 21 agosto 2026, 06:12 UTC
 - **Obiettivo attuale:** vedere NEXO VEO VISION su iPhone tramite TestFlight.
-- **Stato:** PR #9 corretta dopo la prima review; nuova review sul commit aggiornato da richiedere.
+- **Stato:** PR #9 ancora aperta; la mail positiva delle 06:07 UTC riguarda il vecchio SHA `6afdcca36b`, sul quale restano due thread P1 da correggere. Merge bloccato fino a nuovo SHA e review pulita.
 - **Ramo:** `codex/testflight-first-visible-build`
 - **Pull request:** [PR #9](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/9), aperta e unibile prima delle ultime correzioni.
 - **Ultimo commit di codice/workflow:** `f414bd14ccfa567dfdc2eedb5598cb79b2d7445d`
@@ -30,12 +30,13 @@
 - Parsing YAML con PyYAML 6.0.3: exit `0`, un job riconosciuto.
 - Assertion statiche del workflow: exit `0`; superati trigger manuale, push su main, `frontend/**`, permessi read-only, Doctor, lint, controllo token, auto-submit e concorrenza.
 - Assertion statiche startup: exit `0`; LogBox globale rimosso, Promise splash gestite e fallback font presente.
-- Scansione euristica di chiavi private: exit `0`, nessuna corrispondenza.
+- Scansione fail-safe dei due file sorgente modificati, materializzati byte-per-byte dal ramo: comando complessivo exit `0`; `rg` exit `1` (nessuna corrispondenza), due file realmente letti.
 
 ### Falliti e corretti
 
 - Parsing iniziale con Ruby: non eseguibile, `ruby: command not found`, exit `127`. Sostituito dal controllo PyYAML superato.
-- Prima Codex Review sul commit `538df86343`: due P1 e un P2. Tutti e tre sono stati corretti; serve conferma con nuova review.
+- Prima Codex Review sul commit `538df86343`: due P1 e un P2, corretti.
+- Review sul commit `6afdcca36b`: due nuovi P1; la successiva mail positiva riguarda ancora lo stesso SHA e non chiude i thread, quindi non autorizza il merge.
 
 ### Non ancora eseguiti
 
@@ -57,4 +58,4 @@ Questi controlli verranno eseguiti dalla pipeline soltanto dopo il merge.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. Dopo una review pulita la PR verrà unita automaticamente; il merge avvierà la prima pipeline build+submit. Fabio verrà coinvolto soltanto se Apple/EAS indica un singolo dato o intervento manuale indispensabile.
+Nessun clic adesso. Il merge **non è automatico nel workflow GitHub**: dopo le correzioni, i controlli e una review pulita sul nuovo SHA, sarà eseguito manualmente dall'agente autorizzato da Fabio. Quel merge avvierà la prima pipeline build+submit. Fabio verrà coinvolto soltanto se Apple/EAS indica un singolo dato o intervento manuale indispensabile.
