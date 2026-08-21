@@ -4,7 +4,7 @@ Rapporto storico: `docs/codex-reports/2026-08-21_044612_testflight-prima-build-v
 
 ## Dati dell'attività
 
-- **Data e ora UTC:** 2026-08-21 04:46:12 UTC; verifica review e correzioni: 2026-08-21 05:30 UTC.
+- **Data e ora UTC:** 2026-08-21 04:46:12 UTC; verifica review e correzioni: 2026-08-21 06:12 UTC.
 - **Obiettivo richiesto:** rendere automatica la build iOS di produzione e l'invio a TestFlight, mantenendo visibili gli errori della prima esecuzione.
 - **Stato finale:** `parziale`, in attesa della nuova Codex Review e della pipeline successiva al merge.
 - **Ramo utilizzato:** `codex/testflight-first-visible-build`.
@@ -90,14 +90,30 @@ PY
 - **Exit code:** `0`
 - **Esiti individuali:** superati rimozione LogBox globale, gestione delle due Promise e fallback font.
 
-### 4. Scansione euristica di chiavi private
+### 4. Scansione fail-safe di chiavi private
+
+I due file sorgente modificati (workflow e startup) sono stati prima letti dal ramo tramite GitHub e materializzati byte-per-byte sotto `/tmp/nexo-review-input`. La directory dei report è esclusa intenzionalmente perché contiene il pattern euristico come documentazione; il perimetro dichiarato e verificato è quindi esattamente composto dai due file eseguibili modificati.
 
 ```bash
-bash -c '! rg -n '\''(BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|AuthKey_[A-Z0-9]+\\.p8|[A-Za-z0-9+/]{40,}={0,2})'\'' automation-check'
+set +e
+mapfile -d '' scan_files < <(find /tmp/nexo-review-input -type f -print0 | sort -z)
+if [ "${#scan_files[@]}" -ne 2 ]; then
+  echo "ERROR: expected 2 materialized source files, found ${#scan_files[@]}"
+  exit 2
+fi
+rg -n '(BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|AuthKey_[A-Z0-9]+\.p8|[A-Za-z0-9+/]{40,}={0,2})' -- "${scan_files[@]}"
+scan_status=$?
+case "$scan_status" in
+  1) echo "PASS: no private-key heuristic match; rg_exit=1; files=${#scan_files[@]}"; exit 0 ;;
+  0) echo "FAIL: possible private-key material detected; rg_exit=0"; exit 1 ;;
+  *) echo "ERROR: scanner failed; rg_exit=$scan_status"; exit "$scan_status" ;;
+esac
 ```
 
-- **Exit code:** `0`
-- **Esito:** nessuna corrispondenza.
+- **Exit code complessivo:** `0`
+- **Exit code individuale di ripgrep:** `1`
+- **Esito:** superato; nessuna corrispondenza in entrambi i file materializzati.
+- **Fail-safe:** `rg=0` viene trattato come rilevamento e fallimento; `rg>=2` come errore di scansione; solo `rg=1` è un input pulito.
 
 ## Errori e warning rilevati
 
@@ -125,7 +141,7 @@ bash -c '! rg -n '\''(BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|AuthKey_[A-Z0-9]+\\.
 
 ## Rischi tecnici e problemi non risolti
 
-- La nuova review sullo SHA finale può trovare altri rilievi.
+- La review positiva delle 06:07 UTC riguarda ancora il vecchio SHA `6afdcca36b` e non chiude due thread P1; serve una nuova review sul commit successivo alle correzioni.
 - Expo Doctor o lint possono bloccare la pipeline prima della build.
 - La build può riuscire e la submission fallire se manca l'associazione App Store Connect.
 - Non sarà autorizzata automaticamente alcuna spesa EAS.
