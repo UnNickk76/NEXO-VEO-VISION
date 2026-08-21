@@ -10,6 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "appleTeamId": "853F5S8843",
       "bundleIdentifier": "com.fabioandreola.nexoveovision"
     },
     "android": {

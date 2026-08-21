@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_140000_fix-apple-team-id-testflight-run13.md`
-
 # Fix Apple Team ID per EAS/TestFlight run #13
 
 ## Dati attività
