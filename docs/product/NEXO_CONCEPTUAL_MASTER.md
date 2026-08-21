@@ -84,11 +84,11 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 
 | Fatto | ID | Capacità | Fase | Stato | Evidenza |
 | --- | --- | --- | --- | --- | --- |
-| [ ] | `C001` | Casa e Lavoro opzionali, rinominabili e con icone rapide | F1 | concettuale | Vision §35A; PR #10 |
-| [ ] | `C002` | Altri luoghi salvati nominabili, riordinabili, modificabili ed eliminabili | F1 | concettuale | Vision §35A; PR #10 |
+| [ ] | `C001` | Casa e Lavoro opzionali, rinominabili e con icone rapide | F1 | parziale | Vision §35A; PR #10; PR #12 core local-first, UI non integrata |
+| [ ] | `C002` | Altri luoghi salvati nominabili, riordinabili, modificabili ed eliminabili | F1 | parziale | Vision §35A; PR #10; PR #12 core local-first, UI non integrata |
 | [ ] | `C003` | Accesso ai luoghi da mappa, ricerca, menu rapido e voce | F1 | concettuale | UX/UI §24; PR #10 |
 | [ ] | `C004` | Suggerimenti Casa/Lavoro/preferiti basati sul contesto, con consenso e motivazione | F3 | concettuale | Vision §35A; PR #10 |
-| [ ] | `C005` | Conferma obbligatoria prima di avviare una destinazione suggerita | F1 | concettuale | Vision §35A; PR #10 |
+| [ ] | `C005` | Conferma obbligatoria prima di avviare una destinazione suggerita | F1 | parziale | Vision §35A; PR #10; PR #12 guardia core, integrazione suggerimenti/UI assente |
 | [ ] | `C006` | Privacy, cancellazione ed elaborazione locale delle abitudini quando possibile | F0/F3 | concettuale | Vision §35A; PR #10 |
 
 ## Registro permanente della Vision originaria
@@ -239,12 +239,10 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 
 - **Implementato e verificato come funzione utente:** nessuna voce del registro è
   attualmente marcata `[x]`.
-- **Infrastruttura in lavorazione:** prima build iOS/TestFlight nella PR #9.
+- **Infrastruttura iOS/TestFlight:** PR #9 unita in `main` (`1c66a29b24df20ce7bded3b514ce88e534077281`); la pipeline è infrastruttura e non completa F1.
+- **Runtime F1 in corso:** PR #12 implementa e verifica il core local-first dei luoghi salvati; manca ancora integrazione UI, mappa, ricerca e voce, quindi C001/C002/C005 restano `[ ]` e `parziale`.
 - **Documentazione/architettura:** presenti Vision, Roadmap, UX/UI, espansione,
   vocabolario canonico e ADR F0; documentare non equivale a implementare.
-- **Prossima funzione runtime dopo la visibilità TestFlight:** va scelta rispettando
-  la roadmap; la Fase 1 parte da guscio, mappa/posizione, ricerca/routing e luoghi
-  salvati di base.
 
 ## Fonti canoniche dettagliate
 
