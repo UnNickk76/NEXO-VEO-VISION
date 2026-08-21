@@ -55,6 +55,15 @@ function defaultIconForKind(kind: SavedPlaceKind): string | null {
   return null;
 }
 
+function iconForUpdate(
+  kind: SavedPlaceKind,
+  currentIcon: string | null,
+  patchIcon: string | null | undefined,
+): string | null {
+  if (patchIcon === undefined) return currentIcon;
+  return normalizeIcon(patchIcon) ?? defaultIconForKind(kind);
+}
+
 export class SavedPlacesService {
   private readonly idFactory: () => string;
   private readonly now: () => string;
@@ -107,7 +116,7 @@ export class SavedPlacesService {
         patch.destinationText === undefined
           ? current.destinationText
           : requiredTrimmed(patch.destinationText, "destinationText"),
-      icon: patch.icon === undefined ? current.icon : normalizeIcon(patch.icon),
+      icon: iconForUpdate(current.kind, current.icon, patch.icon),
       updatedAt: this.now(),
     };
 
