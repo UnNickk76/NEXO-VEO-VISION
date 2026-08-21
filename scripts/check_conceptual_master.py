@@ -91,7 +91,7 @@ for feature_id, row in rows.items():
                 f"FAIL row {feature_id}: {state} requires motivation/evidence"
             )
         if not re.search(
-            r"\b(motiv|decision|adr|issue|pr\s*#\d+)\b",
+            r"\b(motivazion\w*|decision\w*|adr|issue|pr\s*#\d+)\b",
             evidence,
             re.IGNORECASE,
         ):
