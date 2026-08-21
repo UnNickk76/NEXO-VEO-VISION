@@ -45,4 +45,4 @@ jobs:
         # contains a vendored command-guard implementation with its own style.
         run: npx expo lint app src
 
-      - name: Verification-only stop\n        run: echo "Expo Doctor and lint verification completed; EAS build intentionally not started."\n
+      - name: Verification-only stop\n        run: |\n          echo "Expo Doctor and lint verification completed; EAS build intentionally not started."\n
