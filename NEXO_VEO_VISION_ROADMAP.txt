@@ -92,6 +92,9 @@ COSA REALIZZARE:
   Road Horizon, telemetria, complessita' stradale, predizione.)
 - Posizione GPS in tempo reale, heading, follow-me.
 - Ricerca destinazione (geocoding) + selezione.
+- Prima versione dei luoghi salvati: Casa e Lavoro opzionali con icone rapide,
+  preferiti nominabili e menu di accesso veloce; suggerimenti contestuali solo
+  con consenso, conferma esplicita e nessun avvio automatico del percorso.
 - Guscio Voice-First: attivazione assistente (Nexo/Veo) e comandi base
   ("portami a...", "ricentra", "zoom"), con parita' touch per ogni azione.
 - Indicazioni vocali di navigazione di base su un percorso.

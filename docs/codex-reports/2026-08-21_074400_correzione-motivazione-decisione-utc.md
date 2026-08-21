@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_074400_correzione-motivazione-decisione-utc.md`
-
 # Correzione finale di motivazione, decisione e cronologia UTC
 
 ## Dati dell'attività

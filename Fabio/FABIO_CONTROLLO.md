@@ -1,38 +1,45 @@
 # Fabio Controllo
 
-> Cruscotto di sola consultazione per Fabio. Il rapporto tecnico completo resta in
+> Cruscotto di sola consultazione. Il rapporto tecnico completo è in
 > `docs/codex-reports/LATEST.md`.
 
-## Ultimo aggiornamento
+## Stato semplice
 
-- **Data e ora UTC:** 2026-08-20 22:17:30 UTC
-- **Attività:** correzione documentale successiva alla PR #7 e creazione del cruscotto permanente.
-- **Stato:** in preparazione su ramo dedicato.
-- **Ramo:** `codex/fabio-controllo-e-correzione-pr7`
-- **Pull request:** [PR #8](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/8), aperta come bozza e non ancora autorizzata al merge.
+- **Data:** 21 agosto 2026, 07:44 UTC
+- **Attività:** correzione dei rilievi P1 e P2 della review sullo SHA `58fd97e`.
+- **Stato:** correzioni pubblicate sul ramo; nuova review sul nuovo SHA ancora necessaria.
+- **Ramo:** `codex/luoghi-salvati-concetto`
+- **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10)
+- **Commit della nuova correzione:** `ae43caef0ac9c77beb3266106184c55eb6c64a45`
+- **Priorità runtime invariata:** prima build visibile su TestFlight tramite PR #9.
+- **Costi:** nessuna spesa.
 
 ## Cosa è stato fatto realmente
 
-- Verificato su `main` che la PR #7 è stata unita.
-- Verificato che la correzione locale preparata da Codex non era inclusa nel merge.
-- Conservato il rapporto storico già unito, perché i rapporti storici non possono essere sovrascritti.
-- Preparato un nuovo rapporto correttivo con l'evidenza completa e riproducibile.
-- Aggiunta in `AGENTS.md` la regola che obbliga Codex ad aggiornare questo cruscotto dopo ogni attività.
+- Creato il quadro maestro con 51 requisiti Vision, 47 espansioni, 31 sezioni UX/UI e 6 capacità trasversali.
+- Aggiunte Casa, Lavoro e luoghi salvati al concetto ufficiale.
+- Nessuna funzione è spuntata perché non è ancora implementata e verificata.
+- Il validatore richiede ora entrambi gli elementi per una voce `sostituita` o `scartata`: motivazione e riferimento alla decisione.
+- Corretta la cronologia: il precedente rapporto usava per errore l'ora italiana etichettandola UTC; il nuovo rapporto usa l'ora UTC reale.
 
-## Controlli
+## Controlli superati
 
-- **Superato:** lettura diretta dello stato della PR #7 e del contenuto su `main` tramite integrazione GitHub.
-- **Superato:** individuazione nel rapporto unito dei segnaposto `$endpoint`, `jq ...` e `{5,6}`.
-- **Non eseguito:** test runtime dell'app; questa attività modifica soltanto documentazione.
-- **Da verificare:** nuova Codex Review sul commit finale della pull request correttiva.
+- `python3 scripts/check_conceptual_master.py .` — exit code `0`.
+- Test mirato motivazione + decisione — exit code `0`.
+- Quattro coppie valide accettate.
+- Quattro casi incompleti o generici correttamente rifiutati.
+- ID esatti, stati, evidenze e coerenza documentale ancora validi.
 
-## Problemi ancora aperti
+## Review
 
-- I vecchi thread della PR #7 risultano formalmente irrisolti, ma la PR è già chiusa e unita.
-- La nuova pull request deve ricevere una review pulita prima del merge.
-- L'auto-merge resta disabilitato: il merge deve essere richiesto esplicitamente da Fabio.
+- La review sullo SHA `58fd97eb38a0733265f875c1adb68fb638d00e4b` ha trovato un P1 e un P2.
+- Entrambi sono stati corretti.
+- La PR non viene unita finché la review sul nuovo SHA finale non è pulita.
 
-## Prossimo passo per Fabio
+## Non eseguiti
 
-Attendere la nuova review. Non unire la pull request finché questo file non indica
-che la review sul commit corrente è pulita.
+- UI, database, geocoding, funzioni runtime, build e TestFlight: questa PR è documentale.
+
+## Cosa deve fare Fabio adesso
+
+Nulla. Codex completa rapporto, risposte ai thread e richiesta della nuova review. La PR #9 continua separatamente verso TestFlight.

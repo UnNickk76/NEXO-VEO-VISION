@@ -146,6 +146,15 @@ ALTERNATIVE > ROAD INTELLIGENCE > CONTROLLI.
 - Struttura semplice: MAPPA / VIAGGI / COMMUNITY / PROFILO.
 - TOUR / SCENIC / DISCOVER / Journey Points -> integrati nel flusso di creazione/
   selezione viaggio, non necessariamente grandi sezioni permanenti.
+- MAPPA e ricerca includono una fascia/accesso rapido ai LUOGHI SALVATI: Casa e
+  Lavoro con icone dedicate, poi preferiti nominabili con icona e ordine personalizzati.
+- Casa o Lavoro possono essere messi in evidenza in modo contestuale in base a
+  posizione, fascia abituale e Journey corrente, senza avvio automatico: un tap o
+  una conferma vocale avvia il percorso. Il suggerimento deve essere ignorabile,
+  disattivabile e accompagnato da un motivo comprensibile.
+- Gestione completa fuori guida: aggiungi, rinomina, cambia icona, riordina,
+  sostituisci indirizzo ed elimina. In guida sono esposte solo scorciatoie sicure
+  e Voice-First, compatibili con i limiti della Surface.
 
 25. SMARTPHONE
 - Mappa molto ampia, uso a una mano quando possibile, controlli abbastanza grandi,
