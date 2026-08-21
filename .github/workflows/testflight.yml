@@ -37,6 +37,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Verify immutable package inputs
+        working-directory: .
+        run: |
+          set -euo pipefail
+          for path in frontend/package.json frontend/package-lock.json; do
+            file="$(basename "$path")"
+            curl -fsSL "https://raw.githubusercontent.com/UnNickk76/NEXO-VEO-VISION/49124bfa1a5030291f948b71862757a8041cda5f/$path" -o "/tmp/pr-$file"
+            curl -fsSL "https://raw.githubusercontent.com/UnNickk76/NEXO-VEO-VISION/8586ca2dbb9f348c244143bdcd8bd7a2eb6b0c46/$path" -o "/tmp/verified-$file"
+            cmp -s "/tmp/pr-$file" "/tmp/verified-$file"
+            printf '%s identical; sha256=' "$path"
+            sha256sum "/tmp/pr-$file" | cut -d' ' -f1
+          done
+
       - name: Expo Doctor
         run: npx expo-doctor
 
