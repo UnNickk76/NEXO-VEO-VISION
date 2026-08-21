@@ -90,13 +90,15 @@ for feature_id, row in rows.items():
             raise SystemExit(
                 f"FAIL row {feature_id}: {state} requires motivation/evidence"
             )
-        if not re.search(
-            r"\b(motivazion\w*|decision\w*|adr|issue|pr\s*#\d+)\b",
+        has_motivation = re.search(r"\bmotivazion\w*\b", evidence, re.IGNORECASE)
+        has_decision_reference = re.search(
+            r"\b(decision\w*|adr|issue\s*#?\d+|pr\s*#\d+)\b",
             evidence,
             re.IGNORECASE,
-        ):
+        )
+        if not has_motivation or not has_decision_reference:
             raise SystemExit(
-                f"FAIL row {feature_id}: {state} evidence must reference a motivation or decision"
+                f"FAIL row {feature_id}: {state} evidence requires both motivation and decision reference"
             )
     if not row["checked"]:
         if state == "implementata":
