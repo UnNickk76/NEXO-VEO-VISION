@@ -7,7 +7,7 @@
 
 - **Data:** 21 agosto 2026, 08:22 UTC
 - **Attività:** riallineamento della PR #9 per ottenere la prima build iOS visibile su TestFlight.
-- **Stato:** codice ricostruito sopra il `main` corrente e verificato localmente; pubblicazione e nuova review in corso.
+- **Stato:** PR aperta e unibile; l'ultima review ha trovato un solo P1 documentale sulla cronologia dei commit, corretto con un nuovo rapporto atomico in pubblicazione.
 - **Ramo PR:** `codex/testflight-first-visible-build`
 - **Pull request:** [PR #9](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/9)
 - **Commit funzionale remoto corrente:** `a322b857e37bf0690579a8e256836803ca40ae4d`
@@ -30,8 +30,10 @@
 
 ## Problemi e review
 
-- La precedente PR non era più unibile perché `main` era avanzato con la PR #10.
-- Serve una nuova Codex Review sullo SHA riallineato.
+- La PR è stata riallineata sopra il `main` che include la PR #10 ed è nuovamente unibile.
+- La review dello SHA `e471ce03162eeecfd11aca429e112673b566d8a0` ha trovato un solo P1: mancavano tre commit documentali dal rapporto.
+- Il nuovo rapporto elenca tutti i cinque commit noti e verrà pubblicato insieme a `LATEST.md` e a questo cruscotto in un unico commit.
+- Dopo la pubblicazione serve una nuova Codex Review sul nuovo SHA.
 - Il merge resta vietato finché review e controlli sullo SHA corrente non sono puliti.
 
 ## Cosa deve fare Fabio adesso
