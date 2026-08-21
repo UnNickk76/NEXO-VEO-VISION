@@ -38,10 +38,12 @@ Nessuna funzione NEXO, configurazione EAS/Apple, workflow, segreto o certificato
 
 ## Comandi ed esiti realmente ottenuti
 
+Tutti i comandi relativi al frontend sono riportati dalla radice del repository e includono esplicitamente il cambio di directory realmente usato.
+
 ### Matrice Expo SDK 54 finale
 
 ```bash
-__UNSAFE_EXPO_HOME_DIRECTORY=/tmp/nexo-expo-home EXPO_NO_TELEMETRY=1 ./node_modules/.bin/expo install --check
+(cd frontend && __UNSAFE_EXPO_HOME_DIRECTORY=/tmp/nexo-expo-home EXPO_NO_TELEMETRY=1 ./node_modules/.bin/expo install --check)
 ```
 
 - **Exit code:** `0`
@@ -50,7 +52,7 @@ __UNSAFE_EXPO_HOME_DIRECTORY=/tmp/nexo-expo-home EXPO_NO_TELEMETRY=1 ./node_modu
 ### Installazione pulita dal lockfile
 
 ```bash
-npm ci --cache=/tmp/nexo-npm-cache
+(cd frontend && npm ci --cache=/tmp/nexo-npm-cache)
 ```
 
 - **Exit code:** `0`
@@ -59,7 +61,7 @@ npm ci --cache=/tmp/nexo-npm-cache
 ### Versioni registrate nel lockfile
 
 ```bash
-node -e "const l=require('./package-lock.json'); for (const p of ['node_modules/expo','node_modules/expo-constants']) console.log(p,l.packages[p].version)"
+(cd frontend && node -e "const l=require('./package-lock.json'); for (const p of ['node_modules/expo','node_modules/expo-constants']) console.log(p,l.packages[p].version)")
 ```
 
 - **Exit code:** `0`
@@ -68,7 +70,7 @@ node -e "const l=require('./package-lock.json'); for (const p of ['node_modules/
 ### Overrides npm equivalenti alle resolutions canoniche
 
 ```bash
-node - <<'NODE'
+(cd frontend && node - <<'NODE'
 const l = require('./package-lock.json');
 const expected = {
   'node_modules/@eslint/plugin-kit': '0.3.4',
@@ -86,6 +88,7 @@ for (const [path, version] of Object.entries(expected)) {
   console.log(path, l.packages[path]?.version);
 }
 NODE
+)
 ```
 
 - **Exit code:** `0`
@@ -94,7 +97,7 @@ NODE
 ### Lint first-party equivalente al workflow
 
 ```bash
-./node_modules/.bin/eslint app src
+(cd frontend && ./node_modules/.bin/eslint app src)
 ```
 
 - **Exit code:** `0`
@@ -119,6 +122,49 @@ git diff --check
 - **Identità del contenuto verificato:** confronto byte-per-byte del contenuto base64 restituito dall'API GitHub per `frontend/package.json` e `frontend/package-lock.json` sui branch `codex/fix-expo-sdk54-testflight` e `codex/verify-pr13-expo-doctor`: entrambi `true` (lunghezze base64 rispettivamente `3304` e `657228`).
 
 Due tentativi precedenti del solo ramo effimero (`32469244624` e `32469972795`) non sono partiti per una sintassi YAML errata introdotta nel meccanismo temporaneo di verifica. Non riguardano il workflow su `main`, non hanno eseguito EAS e sono stati sostituiti dalla run finale riuscita sopra indicata.
+
+## Commit creati
+
+La PR contiene i seguenti commit già materializzati prima dell'ultimo aggiornamento del rapporto:
+
+- `525ed458f554b91f1619370a0d6921171dcc6674` — allineamento dipendenze Expo;
+- `f5785c0950910acc288281d10a63e89cc4ec16bf` — lockfile npm iniziale;
+- `1495198428039d0cf8bcaa1556eca25c2004dbc6`, `9282f82c80733f61d7dfdee8cba84fd8adaa95b6`, `1bdfd4c6629a15bb6238152e6867910333be35d4` — rapporto iniziale, `LATEST.md` e cruscotto;
+- `ec96fdb3ad9415b20e6cc34e0e2ab9963d6a91fc`, `70c5a72c9cfea4ad0efbd35749749c718b2e738f`, `d16a994041a0354dcd96446a7c710fc19b330af1` — evidenza remota iniziale;
+- `ebfee1ef0d80467a7a2ad7851330c05959235cb3`, `49124bfa1a5030291f948b71862757a8041cda5f` — overrides npm e lockfile finale;
+- `41e1a7f561ffd1eeae177083adc113323f81ab7c`, `7a480f6e8cb82f819b262ebebe24cbfe405e49f9`, `21251cd85b4079b1bdea3638aa0d7826684921c8` — consolidamento delle evidenze finali nei documenti.
+
+Il commit che contiene la presente correzione del rapporto è indicato nella cronologia della PR #13 e sulla Coordination Board: il suo SHA non può essere incorporato nello stesso contenuto prima della creazione del commit senza una dipendenza circolare.
+
+## Fatti verificati, deduzioni e dati non verificabili
+
+### Verificato realmente
+
+- Le versioni finali installate, gli overrides, l'installazione pulita, lint ed Expo Doctor sono stati controllati con i comandi e gli esiti individuali sopra riportati.
+- La run remota finale ha usato contenuti di `package.json` e `package-lock.json` identici a quelli della PR.
+- La build EAS, la firma Apple e l'invio TestFlight non sono stati eseguiti dalla run di verifica.
+
+### Dedotto
+
+- Poiché il workflow su `main` esegue gli stessi passi `npm install`, `npx expo-doctor` e lint prima di EAS, è ragionevole attendersi che superi il precedente blocco Expo Doctor. Questa è una deduzione e non viene registrata come esito della futura run su `main`.
+
+### Non verificato
+
+- Non sono ancora verificati su `main`: disponibilità di `EXPO_TOKEN`, autenticazione EAS, generazione dell'IPA, firma Apple, auto-submit e comparsa della build in TestFlight.
+
+## Errori, warning e problemi non risolti
+
+- Warning preesistente: import `Text` inutilizzato in `frontend/app/index.tsx`; zero errori lint.
+- Warning infrastrutturale remoto: alcune action Node 20 vengono forzate su Node 24 dal runner GitHub; non ha causato il fallimento.
+- I due tentativi effimeri con YAML errato sono dichiarati sopra; la run finale li sostituisce.
+- Problemi ancora aperti: review sullo SHA finale, merge e pipeline TestFlight reale su `main`.
+
+## Dipendenze, credenziali, rischi e decisioni
+
+- **Dipendenze ancora necessarie:** nessuna ulteriore dipendenza nota per superare Expo Doctor.
+- **Credenziali ancora necessarie:** `EXPO_TOKEN` e credenziali Apple/EAS configurate nel servizio; presenza e validità non sono state ispezionate né esposte.
+- **Rischi tecnici:** un blocco successivo può emergere soltanto nei passi EAS/firma/submit non ancora raggiunti; il warning lint resta debito preesistente fuori perimetro.
+- **Decisioni richieste a Fabio:** nessuna ora. Se la pipeline successiva richiederà un intervento Apple/Expo, verrà indicato un singolo gesto preciso senza chiedere o mostrare segreti.
 
 ## Limiti e verifiche ancora obbligatorie
 
