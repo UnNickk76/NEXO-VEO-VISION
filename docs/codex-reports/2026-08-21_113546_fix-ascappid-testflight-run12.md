@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_113546_fix-ascappid-testflight-run12.md`
-
 # Configurazione ascAppId per EAS Submit / TestFlight
 
 ## Dati dell'attività

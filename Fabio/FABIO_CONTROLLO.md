@@ -5,37 +5,37 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 09:35 UTC
-- **Attività:** sblocco di Expo Doctor per riavviare la prima pipeline TestFlight.
-- **Stato:** PR #13 aperta; corretti anche i rilievi della prima review; Expo Doctor e lint remoti superati sulla coppia finale package/lock; in attesa della nuova Codex Review prima del merge.
-- **Branch:** `codex/fix-expo-sdk54-testflight`
-- **Pull request:** [PR #13](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/13)
-- **Costi:** nessuna spesa.
+- **Data:** 21 agosto 2026, 11:55 UTC
+- **Attività:** correzione dei rilievi NEXO REVIEW sulla PR #14 relativa al blocco `ascAppId` di TestFlight run #12.
+- **Stato:** PR #14 esiste, è aperta e in correzione documentale; il valore `ascAppId` resta invariato e confermato da App Store Connect; nessun merge eseguito da NEXO CODEX.
+- **Branch:** `nexo-codex/fix-ascappid-testflight-run12`
+- **Pull request:** PR #14
+- **Base:** `main` `a123a3c5e5d22a757eac9dda9dd20e44e3362f17`.
+- **Costi:** nessuna build o submit aggiuntivi avviati da questa attività.
 
 ## Cosa è stato fatto realmente
 
-- Letto il log completo della run fallita: Expo Doctor era il blocco e la build iOS non era ancora partita.
-- Aggiornati `expo` a `54.0.37` ed `expo-constants` a `18.0.14`, le versioni richieste dalla matrice Expo SDK 54.
-- Creato un lockfile npm coerente con il comando usato dal workflow.
-- Reso il lockfile npm coerente anche con tutte le `resolutions` Yarn già imposte dal progetto tramite `overrides` equivalenti.
-- Verificata un'installazione pulita dal lockfile.
+- Verificato che `frontend/eas.json` contenga `submit.production.ios.ascAppId = "6803879211"`.
+- Il Coordinatore/proprietario ha confermato direttamente da App Store Connect → NEXO VEO VISION → Informazioni sull'App: Apple ID `6803879211`, Bundle ID `com.fabioandreola.nexoveovision`.
+- Il valore `ascAppId` non è stato modificato durante la correzione della review.
+- Riallineato il rapporto tecnico per registrare PR #14 e tutti i quattro commit già presenti nello SHA revisionato da NEXO REVIEW.
+- Nessuna modifica al workflow TestFlight, al codice NEXO, a package/lock o alle aree funzionali degli altri agenti.
 
 ## Controlli
 
-- `expo install --check`: superato, dipendenze aggiornate.
-- `npm ci`: superato.
-- Lint `app` e `src`: superato con zero errori e un warning preesistente.
-- Expo Doctor remoto: superato sulla coppia finale package/lock nella [run #11](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32472238247), `18/18 checks passed`.
-- Lint remoto: superato, zero errori e un warning preesistente.
-- Il ramo di verifica si è fermato prima di EAS Build: nessuna spesa e nessun invio TestFlight avviato.
-- Il contenuto finale di `package.json` e `package-lock.json` verificato dalla run è byte-per-byte identico a quello della PR #13; il confronto usa commit immutabili, `cmp` e hash SHA-256 registrati nel rapporto.
-- Codex Review sul nuovo SHA, merge e nuova pipeline TestFlight su `main`: ancora da concludere.
+- `eas.json` era già stato validato come JSON: exit `0`.
+- Assertion `ascAppId == "6803879211"`: exit `0`.
+- Assertion bundle identifier `com.fabioandreola.nexoveovision`: exit `0`.
+- Review indipendente 4992945074: P1 sulla provenienza del valore e P2 sul reporting; entrambi indirizzati documentalmente senza cambiare il fix funzionale.
+- Expo Doctor/lint non rilanciati perché questa correzione tocca solo reporting; EAS Build/EAS Submit non avviati.
 
-## Isolamento
+## Problemi e review
 
-- Non sono state toccate funzioni NEXO, saved places della PR #12, concettuale, workflow, segreti, certificati o configurazioni Apple/EAS.
-- La PR #12 resta indipendente; i file condivisi di reporting saranno riallineati prima della chiusura.
+- PR #14 deve essere nuovamente revisionata da NEXO REVIEW sul nuovo SHA.
+- Il diff funzionale `frontend/eas.json` deve restare identico a quello già revisionato.
+- PR #12 di NEXO 1 condivide i file di reporting e dovrà riallinearli/serializzarli prima del proprio merge; non condivide `frontend/eas.json`.
+- TestFlight non viene dichiarato funzionante finché una nuova pipeline su `main` non verifica realmente Expo Doctor, lint, EAS Build, EAS Submit e ricezione della build.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. Il prossimo passaggio è la Codex Review sul nuovo SHA della PR #13. Se sarà pulita, seguiranno merge e pipeline TestFlight; un eventuale blocco Apple/Expo verrà tradotto qui in un solo gesto manuale preciso.
+Nulla. NEXO CODEX passa nuovamente PR #14 a NEXO REVIEW tramite Coordination Board #11. Nessun merge e nessun avvio manuale TestFlight vengono eseguiti da NEXO CODEX.
