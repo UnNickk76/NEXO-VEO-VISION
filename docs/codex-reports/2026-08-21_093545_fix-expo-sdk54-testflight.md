@@ -111,15 +111,34 @@ git diff --check
 
 - **Exit code:** `0`.
 
-### Expo Doctor e lint remoti senza build EAS
+### Identità immutabile dei file, Expo Doctor e lint remoti senza build EAS
 
-- **Run finale:** [NEXO TestFlight #10](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32470746191)
-- **Job:** `96736897331`, conclusione `success`
-- **Commit effimero di verifica:** `8586ca2dbb9f348c244143bdcd8bd7a2eb6b0c46`
+- **Run finale:** [NEXO TestFlight #11](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32472238247)
+- **Job:** `96741261097`, conclusione `success`
+- **Commit del workflow effimero:** `cd4f8edf1baf97476f14390104bff6333bb5cb81`
+- **SHA immutabile della coppia nella PR:** `49124bfa1a5030291f948b71862757a8041cda5f`
+- **SHA immutabile della coppia sottoposta a Doctor/lint:** `8586ca2dbb9f348c244143bdcd8bd7a2eb6b0c46`
+- **Comando realmente eseguito dal job, dalla radice del repository:**
+
+```bash
+set -euo pipefail
+for path in frontend/package.json frontend/package-lock.json; do
+  file="$(basename "$path")"
+  curl -fsSL "https://raw.githubusercontent.com/UnNickk76/NEXO-VEO-VISION/49124bfa1a5030291f948b71862757a8041cda5f/$path" -o "/tmp/pr-$file"
+  curl -fsSL "https://raw.githubusercontent.com/UnNickk76/NEXO-VEO-VISION/8586ca2dbb9f348c244143bdcd8bd7a2eb6b0c46/$path" -o "/tmp/verified-$file"
+  cmp -s "/tmp/pr-$file" "/tmp/verified-$file"
+  printf '%s identical; sha256=' "$path"
+  sha256sum "/tmp/pr-$file" | cut -d' ' -f1
+done
+```
+
+- **Exit code del passo:** `0`
+- **Risultati individuali:**
+  - `frontend/package.json`: identico, SHA-256 `fc9dbcd8b36675978eaaa63b7e1e7ce320997d0bd6b2ccdebe88bfb9a0eca2ea`;
+  - `frontend/package-lock.json`: identico, SHA-256 `ec5e7e9de927450ca422d7d5aa3a8441e07b7610f499e26cba096d01d725be6a`.
 - **Expo Doctor:** exit `0`, output `18/18 checks passed. No issues detected!`
 - **Lint:** exit `0`, zero errori e un warning preesistente.
 - **Guardia costi:** il workflow effimero si è arrestato dopo Doctor/lint; EAS Build non è stato eseguito.
-- **Identità del contenuto verificato:** confronto byte-per-byte del contenuto base64 restituito dall'API GitHub per `frontend/package.json` e `frontend/package-lock.json` sui branch `codex/fix-expo-sdk54-testflight` e `codex/verify-pr13-expo-doctor`: entrambi `true` (lunghezze base64 rispettivamente `3304` e `657228`).
 
 Due tentativi precedenti del solo ramo effimero (`32469244624` e `32469972795`) non sono partiti per una sintassi YAML errata introdotta nel meccanismo temporaneo di verifica. Non riguardano il workflow su `main`, non hanno eseguito EAS e sono stati sostituiti dalla run finale riuscita sopra indicata.
 
@@ -141,7 +160,7 @@ Il commit che contiene la presente correzione del rapporto è indicato nella cro
 ### Verificato realmente
 
 - Le versioni finali installate, gli overrides, l'installazione pulita, lint ed Expo Doctor sono stati controllati con i comandi e gli esiti individuali sopra riportati.
-- La run remota finale ha usato contenuti di `package.json` e `package-lock.json` identici a quelli della PR.
+- La run remota finale ha usato contenuti di `package.json` e `package-lock.json` identici a quelli della PR, verificati con SHA immutabili, `cmp` e SHA-256 riproducibili sopra riportati.
 - La build EAS, la firma Apple e l'invio TestFlight non sono stati eseguiti dalla run di verifica.
 
 ### Dedotto
