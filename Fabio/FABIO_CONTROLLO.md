@@ -25,10 +25,10 @@
 - `expo install --check`: superato, dipendenze aggiornate.
 - `npm ci`: superato.
 - Lint `app` e `src`: superato con zero errori e un warning preesistente.
-- Expo Doctor remoto: superato sulla coppia finale package/lock nella [run #10](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32470746191), `18/18 checks passed`.
+- Expo Doctor remoto: superato sulla coppia finale package/lock nella [run #11](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32472238247), `18/18 checks passed`.
 - Lint remoto: superato, zero errori e un warning preesistente.
 - Il ramo di verifica si è fermato prima di EAS Build: nessuna spesa e nessun invio TestFlight avviato.
-- Il contenuto finale di `package.json` e `package-lock.json` verificato dalla run è byte-per-byte identico a quello della PR #13.
+- Il contenuto finale di `package.json` e `package-lock.json` verificato dalla run è byte-per-byte identico a quello della PR #13; il confronto usa commit immutabili, `cmp` e hash SHA-256 registrati nel rapporto.
 - Codex Review sul nuovo SHA, merge e nuova pipeline TestFlight su `main`: ancora da concludere.
 
 ## Isolamento
