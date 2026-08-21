@@ -5,41 +5,52 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 06:49 UTC
-- **Attività:** aggiunta concettuale di Casa, Lavoro e luoghi salvati.
-- **Stato:** specifica completata su ramo separato; non è ancora implementata nell'app.
+- **Data:** 21 agosto 2026, 07:00 UTC
+- **Attività:** consolidamento completo del concetto di NEXO e registro permanente delle funzioni.
+- **Stato:** documento maestro creato e verificato; PR #10 aperta, nuova review da richiedere sullo SHA finale.
 - **Ramo:** `codex/luoghi-salvati-concetto`
-- **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10), aperta e in attesa di Codex Review.
-- **Priorità principale invariata:** prima build visibile su TestFlight tramite PR #9.
+- **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10)
+- **SHA verificato:** `01c144ae3e35c4f6a4a8147b300f315d49301d70`
+- **Commit principali dell'attività:** `8cfb0cf`, `119f6ef`, `0e64d5a`, `488bd74`, `646b0ba`, `294fa7e`, `01c144a`
+- **Priorità runtime invariata:** prima build visibile su TestFlight tramite PR #9.
 - **Costi:** nessuna spesa.
 
-## Cosa è stato aggiunto realmente
+## Cosa è stato fatto realmente
 
-- Casa e Lavoro opzionali, rinominabili e con icone rapide dedicate.
-- Altri luoghi salvati con nome, icona, ordine, modifica ed eliminazione.
-- Accesso rapido da mappa, ricerca, menu e voce.
-- Suggerimenti contestuali basati su posizione, orario e abitudini soltanto con consenso.
-- Nessuna navigazione avviata automaticamente: serve sempre conferma.
-- Gestione completa fuori guida e scorciatoie essenziali Voice-First durante la guida.
-- Prima versione pianificata nella Fase 1.
+- Creato `docs/product/NEXO_CONCEPTUAL_MASTER.md`.
+- Indicizzati 51 requisiti Vision, 47 espansioni e 31 sezioni UX/UI.
+- Aggiunte 6 capacità permanenti per Casa, Lavoro e luoghi salvati.
+- Tutte le funzioni sono ancora non spuntate perché non sono implementate e verificate.
+- Aggiunta in `AGENTS.md` la regola che vieta di eliminare le funzioni completate.
+- Una funzione potrà essere spuntata solo con PR, commit e test registrati.
+- Aggiornato il README con collegamenti chiari ai documenti principali.
+- Creato lo script `scripts/check_conceptual_master.py`.
 
 ## Controlli
 
 ### Superati
-- Letti direttamente Vision, UX/UI, Roadmap ed espansione concettuale.
-- Confermato che il requisito non era ancora definito con questa completezza.
-- Aggiornati i tre documenti sul ramo dedicato.
+
+- `python3 scripts/check_conceptual_master.py .`: exit `0`.
+- 51 ID Vision univoci.
+- 47 ID espansione univoci.
+- 31 ID UX/UI univoci.
+- 6 ID trasversali univoci.
+- Nessuna funzione falsamente marcata come completata.
+- Coerenza di Vision, UX/UI, Roadmap, AGENTS e README verificata.
+
+### Review aperta
+
+- La prima review PR #10 ha segnalato due P1 documentali:
+  1. rapporto precedente con comandi abbreviati;
+  2. commit mancanti nel vecchio cruscotto.
+- Il cruscotto ora contiene SHA e commit.
+- Il nuovo rapporto usa lo script versionato e il comando esatto realmente eseguito.
+- I thread saranno risolti solo dopo pubblicazione della correzione.
 
 ### Non eseguiti
-- UI, database, geocoding, suggerimenti runtime, lint, build e TestFlight: attività soltanto concettuale.
-- Codex Review: da richiedere dopo la creazione della PR.
 
-## Problemi e rischi
-
-- I luoghi e le abitudini sono dati personali: dovranno essere opzionali, cancellabili e preferibilmente elaborati localmente.
-- Provider, database e schema tecnico non sono ancora scelti.
-- La funzione non deve distrarre durante la guida né anticipare una destinazione senza conferma.
+- UI, database, geocoding, funzioni runtime, lint applicativo, build e TestFlight: questa attività è documentale.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. Attendere la Codex Review della PR #10. Il lavoro sulla PR #9 verso TestFlight continua indipendentemente.
+Nulla. Attendere la nuova Codex Review della PR #10. La PR #9 continua separatamente verso TestFlight.
