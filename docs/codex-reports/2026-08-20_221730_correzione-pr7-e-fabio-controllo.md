@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-20_221730_correzione-pr7-e-fabio-controllo.md`
-
 # Correzione evidenza PR #7 e cruscotto Fabio Controllo
 
 ## Dati dell'attività
