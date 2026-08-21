@@ -7,8 +7,9 @@
 
 - **Data:** 21 agosto 2026, 19:45 UTC
 - **Attività:** test diagnostico EAS con Xcode 16.4.
-- **Stato:** modifica repository minima applicata; PR DRAFT in preparazione/review. Nessun merge e nessuna nuova pipeline TestFlight avviati.
+- **Stato:** PR #16 DRAFT; modifica repository minima applicata e verificata staticamente; in attesa di review NEXO REVIEW. Nessun merge e nessuna nuova pipeline TestFlight avviati.
 - **Branch:** `nexo-codex/diagnostic-xcode-16-4-testflight`
+- **Pull request:** PR #16
 - **Base:** `main` `d3170fd874461c3734954f8f2d208350599673ca`.
 
 ## Cosa è stato modificato realmente
@@ -35,4 +36,4 @@
 
 ## Cosa deve fare Fabio adesso
 
-Nulla durante la review. NEXO CODEX passa la PR diagnostica a NEXO REVIEW sullo SHA esatto. Merge vietato fino a verdetto CLEAN.
+Nulla durante la review. NEXO CODEX passa PR #16 a NEXO REVIEW sullo SHA finale esatto. Merge vietato fino a verdetto CLEAN.
