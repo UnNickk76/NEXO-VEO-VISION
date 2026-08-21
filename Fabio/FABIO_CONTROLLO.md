@@ -5,35 +5,48 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 19:45 UTC
-- **Attività:** test diagnostico EAS con Xcode 16.4.
-- **Stato:** PR #16 DRAFT; modifica repository minima applicata e verificata staticamente; in attesa di review NEXO REVIEW. Nessun merge e nessuna nuova pipeline TestFlight avviati.
-- **Branch:** `nexo-codex/diagnostic-xcode-16-4-testflight`
-- **Pull request:** PR #16
-- **Base:** `main` `d3170fd874461c3734954f8f2d208350599673ca`.
+- **Data:** 21 agosto 2026, 20:55 UTC
+- **Attività:** readiness Android non-EAS.
+- **Stato:** PR #18 DRAFT; preflight Android completato con successo. Nessuna EAS Build Android, APK/AAB o pubblicazione Google Play eseguita.
+- **Branch:** `nexo-codex/android-build-readiness`
+- **Pull request:** PR #18
+- **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`.
 
 ## Cosa è stato modificato realmente
 
-- `frontend/eas.json`: aggiunto esclusivamente `build.production.ios.image = "macos-sequoia-15.6-xcode-16.4"`.
-- `autoIncrement` preservato.
-- `submit.production.ios.ascAppId = "6803879211"` preservato.
-- `submit.production.ios.appleTeamId = "853F5S8843"` preservato.
-- Nessuna modifica ad `app.json`, workflow TestFlight, dipendenze, codice o credenziali.
+- Creato `.github/workflows/android-readiness.yml`, separato dal workflow TestFlight.
+- Il workflow esegue solo controlli gratuiti/non-EAS: install, Expo Doctor, lint, verifica package Android/Expo SDK 54 e generazione prebuild Android.
+- Nessuna modifica a `frontend/app.json`, `frontend/eas.json`, package/lock, codice applicativo o `.github/workflows/testflight.yml`.
+- Nessuna credenziale Apple/EAS/Google modificata o creata.
 
-## Controlli
+## Controlli reali
 
-- Percorso EAS `build.production.ios.image`: supportato dalla documentazione Expo corrente.
-- Immagine `macos-sequoia-15.6-xcode-16.4`: supportata e raccomandata per SDK 54 se non si vuole usare Xcode 26.
-- JSON e valori invarianti verificati staticamente: PASS.
-- Nessuna nuova EAS Build/TestFlight eseguita in questa attività.
+GitHub Actions Android Readiness run #1 (`32525822573`): SUCCESS.
+
+- `npm ci`: PASS.
+- Expo Doctor: PASS — 18/18.
+- Lint: PASS — 0 errori, 1 warning preesistente (`Text` non usato in `frontend/app/index.tsx`).
+- Android package: PASS — `com.fabioandreola.nexoveovision`.
+- Expo SDK: PASS — `~54.0.37`.
+- `expo prebuild --platform android --no-install --clean`: PASS.
+
+Nota: npm segnala 12 vulnerabilità nel dependency tree (1 moderate, 11 high); non sono state corrette perché fuori perimetro.
+
+## Cosa NON è stato verificato
+
+- Nessuna compilazione Gradle completa.
+- Nessun APK/AAB reale.
+- Nessuna firma/keystore Android.
+- Nessuna EAS Build Android.
+- Nessuna configurazione Google Play/service account.
+- Nessun test su dispositivo o emulatore Android.
 
 ## Problemi e review
 
-- Il cambio immagine è solo diagnostico: non dimostra ancora che il problema di importazione del Distribution Certificate dipenda da Xcode 26.
-- Dopo review CLEAN e merge autorizzato, la pipeline dovrà mostrare realmente Xcode 16.4 e verificare Prepare credentials.
-- Se ricompare lo stesso identico errore del certificato, nessun altro workaround repository: stato BLOCKED e pista Xcode 26 esclusa come spiegazione.
-- PR #12 resta concorrente soltanto sui file di reporting e dovrà essere riallineata/serializzata prima di un proprio merge.
+- PR #12 (NEXO 1) e PR #17 (NEXO 3) sono lavori paralleli; la sovrapposizione è solo sui file di reporting/conceptual e dovrà essere serializzata prima di un eventuale merge.
+- V05 resta non completato: il preflight Android phone non implementa Android Auto/CarPlay.
+- PR #18 deve restare DRAFT fino alla review indipendente CLEAN di NEXO REVIEW.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla durante la review. NEXO CODEX passa PR #16 a NEXO REVIEW sullo SHA finale esatto. Merge vietato fino a verdetto CLEAN.
+Nulla. NEXO CODEX richiede review indipendente di PR #18 sullo SHA finale. Nessuna build Android a pagamento viene avviata senza autorizzazione del Coordinatore.

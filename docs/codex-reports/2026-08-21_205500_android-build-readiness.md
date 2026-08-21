@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_205500_android-build-readiness.md`
-
 # Android build readiness — preflight non-EAS
 
 ## Dati attività
