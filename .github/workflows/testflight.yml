@@ -7,13 +7,7 @@ on:
       - main
     paths:
       - ".github/workflows/testflight.yml"
-      - "frontend/app.json"
-      - "frontend/eas.json"
-      - "frontend/package.json"
-      - "frontend/package-lock.json"
-      - "frontend/app/**"
-      - "frontend/src/**"
-      - "frontend/assets/**"
+      - "frontend/**"
 
 permissions:
   contents: read
