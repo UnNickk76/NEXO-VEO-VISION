@@ -65,6 +65,29 @@ correzioni, implementazioni, test e attività parzialmente fallite — Codex dev
     eventuali limiti o dipendenze dell'ambiente. Formule come “script Python”,
     “controllo terminologico” o “scansione segreti” non sono sufficienti.
 
+## Registro concettuale permanente
+
+`docs/product/NEXO_CONCEPTUAL_MASTER.md` è l'indice canonico dello stato delle
+funzioni. Ogni requisito deve conservare un ID stabile e non può essere eliminato
+quando viene implementato, sostituito, rinviato o scartato.
+
+Per ogni attività che introduce o modifica una funzione Codex deve:
+
+1. aggiungere o aggiornare la relativa riga senza cancellare lo storico;
+2. lasciare la casella `[ ]` per funzioni soltanto documentate, simulate,
+   parziali o non verificate;
+3. usare `[x]` soltanto dopo implementazione e verifiche applicabili realmente
+   superate;
+4. registrare nella colonna Evidenza almeno pull request, commit e test pertinenti;
+5. usare uno stato esplicito (`concettuale`, `in corso`, `parziale`,
+   `implementata`, `rinviata`, `sostituita` o `scartata`);
+6. se una voce è sostituita o scartata, mantenerla e aggiungere motivazione e
+   riferimento alla decisione;
+7. aggiornare il registro nella stessa pull request dell'implementazione.
+
+Una build, uno splash screen, una demo statica, uno schema o la sola
+documentazione non dimostrano che una funzione utente sia completata.
+
 ## Cruscotto di controllo di Fabio
 
 `Fabio/FABIO_CONTROLLO.md` è il cruscotto sintetico, in italiano semplice,
