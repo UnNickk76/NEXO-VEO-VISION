@@ -65,6 +65,9 @@ assert.deepEqual(
 );
 assert.equal((await restarted.list())[2].destinationText, "Piazza\nGrande 4");
 
+const homeWithBlankIcon = await service.update(home.id, { icon: "   " });
+assert.equal(homeWithBlankIcon.icon, "home");
+
 const updated = await service.update(favorite.id, { name: "Centro", icon: " star " });
 assert.equal(updated.name, "Centro");
 assert.equal(updated.icon, "star");
