@@ -1,14 +1,14 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_093200_correzione-motivazioni-registro.md`
+Rapporto storico: `docs/codex-reports/2026-08-21_074400_correzione-motivazione-decisione-utc.md`
 
-# Correzione del riconoscimento delle motivazioni nel registro concettuale
+# Correzione finale di motivazione, decisione e cronologia UTC
 
 ## Dati dell'attività
 
-- **Data e ora UTC:** 2026-08-21 09:32:00 UTC
-- **Obiettivo richiesto:** controllare la nuova Codex Review della PR #10 e correggere i rilievi reali.
+- **Data e ora UTC:** 2026-08-21 07:44:00 UTC
+- **Obiettivo richiesto:** controllare la Codex Review sullo SHA `58fd97eb38a0733265f875c1adb68fb638d00e4b` e correggere i rilievi reali.
 - **Stato finale:** completato sul ramo; in attesa di nuova review.
 - **Ramo utilizzato:** `codex/luoghi-salvati-concetto`
-- **Commit creati prima del rapporto:** `1442dbb9aaab75e659ef08a7007c8cbb068805fb`, `8c8a68a07a434b60025ae8ce320eaf341996230b`
+- **Commit creati prima del rapporto:** `ae43caef0ac9c77beb3266106184c55eb6c64a45`, `4d3aeef814465e474726b1d186ee5195687557cd`
 - **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10)
 - **Costi:** nessuna spesa.
 
@@ -20,13 +20,22 @@ Rapporto storico: `docs/codex-reports/2026-08-21_093200_correzione-motivazioni-r
 
 ## File creato
 
-- `docs/codex-reports/2026-08-21_093200_correzione-motivazioni-registro.md`
+- `docs/codex-reports/2026-08-21_074400_correzione-motivazione-decisione-utc.md`
 
-## Modifica concreta
+## Modifiche concrete
 
-La review sul commit `4c1977d983c46e3ac4618332ae8dbd6bfcb5ea64` ha rilevato che il pattern `\b(motiv|decision|adr|issue|pr\s*#\d+)\b` riconosceva soltanto le parole esatte `motiv` e `decision`, non le forme italiane previste `motivazione` e `decisione`.
+### P1 — motivazione e decisione entrambe obbligatorie
 
-Il pattern è stato sostituito con `\b(motivazion\w*|decision\w*|adr|issue|pr\s*#\d+)\b`. In questo modo accetta le forme italiane singolari e plurali, continuando ad accettare ADR, issue e riferimenti PR e a rifiutare testo generico privo di decisione o motivazione.
+Il precedente pattern accettava una motivazione oppure un riferimento alla decisione. Il protocollo permanente richiede invece entrambi. Il validatore ora calcola separatamente:
+
+- `has_motivation`: riconosce `motivazione` e relative forme;
+- `has_decision_reference`: riconosce `decisione`, ADR, issue numerata o PR numerata.
+
+Una voce `sostituita` o `scartata` fallisce se manca uno qualsiasi dei due elementi.
+
+### P2 — cronologia UTC
+
+Il rapporto storico `2026-08-21_093200_correzione-motivazioni-registro.md` indicava erroneamente l'ora locale UTC+2 come UTC. In conformità al divieto di sovrascrivere i rapporti storici, quel file resta immutato come registrazione dell'errore. Questo rapporto correttivo usa il nome e l'orario UTC reale e `LATEST.md` viene sostituito integralmente con questa versione. Anche `Fabio/FABIO_CONTROLLO.md` usa ora UTC reale.
 
 ## Comandi realmente eseguiti
 
@@ -55,56 +64,60 @@ PASS assertion: README discovery
 PASS: conceptual master registry is coherent
 ```
 
-### Test mirato del pattern
+### Test mirato della coppia obbligatoria
 
 ```bash
 python3 - <<'PY'
 import re
-pattern = re.compile(r'\b(motivazion\w*|decision\w*|adr|issue|pr\s*#\d+)\b', re.I)
+motivation = re.compile(r'\bmotivazion\w*\b', re.I)
+decision = re.compile(r'\b(decision\w*|adr|issue\s*#?\d+|pr\s*#\d+)\b', re.I)
 cases = {
-    'Motivazione: requisito obsoleto': True,
-    'Decisione documentata': True,
-    'ADR-004': True,
-    'issue #12': True,
-    'PR #10': True,
+    'Motivazione: requisito obsoleto; Decisione documentata': True,
+    'Motivazioni tecniche; ADR-004': True,
+    'Motivazione verificata; issue #12': True,
+    'Motivazione verificata; PR #10': True,
+    'Motivazione: requisito obsoleto': False,
+    'PR #10': False,
+    'Decisione documentata': False,
     'testo generico': False,
 }
 for value, expected in cases.items():
-    actual = bool(pattern.search(value))
-    print(f"{'PASS' if actual == expected else 'FAIL'} regex: {value!r} -> {actual}")
+    actual = bool(motivation.search(value) and decision.search(value))
+    print(f"{'PASS' if actual == expected else 'FAIL'} pair: {value!r} -> {actual}")
     assert actual == expected
 PY
 ```
 
 - **Exit code:** `0`
-- **Risultati individuali:** tutti i cinque casi validi riconosciuti; il caso generico rifiutato.
+- **Risultati individuali:** quattro coppie complete accettate; motivazione sola, PR sola, decisione sola e testo generico rifiutati.
 
 ## Verificato realmente
 
-- La nuova review è ancorata allo SHA `4c1977d983c46e3ac4618332ae8dbd6bfcb5ea64`.
-- Esiste un solo nuovo thread aperto, priorità P2, sul pattern delle motivazioni.
-- La PR era aperta e GitHub la indicava unibile prima della nuova correzione.
-- Il controllo completo e il test mirato terminano entrambi con exit code `0`.
+- La review è ancorata allo SHA `58fd97eb38a0733265f875c1adb68fb638d00e4b`.
+- Contiene due thread nuovi: un P1 sul requisito congiunto e un P2 sull'ora UTC.
+- La PR risultava aperta e unibile prima delle correzioni.
+- Il controllo completo e il test mirato terminano con exit code `0`.
 
 ## Dedotto
 
-- Le evidenze conformi che usano `Motivazione`, `Motivazioni`, `Decisione` o `Decisioni` non saranno più respinte per il precedente errore di confine parola.
+- Una voce sostituita o scartata non potrà più superare il checker con la sola motivazione o il solo riferimento PR/ADR/issue.
 
 ## Non verificato
 
-- La nuova Codex Review sul commit finale non è ancora disponibile.
+- La nuova Codex Review sul futuro SHA finale non è ancora disponibile.
 - Nessuna funzione runtime dell'app è stata modificata o verificata.
 - Build iOS, EAS e TestFlight non sono applicabili a questa PR documentale.
 
 ## Errori e warning
 
-- Rilievo P2 reale trovato e corretto.
-- Nessun errore nei controlli locali conclusivi.
+- Corretto un errore logico P1.
+- Corretto mediante rapporto successivo un errore cronologico P2.
+- Il rapporto storico con nome `093200` resta immutato per rispettare il protocollo di immutabilità.
 
 ## Problemi non risolti
 
-- Il thread P2 deve ricevere risposta ed essere risolto.
-- Serve una Codex Review pulita sul nuovo SHA finale prima dello squash merge.
+- I due thread devono ricevere risposta ed essere risolti.
+- Serve una review pulita sul nuovo SHA prima dello squash merge.
 
 ## Dipendenze o credenziali
 
@@ -112,12 +125,12 @@ Nessuna.
 
 ## Rischi tecnici
 
-- Il pattern accetta suffissi alfanumerici dopo gli stem italiani; resta intenzionalmente limitato alle famiglie di parole previste.
+- Il formato delle evidenze resta un contratto testuale; variazioni future richiederanno aggiornamento e test del checker.
 - La documentazione non equivale a implementazione runtime.
 
 ## Prossimo passo consigliato
 
-Pubblicare rapporto e `LATEST.md`, rispondere e risolvere il thread P2, richiedere Codex Review sullo SHA finale e fare squash merge soltanto dopo review pulita e controlli applicabili superati.
+Pubblicare rapporto e `LATEST.md`, rispondere e risolvere entrambi i thread, richiedere Codex Review sullo SHA finale e fare squash merge soltanto dopo review pulita.
 
 ## Decisioni richieste a Fabio
 
