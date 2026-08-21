@@ -1,101 +1,92 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_084755_esiti-finali-pr9.md`
+Rapporto storico: `docs/codex-reports/2026-08-21_093545_fix-expo-sdk54-testflight.md`
 
-# Esiti finali e stato pubblicato della PR #9
+# Ripristino Expo Doctor per TestFlight
 
 ## Dati dell'attività
 
-- **Data e ora UTC:** 2026-08-21 08:47:55 UTC
-- **Obiettivo:** correggere i due P1 della Codex Review sullo SHA `f7c189b9d1bd4ab60f71b8f76b5e3f26c471a527`, registrando gli esiti finali realmente ottenuti e aggiornando il cruscotto allo stato pubblicato.
-- **Stato finale:** parziale; correzioni e controlli completati, in attesa della nuova Codex Review.
-- **Ramo:** `codex/testflight-first-visible-build`
-- **Pull request:** [PR #9](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/9)
-- **Commit creati:** `f7c189b9d1bd4ab60f71b8f76b5e3f26c471a527` era lo SHA esaminato; lo SHA del commit che contiene questo rapporto è autoreferenziale e non disponibile prima della sua creazione.
+- **Data e ora UTC:** 2026-08-21 09:35:45 UTC
+- **Obiettivo:** correggere il mismatch Expo SDK 54 che ha bloccato la pipeline TestFlight dopo il merge della PR #9, senza disabilitare Expo Doctor.
+- **Stato:** in corso; dipendenze e lockfile corretti, verifica remota Expo Doctor ancora necessaria prima del merge.
+- **Branch:** `codex/fix-expo-sdk54-testflight`
+- **Base verificata:** `main` `1c66a29b24df20ce7bded3b514ce88e534077281`
+- **Run fallita esaminata:** [NEXO TestFlight 32465874331](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32465874331), job `96722214081`
 - **Costi:** nessuna spesa.
 
-## File creato
+## READ e PLAN realmente eseguiti
 
-- `docs/codex-reports/2026-08-21_084755_esiti-finali-pr9.md`
+- Letti integralmente Issue #11, `AGENTS.md`, `Fabio/FABIO_CONTROLLO.md`, workflow TestFlight, `frontend/package.json` e i log completi del job fallito.
+- Verificati `main`, PR aperte e lavoro NEXO 1 sulla PR #12. Il codice saved-places resta fuori perimetro; i file condivisi di reporting vengono serializzati.
+- Il log reale di Expo Doctor richiede `expo ~54.0.37` e `expo-constants ~18.0.14`; il repository conteneva rispettivamente `54.0.36` e `18.0.13`.
+- La run non ha raggiunto EAS Build, firma Apple o invio TestFlight.
 
 ## File modificati
 
+- `frontend/package.json`
+- `frontend/package-lock.json` (nuovo lockfile npm coerente con il workflow, che usa `npm install`)
+- `docs/codex-reports/2026-08-21_093545_fix-expo-sdk54-testflight.md`
 - `docs/codex-reports/LATEST.md`
 - `Fabio/FABIO_CONTROLLO.md`
 
-Nessun file è stato eliminato.
+Nessuna funzione NEXO, configurazione EAS/Apple, workflow, segreto o certificato è stato modificato.
 
-## Modifiche concrete
+## Modifica applicata
 
-- Registrati gli esiti finali dei controlli sul contenuto destinato al commit.
-- Aggiornato il cruscotto Fabio con data, SHA pubblicato e stato reale della review.
-- Il precedente rapporto storico resta immutato.
+- `expo`: da `54.0.36` a `~54.0.37`.
+- `expo-constants`: da `18.0.13` a `~18.0.14`.
+- Generato il lockfile npm e installate esattamente `expo 54.0.37` ed `expo-constants 18.0.14`.
 
-## Comandi, test ed esiti realmente eseguiti
+## Comandi ed esiti realmente ottenuti
 
-### 1. Integrità whitespace del diff finale
+### Matrice Expo SDK 54 finale
+
+```bash
+__UNSAFE_EXPO_HOME_DIRECTORY=/tmp/nexo-expo-home EXPO_NO_TELEMETRY=1 ./node_modules/.bin/expo install --check
+```
+
+- **Exit code:** `0`
+- **Output conclusivo:** `Dependencies are up to date`.
+
+### Installazione pulita dal lockfile
+
+```bash
+npm ci --cache=/tmp/nexo-npm-cache
+```
+
+- **Exit code:** `0`
+- **Risultato:** 936 package installati; nessun errore di installazione.
+
+### Versioni registrate nel lockfile
+
+```bash
+node -e "const l=require('./package-lock.json'); for (const p of ['node_modules/expo','node_modules/expo-constants']) console.log(p,l.packages[p].version)"
+```
+
+- **Exit code:** `0`
+- **Output:** `expo 54.0.37`; `expo-constants 18.0.14`.
+
+### Lint first-party equivalente al workflow
+
+```bash
+./node_modules/.bin/eslint app src
+```
+
+- **Exit code:** `0`
+- **Risultato:** zero errori; un warning preesistente per `Text` inutilizzato in `app/index.tsx`.
+
+### Integrità del diff
 
 ```bash
 git diff --check
 ```
 
-- **Exit code:** `0`
-- **Esito individuale:** superato; nessun errore di whitespace nel diff finale.
+- **Exit code:** `0`.
 
-### 2. Identità integrale del rapporto più recente
+## Limiti e verifiche ancora obbligatorie
 
-```bash
-cmp -s docs/codex-reports/2026-08-21_084755_esiti-finali-pr9.md docs/codex-reports/LATEST.md
-```
+- L'ambiente locale ha negato la rete richiesta da Expo Doctor prima dell'esecuzione; **Expo Doctor non viene dichiarato superato localmente**.
+- Prima del merge deve essere eseguito realmente su GitHub Actions sullo SHA finale e deve terminare con exit code `0`.
+- PR, SHA finale, Codex Review, merge e nuova run TestFlight verranno registrati quando esistono; non sono anticipati.
 
-- **Exit code:** `0`
-- **Esito individuale:** superato; `LATEST.md` è byte-per-byte identico al rapporto storico.
+## Prossimo passo
 
-### 3. Perimetro dei file modificati
-
-```bash
-test "$(git status --short | awk '{print $2}' | sort)" = "$(printf '%s\n' 'Fabio/FABIO_CONTROLLO.md' 'docs/codex-reports/2026-08-21_084755_esiti-finali-pr9.md' 'docs/codex-reports/LATEST.md' | sort)"
-```
-
-- **Exit code:** `0`
-- **Esito individuale:** superato; soltanto i tre percorsi dichiarati appartengono alla correzione.
-
-## Verificato realmente
-
-- La review Codex sullo SHA `f7c189b9d1` contiene due P1 documentali e nessun nuovo rilievo sul workflow TestFlight o sul codice di startup.
-- Il rapporto atomico precedente è già pubblicato nello SHA `f7c189b9d1bd4ab60f71b8f76b5e3f26c471a527`.
-- I tre controlli conclusivi sopra riportati sono stati eseguiti sul contenuto finale destinato al commit e hanno restituito exit code `0`.
-
-## Dedotto
-
-- Nessuna deduzione viene usata come sostituto della futura review o della build reale.
-
-## Non verificato
-
-- Esito della nuova Codex Review sul futuro SHA.
-- Build EAS e invio a TestFlight, non ancora avviati perché la PR non è unita.
-- Expo Doctor nell'ambiente locale, non completabile per i limiti di rete già documentati; resta previsto nel workflow GitHub.
-
-## Errori e warning
-
-- La review sullo SHA `f7c189b9d1` ha rilevato che il rapporto precedente lasciava gli esiti finali in sospeso e che il cruscotto descriveva ancora la pubblicazione come futura.
-- Warning lint preesistente: import `Text` inutilizzato in `frontend/app/index.tsx`; zero errori nel perimetro `app` e `src`.
-
-## Problemi non risolti
-
-- Ottenere una review pulita sul nuovo SHA.
-- Eseguire la pipeline EAS/TestFlight dopo il merge.
-
-## Dipendenze o credenziali
-
-La pipeline richiede `EXPO_TOKEN` e le credenziali Apple/EAS configurate esternamente. Nessun valore è stato letto o inserito nel repository.
-
-## Rischi tecnici
-
-- La prima esecuzione reale può fermarsi su Expo Doctor, autenticazione EAS o configurazione App Store Connect; l'esito non viene anticipato.
-
-## Prossimo passo consigliato
-
-Pubblicare atomicamente questi tre file, risolvere i due P1 e richiedere una nuova Codex Review. Eseguire squash merge soltanto con review pulita sullo SHA corrente, PR unibile e controlli applicabili superati.
-
-## Decisioni richieste a Fabio
-
-Nessuna in questa fase.
+Pubblicare la PR atomica, eseguire Expo Doctor in GitHub Actions senza avviare una build a pagamento, richiedere Codex Review e unire soltanto dopo entrambi gli esiti puliti. Dopo il merge, controllare il punto esatto raggiunto dalla nuova pipeline TestFlight.
