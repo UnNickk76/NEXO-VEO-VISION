@@ -1,43 +1,39 @@
 # Fabio Controllo
 
-> Cruscotto di sola consultazione. Il rapporto tecnico completo è in
-> `docs/codex-reports/LATEST.md`.
+> Cruscotto di sola consultazione. Il rapporto tecnico completo è in `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 21:49 UTC
-- **Attività:** NEXO 2 — primo contratto provider-neutral delle Surface NEXO.
-- **Stato:** PR #20 DRAFT; implementazione del core Surface completata nel perimetro assegnato e verificata con TypeScript strict + checker isolato. In attesa di review indipendente. Nessun merge autonomo.
+- **Attività:** NEXO 2 — Surface Capabilities Core / correzioni review PR #20.
+- **Stato:** 🔵 correzioni P1 applicate; PR #20 resta DRAFT e deve essere riconsegnata a NEXO REVIEW sul nuovo SHA.
 - **Branch:** `nexo2/f0-surface-capabilities`
-- **Pull request:** PR #20
 - **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`.
 
-## Cosa è stato modificato realmente
+## Correzioni effettuate
 
-- Creato `frontend/src/core/surface/` con tipi, profili, policy e API pubblica per `ios-phone`, `android-phone`, `carplay`, `android-auto`.
-- Le capability runtime devono essere dichiarate esplicitamente: non vengono dedotte dal nome della piattaforma.
-- In movimento il contratto limita free text, rich details e touch; i limiti automotive prevalgono sul ruolo Passenger.
-- Creato checker dedicato `frontend/scripts/check-surface-capabilities.ts`.
-- Registro concettuale aggiornato in modo conservativo: V05/V44/V45/V46 restano `[ ]` e diventano soltanto `parziale`.
-- Nessuna modifica a saved-places, voice core, Android build config, `app.json`, `eas.json`, workflow TestFlight o credenziali.
+- `resolveSurfaceCapability` preserva l'availability runtime anche quando la policy prodotto è `prohibited`; in quel caso `usable` resta `false`.
+- Il checker prova esplicitamente i casi `available + prohibited` e `degraded + prohibited` senza riscrivere availability.
+- V05/V44/V45/V46 restano `[ ]` / `parziale` e ora hanno evidenze riproducibili con PR #20, commit e checker/test.
+- Nessun requisito è stato marcato `[x]`.
 
-## Controlli
+## Commit correzione review
 
-- TypeScript strict + checker Surface: **PASS** (`surface-capabilities checks: PASS`).
-- Scansione import provider/platform-specific: **PASS**, nessun match.
-- Scansione token API Apple/Google/Map provider: **PASS**, nessun match.
-- Trailing whitespace sui file funzionali/checker: **PASS**, nessun match.
-- Verifica remota conceptual: V05/V44/V45/V46 = `[ ]` / `parziale`.
-- Checkout Git locale completo: **NON DISPONIBILE** per DNS del runtime shell (`Could not resolve host: github.com`); i test sono stati eseguiti sul modulo isolato ricostruito dai contenuti pubblicati sul branch.
-- Lint globale frontend: non eseguito e non dichiarato PASS.
+- `3541d2fda8f10929ffa253b2f35d833d424102f1` — fix policy/availability.
+- `a69af5635e591cbfa985bfb8c173b124cce1f85f` — checker ortogonalità rafforzato.
+- `f52e2f24882becb612439c24dc9fdc3fbf2541e8` — evidenze conceptual.
+- `17424dbab6be2963d1acf72ba822d643fe775ebb` — rapporto storico aggiornato.
+- `d388605230531f8dbe0c8d22bebd45eb9d298f39` — `LATEST.md` aggiornato.
 
-## Problemi e review
+## VERIFY
 
-- Nessun problema funzionale aperto individuato dal self-review.
-- Il contratto NON dimostra entitlement/runtime CarPlay o Android Auto e non contiene UI automotive reale.
-- PR #12, #17 e #18 sono concorrenti; nessuna sovrapposizione funzionale rilevata, ma i file di reporting/conceptual dovranno essere serializzati prima del merge.
-- PR #20 deve restare DRAFT fino a review CLEAN e decisione del Coordinatore.
+TypeScript strict + checker Surface ricostruito dai contenuti del branch: **PASS**, exit code 0, output `surface-capabilities checks: PASS`.
+
+Il checkout Git completo resta non disponibile nel runtime shell per DNS (`Could not resolve host: github.com`), quindi lint globale/repository checkout non sono dichiarati PASS.
+
+## Perimetro protetto
+
+Non toccati: location/saved places, voice, navigation, Android workflow, `app.json`, `eas.json`, TestFlight, credenziali, runtime/UI CarPlay o Android Auto reali.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. NEXO 2 consegna PR #20 a NEXO REVIEW sullo SHA finale. Il Coordinatore gestirà eventuale Ready/merge dopo review e riallineamento con la main corrente.
+Nulla. NEXO 2 completa il VERIFY remoto, aggiorna la Board e richiede nuova review indipendente di PR #20 sullo SHA finale. N2.2 partirà soltanto dopo la chiusura operativa di N2.1 secondo il Batch ufficiale.
