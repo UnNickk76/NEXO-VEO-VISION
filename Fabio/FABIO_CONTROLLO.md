@@ -5,51 +5,45 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 07:00 UTC
-- **Attività:** consolidamento completo del concetto di NEXO e registro permanente delle funzioni.
-- **Stato:** documento maestro creato e verificato; PR #10 aperta, nuova review da richiedere sullo SHA finale.
+- **Data:** 21 agosto 2026, 07:14 UTC
+- **Attività:** quadro concettuale completo di NEXO e correzione dei controlli permanenti.
+- **Stato:** i due nuovi P1 della review sono stati corretti; nuova review da richiedere.
 - **Ramo:** `codex/luoghi-salvati-concetto`
 - **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10)
-- **SHA verificato:** `01c144ae3e35c4f6a4a8147b300f315d49301d70`
-- **Commit principali dell'attività:** `8cfb0cf`, `119f6ef`, `0e64d5a`, `488bd74`, `646b0ba`, `294fa7e`, `01c144a`
+- **SHA del controllo corretto:** `d7a78835d7fde68a395f4a5d590eb35f92c6278f`
+- **Commit principali:** `488bd74`, `646b0ba`, `294fa7e`, `01c144a`, `2326e58`, `443fa60`, `1566537`, `d7a7883`
 - **Priorità runtime invariata:** prima build visibile su TestFlight tramite PR #9.
 - **Costi:** nessuna spesa.
 
 ## Cosa è stato fatto realmente
 
 - Creato `docs/product/NEXO_CONCEPTUAL_MASTER.md`.
-- Indicizzati 51 requisiti Vision, 47 espansioni e 31 sezioni UX/UI.
-- Aggiunte 6 capacità permanenti per Casa, Lavoro e luoghi salvati.
-- Tutte le funzioni sono ancora non spuntate perché non sono implementate e verificate.
-- Aggiunta in `AGENTS.md` la regola che vieta di eliminare le funzioni completate.
-- Una funzione potrà essere spuntata solo con PR, commit e test registrati.
-- Aggiornato il README con collegamenti chiari ai documenti principali.
-- Creato lo script `scripts/check_conceptual_master.py`.
+- Indicizzati 51 requisiti Vision, 47 espansioni, 31 sezioni UX/UI e 6 capacità trasversali.
+- Aggiunte Casa, Lavoro e luoghi salvati al concetto ufficiale.
+- Nessuna funzione è spuntata perché non è ancora implementata e verificata.
+- Le funzioni completate non verranno mai cancellate: resteranno `[x]` con PR, commit e test.
+- Corretto `scripts/check_conceptual_master.py`: ora verifica gli insiemi esatti degli ID stabili.
+- Lo script accetta future spunte valide e rifiuta solo quelle senza stato `implementata`, PR, SHA e test.
 
 ## Controlli
 
 ### Superati
 
-- `python3 scripts/check_conceptual_master.py .`: exit `0`.
-- 51 ID Vision univoci.
-- 47 ID espansione univoci.
-- 31 ID UX/UI univoci.
-- 6 ID trasversali univoci.
-- Nessuna funzione falsamente marcata come completata.
-- Coerenza di Vision, UX/UI, Roadmap, AGENTS e README verificata.
+- `python3 fix-pr10/check_conceptual_master.py verify-conceptual`: exit `0`.
+- ID esatti: V01–V51, E01–E47, U01–U31 e C001–C006.
+- Validazione delle evidenze per le future righe `[x]`.
+- Coerenza di Vision, UX/UI, Roadmap, AGENTS e README.
 
-### Review aperta
+### Review
 
-- La prima review PR #10 ha segnalato due P1 documentali:
-  1. rapporto precedente con comandi abbreviati;
-  2. commit mancanti nel vecchio cruscotto.
-- Il cruscotto ora contiene SHA e commit.
-- Il nuovo rapporto usa lo script versionato e il comando esatto realmente eseguito.
-- I thread saranno risolti solo dopo pubblicazione della correzione.
+- I primi due P1 documentali sono chiusi.
+- La review sullo SHA `1566537` ha trovato due P1 nello script.
+- Entrambi sono corretti nel commit `d7a7883`.
+- La PR non viene unita finché la nuova review sullo SHA finale non è pulita.
 
 ### Non eseguiti
 
-- UI, database, geocoding, funzioni runtime, lint applicativo, build e TestFlight: questa attività è documentale.
+- UI, database, geocoding, funzioni runtime, build e TestFlight: questa PR è documentale.
 
 ## Cosa deve fare Fabio adesso
 
