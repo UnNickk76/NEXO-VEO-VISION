@@ -5,35 +5,39 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 19:45 UTC
-- **Attività:** test diagnostico EAS con Xcode 16.4.
-- **Stato:** PR #16 DRAFT; modifica repository minima applicata e verificata staticamente; in attesa di review NEXO REVIEW. Nessun merge e nessuna nuova pipeline TestFlight avviati.
-- **Branch:** `nexo-codex/diagnostic-xcode-16-4-testflight`
-- **Pull request:** PR #16
-- **Base:** `main` `d3170fd874461c3734954f8f2d208350599673ca`.
+- **Data:** 21 agosto 2026, 21:49 UTC
+- **Attività:** NEXO 2 — primo contratto provider-neutral delle Surface NEXO.
+- **Stato:** PR #20 DRAFT; implementazione del core Surface completata nel perimetro assegnato e verificata con TypeScript strict + checker isolato. In attesa di review indipendente. Nessun merge autonomo.
+- **Branch:** `nexo2/f0-surface-capabilities`
+- **Pull request:** PR #20
+- **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`.
 
 ## Cosa è stato modificato realmente
 
-- `frontend/eas.json`: aggiunto esclusivamente `build.production.ios.image = "macos-sequoia-15.6-xcode-16.4"`.
-- `autoIncrement` preservato.
-- `submit.production.ios.ascAppId = "6803879211"` preservato.
-- `submit.production.ios.appleTeamId = "853F5S8843"` preservato.
-- Nessuna modifica ad `app.json`, workflow TestFlight, dipendenze, codice o credenziali.
+- Creato `frontend/src/core/surface/` con tipi, profili, policy e API pubblica per `ios-phone`, `android-phone`, `carplay`, `android-auto`.
+- Le capability runtime devono essere dichiarate esplicitamente: non vengono dedotte dal nome della piattaforma.
+- In movimento il contratto limita free text, rich details e touch; i limiti automotive prevalgono sul ruolo Passenger.
+- Creato checker dedicato `frontend/scripts/check-surface-capabilities.ts`.
+- Registro concettuale aggiornato in modo conservativo: V05/V44/V45/V46 restano `[ ]` e diventano soltanto `parziale`.
+- Nessuna modifica a saved-places, voice core, Android build config, `app.json`, `eas.json`, workflow TestFlight o credenziali.
 
 ## Controlli
 
-- Percorso EAS `build.production.ios.image`: supportato dalla documentazione Expo corrente.
-- Immagine `macos-sequoia-15.6-xcode-16.4`: supportata e raccomandata per SDK 54 se non si vuole usare Xcode 26.
-- JSON e valori invarianti verificati staticamente: PASS.
-- Nessuna nuova EAS Build/TestFlight eseguita in questa attività.
+- TypeScript strict + checker Surface: **PASS** (`surface-capabilities checks: PASS`).
+- Scansione import provider/platform-specific: **PASS**, nessun match.
+- Scansione token API Apple/Google/Map provider: **PASS**, nessun match.
+- Trailing whitespace sui file funzionali/checker: **PASS**, nessun match.
+- Verifica remota conceptual: V05/V44/V45/V46 = `[ ]` / `parziale`.
+- Checkout Git locale completo: **NON DISPONIBILE** per DNS del runtime shell (`Could not resolve host: github.com`); i test sono stati eseguiti sul modulo isolato ricostruito dai contenuti pubblicati sul branch.
+- Lint globale frontend: non eseguito e non dichiarato PASS.
 
 ## Problemi e review
 
-- Il cambio immagine è solo diagnostico: non dimostra ancora che il problema di importazione del Distribution Certificate dipenda da Xcode 26.
-- Dopo review CLEAN e merge autorizzato, la pipeline dovrà mostrare realmente Xcode 16.4 e verificare Prepare credentials.
-- Se ricompare lo stesso identico errore del certificato, nessun altro workaround repository: stato BLOCKED e pista Xcode 26 esclusa come spiegazione.
-- PR #12 resta concorrente soltanto sui file di reporting e dovrà essere riallineata/serializzata prima di un proprio merge.
+- Nessun problema funzionale aperto individuato dal self-review.
+- Il contratto NON dimostra entitlement/runtime CarPlay o Android Auto e non contiene UI automotive reale.
+- PR #12, #17 e #18 sono concorrenti; nessuna sovrapposizione funzionale rilevata, ma i file di reporting/conceptual dovranno essere serializzati prima del merge.
+- PR #20 deve restare DRAFT fino a review CLEAN e decisione del Coordinatore.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla durante la review. NEXO CODEX passa PR #16 a NEXO REVIEW sullo SHA finale esatto. Merge vietato fino a verdetto CLEAN.
+Nulla. NEXO 2 consegna PR #20 a NEXO REVIEW sullo SHA finale. Il Coordinatore gestirà eventuale Ready/merge dopo review e riallineamento con la main corrente.

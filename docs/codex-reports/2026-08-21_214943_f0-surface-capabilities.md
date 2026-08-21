@@ -1,7 +1,3 @@
-# Rapporto più recente
-
-Percorso: `docs/codex-reports/2026-08-21_214943_f0-surface-capabilities.md`
-
 # NEXO 2 — F0 Surface Capabilities provider-neutral
 
 - **Data/ora UTC:** 2026-08-21 21:49:43 UTC
