@@ -2,10 +2,30 @@ name: NEXO TestFlight
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/testflight.yml"
+      - "frontend/app.json"
+      - "frontend/eas.json"
+      - "frontend/package.json"
+      - "frontend/package-lock.json"
+      - "frontend/app/**"
+      - "frontend/src/**"
+      - "frontend/assets/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexo-testflight-production
+  cancel-in-progress: false
 
 jobs:
-  build-ios:
+  build-and-submit-ios:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
 
     defaults:
       run:
@@ -20,8 +40,23 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies and generate lockfile
+      - name: Install dependencies
         run: npm install
+
+      - name: Expo Doctor
+        run: npx expo-doctor
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Verify Expo token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::error::GitHub secret EXPO_TOKEN is missing."
+            exit 1
+          fi
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -29,5 +64,5 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Build iOS production
-        run: eas build --platform ios --profile production --non-interactive
+      - name: Build iOS production and submit to TestFlight
+        run: eas build --platform ios --profile production --non-interactive --wait --auto-submit
