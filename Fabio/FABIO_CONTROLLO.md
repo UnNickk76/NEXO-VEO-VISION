@@ -5,35 +5,34 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 19:45 UTC
-- **Attività:** test diagnostico EAS con Xcode 16.4.
-- **Stato:** PR #16 DRAFT; modifica repository minima applicata e verificata staticamente; in attesa di review NEXO REVIEW. Nessun merge e nessuna nuova pipeline TestFlight avviati.
-- **Branch:** `nexo-codex/diagnostic-xcode-16-4-testflight`
-- **Pull request:** PR #16
-- **Base:** `main` `d3170fd874461c3734954f8f2d208350599673ca`.
+- **Data:** 21 agosto 2026, 20:46 UTC
+- **Attività:** NEXO 1 — riallineamento PR #12 Saved Places core.
+- **Stato:** core riallineato alla main corrente, testato e riportato; PR #12 deve restare DRAFT e passare NEXO REVIEW prima di qualsiasi merge.
+- **Branch:** `nexo1/f1-saved-places-core`
+- **Pull request:** PR #12
+- **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`
 
-## Cosa è stato modificato realmente
+## Cosa è stato fatto realmente
 
-- `frontend/eas.json`: aggiunto esclusivamente `build.production.ios.image = "macos-sequoia-15.6-xcode-16.4"`.
-- `autoIncrement` preservato.
-- `submit.production.ios.ascAppId = "6803879211"` preservato.
-- `submit.production.ios.appleTeamId = "853F5S8843"` preservato.
-- Nessuna modifica ad `app.json`, workflow TestFlight, dipendenze, codice o credenziali.
+- Salvato il vecchio head PR #12 in `backup/nexo1-pr12-before-realign-20260821`.
+- Preservato il core locale Casa/Lavoro/preferiti e il checker dedicato.
+- Riallineato il lavoro sulla main corrente senza incorporare vecchi reporting ormai superati.
+- C001/C002/C005 restano `[ ]` e `parziale`; C003 resta `concettuale`.
+- Nessuna modifica a iOS/EAS/TestFlight, credenziali, `app.json`, `eas.json`, workflow, voice core, surface contracts o Android build config.
 
 ## Controlli
 
-- Percorso EAS `build.production.ios.image`: supportato dalla documentazione Expo corrente.
-- Immagine `macos-sequoia-15.6-xcode-16.4`: supportata e raccomandata per SDK 54 se non si vuole usare Xcode 26.
-- JSON e valori invarianti verificati staticamente: PASS.
-- Nessuna nuova EAS Build/TestFlight eseguita in questa attività.
+- TypeScript strict del core: **PASS**, exit `0`.
+- `node scripts/check-saved-places.mjs`: **PASS**, exit `0`, output `saved-places checks: PASS`.
+- Clone GitHub nell'ambiente shell: **NON DISPONIBILE**, errore `Could not resolve host: github.com`; i test sono stati eseguiti su file ricostruiti dai contenuti letti direttamente via connettore GitHub.
+- Test UI/device: **non eseguito**, fuori perimetro perché il core non è ancora integrato nella UI.
 
-## Problemi e review
+## Problemi / residui
 
-- Il cambio immagine è solo diagnostico: non dimostra ancora che il problema di importazione del Distribution Certificate dipenda da Xcode 26.
-- Dopo review CLEAN e merge autorizzato, la pipeline dovrà mostrare realmente Xcode 16.4 e verificare Prepare credentials.
-- Se ricompare lo stesso identico errore del certificato, nessun altro workaround repository: stato BLOCKED e pista Xcode 26 esclusa come spiegazione.
-- PR #12 resta concorrente soltanto sui file di reporting e dovrà essere riallineata/serializzata prima di un proprio merge.
+- UI, map/search/voice/routing restano lavori separati.
+- Il wrapper storage condiviso non distingue miss da errore read quando restituisce il fallback; nessuna modifica fatta in questo task.
+- Merge vietato finché NEXO REVIEW non restituisce CLEAN e il Coordinatore non autorizza il passo successivo.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla durante la review. NEXO CODEX passa PR #16 a NEXO REVIEW sullo SHA finale esatto. Merge vietato fino a verdetto CLEAN.
+Nulla. NEXO 1 consegna PR #12 a NEXO REVIEW sul nuovo SHA finale; nessun intervento manuale richiesto in questa fase.
