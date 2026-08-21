@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_093545_fix-expo-sdk54-testflight.md`
-
 # Ripristino Expo Doctor per TestFlight
 
 ## Dati dell'attività
