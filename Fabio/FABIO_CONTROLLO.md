@@ -5,38 +5,56 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 04:46 UTC
+- **Data:** 21 agosto 2026, 05:30 UTC
 - **Obiettivo attuale:** vedere NEXO VEO VISION su iPhone tramite TestFlight.
-- **Stato:** correzione della pipeline preparata; pull request e review in corso.
+- **Stato:** PR #9 corretta dopo la prima review; nuova review sul commit aggiornato da richiedere.
 - **Ramo:** `codex/testflight-first-visible-build`
+- **Pull request:** [PR #9](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/9), aperta e unibile prima delle ultime correzioni.
+- **Ultimo commit di codice/workflow:** `f414bd14ccfa567dfdc2eedb5598cb79b2d7445d`
 - **PC di Fabio:** non serve che rimanga acceso per build e controlli cloud.
 - **Costi:** nessuna spesa autorizzata.
 
-## Cosa è stato fatto
+## Cosa è stato modificato realmente
 
-- Verificato che l'app ha già una schermata iniziale avviabile e gli asset necessari.
-- Individuato il difetto principale: il vecchio workflow creava la build ma non la inviava a TestFlight.
-- Preparata l'esecuzione automatica dopo il merge con build EAS e `--auto-submit`.
-- Aggiunti Expo Doctor, lint e controllo esplicito del token Expo.
-- Rimossa la soppressione totale degli errori runtime, così un problema iniziale resta diagnosticabile.
-- Resa più sicura la gestione dello splash screen.
+- Il workflow adesso copre qualunque modifica sotto `frontend/**`, inclusa la configurazione Metro.
+- La pipeline eseguirà Expo Doctor, lint, build EAS e invio automatico a TestFlight.
+- `EXPO_TOKEN` viene controllato prima di avviare EAS.
+- Gli errori runtime non vengono più nascosti globalmente.
+- Le Promise dello splash screen sono gestite senza bloccare l'avvio.
+- Rapporto e cruscotto riportano controlli ed esiti reali.
 
-## Cosa succede dopo
+## Controlli di questa attività
 
-1. Viene aperta la pull request.
-2. Codex Review controlla le modifiche.
-3. Se la review è pulita, la pull request viene unita automaticamente come autorizzato da Fabio.
-4. Il merge avvia GitHub Actions.
-5. EAS prova a costruire l'app e a inviarla a TestFlight.
+### Superati
 
-## Possibili blocchi
+- Parsing YAML con PyYAML 6.0.3: exit `0`, un job riconosciuto.
+- Assertion statiche del workflow: exit `0`; superati trigger manuale, push su main, `frontend/**`, permessi read-only, Doctor, lint, controllo token, auto-submit e concorrenza.
+- Assertion statiche startup: exit `0`; LogBox globale rimosso, Promise splash gestite e fallback font presente.
+- Scansione euristica di chiavi private: exit `0`, nessuna corrispondenza.
 
-- `EXPO_TOKEN` mancante o non valido.
-- Credenziali Apple/App Store Connect non ancora collegate in EAS.
-- App Store Connect richiede il valore numerico `ascAppId`.
-- Expo Doctor o lint rilevano un errore.
-- Piano EAS senza build disponibile: non verrà autorizzata alcuna spesa automaticamente.
+### Falliti e corretti
+
+- Parsing iniziale con Ruby: non eseguibile, `ruby: command not found`, exit `127`. Sostituito dal controllo PyYAML superato.
+- Prima Codex Review sul commit `538df86343`: due P1 e un P2. Tutti e tre sono stati corretti; serve conferma con nuova review.
+
+### Non ancora eseguiti
+
+- `npm install`
+- `npx expo-doctor`
+- `npm run lint`
+- build EAS iOS
+- submission App Store Connect/TestFlight
+
+Questi controlli verranno eseguiti dalla pipeline soltanto dopo il merge.
+
+## Problemi possibili ancora aperti
+
+- La nuova Codex Review potrebbe trovare altri rilievi.
+- `EXPO_TOKEN` potrebbe mancare o essere scaduto.
+- EAS potrebbe richiedere credenziali Apple/App Store Connect o il valore numerico `ascAppId`.
+- Il repository non ha ancora un lockfile npm.
+- Nessuna spesa EAS verrà accettata automaticamente.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. Attendere qui l'esito della review e della prima pipeline. Verrà chiesto un intervento soltanto se Apple/EAS richiede un dato o un'autorizzazione che non può essere dedotta.
+Nulla. Dopo una review pulita la PR verrà unita automaticamente; il merge avvierà la prima pipeline build+submit. Fabio verrà coinvolto soltanto se Apple/EAS indica un singolo dato o intervento manuale indispensabile.
