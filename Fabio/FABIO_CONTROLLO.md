@@ -10,6 +10,7 @@
 - **Branch:** `nexo1/f1-saved-places-core`
 - **Pull request:** PR #12
 - **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`
+- **Commit funzionali creati:** `9c25cdf856d88a6abdd7de39773aa7963590cad0`, `8988aad4e70d6081dec12e4454c37c983c01e03d`; commit documentale finale registrato come `HEAD` nel rapporto e con SHA esatto sulla Board.
 
 ## Cosa è stato fatto realmente
 - Vecchio head salvato in `backup/nexo1-pr12-before-realign-20260821`.
@@ -23,13 +24,15 @@
 - TypeScript strict post-correzione: **PASS**, exit `0`.
 - `node scripts/check-saved-places.mjs`: **PASS**, exit `0`, output `saved-places checks: PASS`.
 - Checker copre concorrenza Home/Work, stale confirmation, read failure senza perdita dati, CRUD/reorder e write failure.
+- Diff/perimetro verificato via GitHub connector: branch riallineato, nessun file iOS/EAS/TestFlight nel diff.
 - Clone GitHub nell'ambiente shell: **NON DISPONIBILE** (`Could not resolve host: github.com`).
-- Validatore globale concettuale: **NON ESEGUITO** per assenza di checkout completo e clone di rete non disponibile; non dichiarato PASS.
+- Validatore globale concettuale: **NON ESEGUITO** perché la sessione non dispone di checkout completo e il clone di rete non è disponibile; non dichiarato PASS.
 - Test UI/device: **non eseguito**, fuori perimetro.
 
 ## Problemi / residui
 - UI, map/search/voice/routing restano separati.
-- PR #12 deve ottenere verdetto CLEAN da NEXO REVIEW sullo SHA finale.
+- Il vecchio rilievo sul validatore concettuale resta noto e non viene nascosto; NEXO REVIEW deve valutarlo sullo SHA finale.
+- PR #12 deve ottenere verdetto CLEAN da NEXO REVIEW.
 - Merge vietato finché il Coordinatore non autorizza il passo successivo.
 
 ## Cosa deve fare Fabio adesso
