@@ -5,37 +5,40 @@
 
 ## Stato semplice
 
-- **Data:** 21 agosto 2026, 11:55 UTC
-- **Attività:** correzione dei rilievi NEXO REVIEW sulla PR #14 relativa al blocco `ascAppId` di TestFlight run #12.
-- **Stato:** PR #14 esiste, è aperta e in correzione documentale; il valore `ascAppId` resta invariato e confermato da App Store Connect; nessun merge eseguito da NEXO CODEX.
-- **Branch:** `nexo-codex/fix-ascappid-testflight-run12`
-- **Pull request:** PR #14
-- **Base:** `main` `a123a3c5e5d22a757eac9dda9dd20e44e3362f17`.
-- **Costi:** nessuna build o submit aggiuntivi avviati da questa attività.
+- **Data:** 21 agosto 2026, 14:00 UTC
+- **Attività:** correzione repository del blocco Apple Team ID emerso nella TestFlight run #13.
+- **Stato:** PR #15 creata come DRAFT; fix applicato e verificato staticamente; in attesa di review indipendente NEXO REVIEW. Nessun merge e nessuna nuova pipeline TestFlight avviati.
+- **Branch:** `nexo-codex/fix-apple-team-id-testflight-run13`
+- **Pull request:** PR #15
+- **Base:** `main` `2679343a9e0766097cbc89263ecccca9861b97e7`.
 
-## Cosa è stato fatto realmente
+## Cosa è stato modificato realmente
 
-- Verificato che `frontend/eas.json` contenga `submit.production.ios.ascAppId = "6803879211"`.
-- Il Coordinatore/proprietario ha confermato direttamente da App Store Connect → NEXO VEO VISION → Informazioni sull'App: Apple ID `6803879211`, Bundle ID `com.fabioandreola.nexoveovision`.
-- Il valore `ascAppId` non è stato modificato durante la correzione della review.
-- Riallineato il rapporto tecnico per registrare PR #14 e tutti i quattro commit già presenti nello SHA revisionato da NEXO REVIEW.
-- Nessuna modifica al workflow TestFlight, al codice NEXO, a package/lock o alle aree funzionali degli altri agenti.
+- `frontend/app.json`: aggiunto `expo.ios.appleTeamId = "853F5S8843"`.
+- `frontend/eas.json`: mantenuto `submit.production.ios.ascAppId = "6803879211"` e aggiunto `submit.production.ios.appleTeamId = "853F5S8843"`.
+- Bundle identifier invariato: `com.fabioandreola.nexoveovision`.
+- Nessun `build.production.ios.appleTeamId`.
+- `.github/workflows/testflight.yml` non modificato.
+- Nessuna credenziale Apple/EAS modificata, cancellata o rigenerata.
 
 ## Controlli
 
-- `eas.json` era già stato validato come JSON: exit `0`.
-- Assertion `ascAppId == "6803879211"`: exit `0`.
-- Assertion bundle identifier `com.fabioandreola.nexoveovision`: exit `0`.
-- Review indipendente 4992945074: P1 sulla provenienza del valore e P2 sul reporting; entrambi indirizzati documentalmente senza cambiare il fix funzionale.
-- Expo Doctor/lint non rilanciati perché questa correzione tocca solo reporting; EAS Build/EAS Submit non avviati.
+- `frontend/app.json` JSON valido: PASS.
+- `frontend/eas.json` JSON valido: PASS.
+- Assertion Team ID in app config: PASS.
+- Assertion bundle identifier invariato: PASS.
+- Assertion `ascAppId` invariato: PASS.
+- Assertion Team ID nel submit profile: PASS.
+- Assertion assenza Team ID sotto `build.production`: PASS.
+- Diff funzionale prima del reporting: esclusivamente `frontend/app.json` e `frontend/eas.json`.
+- TestFlight run #13 già verificata: Expo Doctor 18/18 PASS; lint 0 errori e 1 warning preesistente; blocco reale sul prompt non-interattivo Apple Team ID.
 
 ## Problemi e review
 
-- PR #14 deve essere nuovamente revisionata da NEXO REVIEW sul nuovo SHA.
-- Il diff funzionale `frontend/eas.json` deve restare identico a quello già revisionato.
-- PR #12 di NEXO 1 condivide i file di reporting e dovrà riallinearli/serializzarli prima del proprio merge; non condivide `frontend/eas.json`.
-- TestFlight non viene dichiarato funzionante finché una nuova pipeline su `main` non verifica realmente Expo Doctor, lint, EAS Build, EAS Submit e ricezione della build.
+- Il fix repository non dimostra ancora che TestFlight funzioni: serve review CLEAN, merge autorizzato e nuova pipeline reale.
+- Se la nuova pipeline mostra ancora `Failed to display prompt: Apple Team ID:`, il repository non va ulteriormente modificato in modo speculativo: il blocco va trattato come associazione remota credenziale EAS.
+- PR #12 resta concorrente sui soli file di reporting e dovrà essere riallineata/serializzata prima del proprio merge.
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. NEXO CODEX passa nuovamente PR #14 a NEXO REVIEW tramite Coordination Board #11. Nessun merge e nessun avvio manuale TestFlight vengono eseguiti da NEXO CODEX.
+Nulla durante la review. NEXO CODEX passa PR #15 a NEXO REVIEW sullo SHA finale esatto. Solo dopo verdetto CLEAN il Coordinatore potrà autorizzare Ready/merge e la successiva pipeline TestFlight.
