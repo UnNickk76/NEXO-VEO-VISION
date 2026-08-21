@@ -71,13 +71,42 @@ for prefix, expected_set in expected.items():
     print(f"PASS {prefix}: exact stable ID set ({len(expected_set)} rows)")
 
 checked_count = 0
+allowed_states = {
+    "concettuale",
+    "in corso",
+    "parziale",
+    "implementata",
+    "rinviata",
+    "sostituita",
+    "scartata",
+}
 for feature_id, row in rows.items():
+    state = row["state"].lower()
+    evidence = row["evidence"]
+    if state not in allowed_states:
+        raise SystemExit(f"FAIL row {feature_id}: invalid state {row['state']!r}")
+    if state in {"sostituita", "scartata"}:
+        if evidence in {"", "—", "-"}:
+            raise SystemExit(
+                f"FAIL row {feature_id}: {state} requires motivation/evidence"
+            )
+        if not re.search(
+            r"\b(motiv|decision|adr|issue|pr\s*#\d+)\b",
+            evidence,
+            re.IGNORECASE,
+        ):
+            raise SystemExit(
+                f"FAIL row {feature_id}: {state} evidence must reference a motivation or decision"
+            )
     if not row["checked"]:
+        if state == "implementata":
+            raise SystemExit(
+                f"FAIL row {feature_id}: implementata state requires [x]"
+            )
         continue
     checked_count += 1
-    evidence = row["evidence"]
     failures = []
-    if row["state"].lower() != "implementata":
+    if state != "implementata":
         failures.append("state must be implementata")
     if evidence in {"", "—", "-"}:
         failures.append("evidence is empty")
