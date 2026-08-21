@@ -7,8 +7,9 @@
 
 - **Data:** 21 agosto 2026, 09:35 UTC
 - **Attività:** sblocco di Expo Doctor per riavviare la prima pipeline TestFlight.
-- **Stato:** dipendenze e lockfile corretti sul branch; PR, review e merge non ancora eseguiti.
+- **Stato:** PR #13 aperta; Expo Doctor e lint remoti superati; in attesa della Codex Review sul nuovo SHA prima del merge.
 - **Branch:** `codex/fix-expo-sdk54-testflight`
+- **Pull request:** [PR #13](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/13)
 - **Costi:** nessuna spesa.
 
 ## Cosa è stato fatto realmente
@@ -23,8 +24,10 @@
 - `expo install --check`: superato, dipendenze aggiornate.
 - `npm ci`: superato.
 - Lint `app` e `src`: superato con zero errori e un warning preesistente.
-- Expo Doctor locale: non dichiarato superato perché la rete richiesta è bloccata dall'ambiente locale.
-- Expo Doctor remoto, Codex Review, merge e nuova pipeline TestFlight: ancora da eseguire.
+- Expo Doctor remoto: superato nella [run #8](https://github.com/UnNickk76/NEXO-VEO-VISION/actions/runs/32470136178), `18/18 checks passed`.
+- Lint remoto: superato, zero errori e un warning preesistente.
+- Il ramo di verifica si è fermato prima di EAS Build: nessuna spesa e nessun invio TestFlight avviato.
+- Codex Review sul nuovo SHA, merge e nuova pipeline TestFlight su `main`: ancora da concludere.
 
 ## Isolamento
 
@@ -33,4 +36,4 @@
 
 ## Cosa deve fare Fabio adesso
 
-Nulla. Il prossimo passaggio è una verifica Expo Doctor reale su GitHub Actions senza avviare spese. Se emergerà un blocco Apple/Expo, qui verrà indicato un solo gesto manuale preciso.
+Nulla. Il prossimo passaggio è la Codex Review sul nuovo SHA della PR #13. Se sarà pulita, seguiranno merge e pipeline TestFlight; un eventuale blocco Apple/Expo verrà tradotto qui in un solo gesto manuale preciso.
