@@ -17,20 +17,11 @@ export function resolveSurfaceCapability(
   const policy = contract.policy[capability];
   const reportedAvailability = context.availability[capability];
 
-  if (policy === "prohibited") {
-    return {
-      capability,
-      policy,
-      availability: "unsupported",
-      usable: false,
-    };
-  }
-
   return {
     capability,
     policy,
     availability: reportedAvailability,
-    usable: runtimeUsable(reportedAvailability),
+    usable: policy !== "prohibited" && runtimeUsable(reportedAvailability),
   };
 }
 
