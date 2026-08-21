@@ -1,88 +1,78 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_070045_quadro-concettuale-maestro.md`
+Rapporto storico: `docs/codex-reports/2026-08-21_071443_correzione-controlli-concettuali.md`
 
-# Quadro concettuale maestro e registro permanente delle funzioni
+# Correzione dei controlli permanenti del quadro concettuale
 
 ## Dati dell'attività
 
-- **Data e ora UTC:** 2026-08-21 07:00:45 UTC
-- **Obiettivo richiesto:** produrre un quadro completo del concetto di NEXO VEO VISION e creare un registro permanente in cui le funzioni implementate vengano spuntate senza cancellare le voci.
-- **Stato finale:** completato sul ramo; in attesa di nuova Codex Review.
-- **Ramo utilizzato:** `codex/luoghi-salvati-concetto`
+- **Data e ora UTC:** 2026-08-21 07:14:43 UTC
+- **Obiettivo:** verificare la nuova Codex Review della PR #10 e correggere i rilievi reali prima del merge.
+- **Stato finale:** completato sul ramo; nuova review ancora da richiedere.
+- **Ramo:** `codex/luoghi-salvati-concetto`
 - **Pull request:** [PR #10](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/10)
-- **Commit creati nell'intera attività PR #10:** `8cfb0cfc29c925d95ea2b328da52c9f4c8141e3b`, `119f6ef2f78a41e73968cbe56eb2568ef721599a`, `0e64d5a60b57ed472e9df913ba557c3c1210fff9`, `34ab5edf4b1fd5f5b2ad16b51675cd3928342e67`, `915550736f2ed7a5e04e21d10f25894ac0f491ca`, `9ca5d7305588a6dbe02caea6f054ce03096aec02`, `6b1eea32fb183daf5d845badbc36fc453fec98af`, `488bd745871472afe731d0783c4ace07845505e4`, `646b0bae7fd4f5d78ebb0632e519752e898043b5`, `294fa7e154464921ee7c42d36eb8bdfd651e4703`, `01c144ae3e35c4f6a4a8147b300f315d49301d70`, `2326e58c91a1501f2938db0a38d1784f0268cb54`. Il commit che contiene questo rapporto e la successiva sincronizzazione di `LATEST.md` non sono conoscibili dal contenuto prima della loro creazione.
+- **SHA revisionato da Codex:** `1566537ac6c71559efd9fd8207c8002d873bd5be`
+- **Commit creati prima di questo rapporto:** `d7a78835d7fde68a395f4a5d590eb35f92c6278f`, `ebe0b2b2dd640319a3367169b105a34ea06ff516`
 - **Costi:** nessuna spesa.
 
-## File creati
+## File modificati
 
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md`
 - `scripts/check_conceptual_master.py`
-- `docs/codex-reports/2026-08-21_070045_quadro-concettuale-maestro.md`
-
-## File modificati nell'attività PR #10
-
-- `memory/NEXO_VEO_VISION.md`
-- `NEXO_VEO_VISION_UX_UI.txt`
-- `NEXO_VEO_VISION_ROADMAP.txt`
-- `AGENTS.md`
-- `README.md`
 - `Fabio/FABIO_CONTROLLO.md`
 - `docs/codex-reports/LATEST.md`
 
+## File creato
+
+- `docs/codex-reports/2026-08-21_071443_correzione-controlli-concettuali.md`
+
+## Rilievi della review
+
+1. **P1 — spunte:** lo script rifiutava ogni `[x]`, anche quando accompagnato da implementazione ed evidenze valide.
+2. **P1 — ID:** lo script verificava soltanto quantità e unicità, quindi una rinumerazione poteva sostituire una voce senza cambiare il conteggio.
+
 ## Modifiche concrete
 
-- Creato un documento maestro leggibile che riassume identità, navigazione, voce, strada viva, community, AI, personalizzazione, viaggio, sicurezza, superfici, privacy e architettura.
-- Creato un registro con ID stabili per 51 punti Vision, 47 punti di espansione, 31 sezioni UX/UI e 6 nuove capacità trasversali.
-- Tutte le caselle sono inizialmente vuote: la documentazione non viene confusa con implementazione runtime.
-- Definito un protocollo permanente: la voce non si elimina; viene spuntata soltanto con codice, test e riferimenti a PR/commit.
-- Stati rinviati, sostituiti o scartati rimangono visibili con motivazione.
-- Aggiunta la regola permanente in `AGENTS.md`.
-- Reso il master facilmente raggiungibile dal README.
-- Aggiunto un controllo automatico standard-library.
+- Gli ID vengono confrontati con gli insiemi esatti `V01–V51`, `E01–E47`, `U01–U31` e `C001–C006`.
+- Una riga `[x]` è accettata soltanto se:
+  - lo stato è `implementata`;
+  - l'evidenza non è vuota;
+  - contiene un riferimento `PR #numero`;
+  - contiene uno SHA Git valido da 7 a 40 caratteri;
+  - contiene un riferimento riconoscibile ai test.
+- Una riga incompleta fallisce indicando ID e prove mancanti.
+- Il cruscotto Fabio registra review, correzioni, SHA e prossimo passo.
 
-## Correzione dei P1 della prima review PR #10
+## Operazioni realmente eseguite
 
-1. Il cruscotto ora contiene SHA verificato e commit principali.
-2. Il vecchio rapporto resta immutabile; questo nuovo rapporto sostituisce le descrizioni abbreviate con uno script versionato e una singola invocazione esatta riproducibile.
-3. Lo script contiene integralmente input, conteggi attesi e assertion; non usa `...` o parametri omessi.
+### Lettura dello stato remoto
 
-## Comandi realmente eseguiti
+- `github_fetch_pr(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
+- `github_list_pull_request_reviews(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
+- `github_list_pull_request_review_threads(repo_full_name="UnNickk76/NEXO-VEO-VISION", pr_number=10)`
+- `github_fetch_commit_workflow_runs(repo_full_name="UnNickk76/NEXO-VEO-VISION", commit_sha="1566537ac6c71559efd9fd8207c8002d873bd5be")`
 
-### Materializzazione controllata del contenuto revisionato
+Risultato: PR aperta e unibile, review sullo SHA corretto, due thread P1 aperti, nessun workflow PR associato allo SHA.
 
-Sono state eseguite individualmente le seguenti letture autenticate, tutte con esito positivo:
+### Verifica conclusiva locale
 
-- `github_fetch_file(repository_full_name="UnNickk76/NEXO-VEO-VISION", path="docs/product/NEXO_CONCEPTUAL_MASTER.md", ref="codex/luoghi-salvati-concetto", encoding="utf-8")`
-- `github_fetch_file(repository_full_name="UnNickk76/NEXO-VEO-VISION", path="AGENTS.md", ref="codex/luoghi-salvati-concetto", encoding="utf-8")`
-- `github_fetch_file(repository_full_name="UnNickk76/NEXO-VEO-VISION", path="memory/NEXO_VEO_VISION.md", ref="codex/luoghi-salvati-concetto", encoding="utf-8")`
-- `github_fetch_file(repository_full_name="UnNickk76/NEXO-VEO-VISION", path="NEXO_VEO_VISION_UX_UI.txt", ref="codex/luoghi-salvati-concetto", encoding="utf-8")`
-- `github_fetch_file(repository_full_name="UnNickk76/NEXO-VEO-VISION", path="NEXO_VEO_VISION_ROADMAP.txt", ref="codex/luoghi-salvati-concetto", encoding="utf-8")`
-- `github_fetch_file(repository_full_name="UnNickk76/NEXO-VEO-VISION", path="README.md", ref="codex/luoghi-salvati-concetto", encoding="utf-8")`
-- `github_fetch_file(repository_full_name="UnNickk76/NEXO-VEO-VISION", path="scripts/check_conceptual_master.py", ref="codex/luoghi-salvati-concetto", encoding="utf-8")`
+I sette file precedentemente materializzati senza trasformazioni in
+`/workspace/scratch/40abb2bd44cb/verify-conceptual/` sono stati controllati
+usando la versione corretta dello script in `fix-pr10/check_conceptual_master.py`.
 
-I sette contenuti restituiti sono stati materializzati senza trasformazioni sotto
-`/workspace/scratch/40abb2bd44cb/verify-conceptual/`, conservando gli stessi
-percorsi relativi. Il controllo è riproducibile da qualunque checkout dello stesso
-ramo o commit senza tale materializzazione.
-
-### Verifica conclusiva
-
-Comando esatto realmente eseguito:
+Comando esatto:
 
 ```bash
-cd /workspace/scratch/40abb2bd44cb/verify-conceptual
-python3 scripts/check_conceptual_master.py .
+python3 fix-pr10/check_conceptual_master.py verify-conceptual
 ```
 
+- **Directory di esecuzione:** `/workspace/scratch/40abb2bd44cb`
 - **Exit code:** `0`
-
-Risultati individuali stampati:
+- **Output individuale:**
 
 ```text
-PASS V: 51 unique rows
-PASS E: 47 unique rows
-PASS U: 31 unique rows
-PASS C: 6 unique rows
-PASS completion state: no product feature falsely marked complete
+PASS V: exact stable ID set (51 rows)
+PASS E: exact stable ID set (47 rows)
+PASS U: exact stable ID set (31 rows)
+PASS C: exact stable ID set (6 rows)
+PASS completion evidence: 0 checked rows valid
 PASS assertion: master protocol
 PASS assertion: AGENTS registry
 PASS assertion: Vision saved places
@@ -94,43 +84,47 @@ PASS: conceptual master registry is coherent
 
 ## Verificato realmente
 
-- I conteggi e l'univocità degli ID.
-- L'assenza di funzioni falsamente spuntate.
-- La presenza del protocollo sia nel master sia in `AGENTS.md`.
-- La coerenza delle aggiunte Casa/Lavoro fra Vision, UX/UI e Roadmap.
-- La raggiungibilità del master dal README.
-- I due P1 documentali della precedente review sono stati presi in carico.
+- La review riguarda lo SHA `1566537ac6`.
+- I due nuovi P1 sono presenti e non sono falsi positivi.
+- La versione corretta dello script termina con exit code 0 sui file correnti.
+- Gli insiemi esatti degli ID correnti sono preservati.
+- Nessuna riga è attualmente marcata `[x]`.
+- Il parser è predisposto ad accettare future spunte solo con tutte le prove richieste.
 
 ## Dedotto
 
-- Il master ridurrà la dipendenza dalla memoria della chat, perché rende visibili requisiti e stato nel repository.
-- I documenti storici dettagliati restano necessari; il master è indice e quadro operativo, non sostituzione distruttiva.
+- Il nuovo controllo impedisce la sostituzione silenziosa di un ID mantenendo invariato il numero di righe.
+- Le future implementazioni potranno essere spuntate senza disabilitare il controllo, purché la riga contenga evidenza completa.
 
 ## Non verificato
 
-- Nessuna funzione utente è stata implementata o provata su dispositivo.
-- Non sono stati eseguiti lint, test applicativi, build EAS o TestFlight perché la modifica è documentale.
-- La nuova Codex Review sullo SHA finale non era disponibile durante la redazione.
+- Nessuna funzione runtime dell'app è stata implementata o verificata.
+- Non sono stati eseguiti build, lint applicativo o TestFlight perché la PR è documentale.
+- La nuova Codex Review sullo SHA finale non è ancora disponibile.
 
-## Errori, warning e problemi aperti
+## Errori e warning
 
-- La prima review della PR #10 ha prodotto due P1 documentali; le correzioni sono preparate ma i thread non devono essere risolti finché la nuova versione non è pubblicata.
-- Il master contiene titoli e riferimenti; per il dettaglio normativo restano necessarie le fonti indicate.
-- La PR #9 TestFlight è separata e mantiene priorità runtime.
+- Il primo tentativo locale della versione corretta ha restituito exit code `1` con `ValueError: not enough values to unpack (expected 7, got 6)`; il parser è stato corretto per le sei colonne catturate e il controllo è stato ripetuto con exit `0`.
+- Nessun workflow GitHub PR risultava associato allo SHA revisionato.
 
-## Dipendenze e credenziali
+## Problemi non risolti
 
-Nessuna credenziale o dipendenza esterna richiesta. Lo script usa soltanto Python standard library.
+- I due nuovi thread P1 restano aperti fino alla pubblicazione completa della correzione e della risposta.
+- La PR non può essere unita fino a una Codex Review pulita sul nuovo SHA finale.
+
+## Dipendenze o credenziali
+
+Nessuna.
 
 ## Rischi tecnici
 
-- Spuntare manualmente una voce senza prove falserebbe l'avanzamento; lo script impedisce oggi spunte premature, ma in futuro dovrà essere aggiornato per accettare soltanto righe con evidenza valida.
-- Sovrapposizioni tra Vision, espansione e UX rimangono visibili per preservare lo storico; non vanno eliminate senza una decisione documentata.
+- Il riconoscimento dell'evidenza usa pattern testuali; se in futuro cambia il formato delle colonne, script e protocollo devono essere aggiornati nella stessa PR.
+- Un documento concettuale non dimostra l'implementazione runtime.
 
 ## Prossimo passo consigliato
 
-Aggiornare `LATEST.md`, pubblicare le correzioni, rispondere ai due thread P1 e richiedere una nuova Codex Review sullo SHA corrente. Unire soltanto dopo review pulita e PR unibile.
+Sincronizzare `LATEST.md`, rispondere e risolvere i due thread, richiedere Codex Review sullo SHA finale e fare squash merge soltanto se la review è pulita e la PR resta unibile.
 
 ## Decisioni richieste a Fabio
 
-Nessuna. Le future decisioni di prodotto verranno registrate senza cancellare le alternative o i requisiti precedenti.
+Nessuna.
