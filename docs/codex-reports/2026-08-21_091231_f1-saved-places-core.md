@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_091231_f1-saved-places-core.md`
-
 # NEXO 1 — F1 Saved Places local-first core
 
 ## Dati attività
@@ -11,7 +9,7 @@ Rapporto storico: `docs/codex-reports/2026-08-21_091231_f1-saved-places-core.md`
 - **Pull request:** PR #12 — `feat(f1): saved places local-first core`
 - **Base finale:** `main` `1c66a29b24df20ce7bded3b514ce88e534077281` (PR #9 TestFlight già unita).
 - **SHA esaminato prima del commit documentale finale:** `5e46f43b51af44fcdc8226ce6c54e033bb8e0955`.
-- **SHA del commit documentale finale:** non disponibile al momento della creazione del rapporto; viene creato atomicamente con questo rapporto, `LATEST.md` e il cruscotto Fabio.
+- **SHA del commit documentale finale:** non disponibile al momento della creazione del rapporto; viene creato atomically con questo rapporto, `LATEST.md` e il cruscotto Fabio.
 
 ## READ verificato realmente
 
