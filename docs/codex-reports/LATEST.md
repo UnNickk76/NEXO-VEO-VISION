@@ -1,165 +1,125 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_113546_fix-ascappid-testflight-run12.md`
+Rapporto storico: `docs/codex-reports/2026-08-21_140000_fix-apple-team-id-testflight-run13.md`
 
-# Configurazione ascAppId per EAS Submit / TestFlight
+# Fix Apple Team ID per EAS/TestFlight run #13
 
-## Dati dell'attività
+## Dati attività
+- **Data e ora UTC:** 2026-08-21 14:00 UTC.
+- **Obiettivo:** correggere esclusivamente il prompt non-interattivo `Apple Team ID` emerso nella TestFlight run #13 configurando il Team ID verificato nei due percorsi repository supportati, senza modificare workflow, dipendenze, codice applicativo o credenziali remote.
+- **Stato finale:** `parziale` — fix repository applicato e verificato staticamente; PR #15 DRAFT in attesa di review indipendente NEXO REVIEW; nessuna nuova pipeline TestFlight avviata.
+- **Branch:** `nexo-codex/fix-apple-team-id-testflight-run13`.
+- **Base:** `main` `2679343a9e0766097cbc89263ecccca9861b97e7`.
+- **Pull request:** PR #15 — `https://github.com/UnNickk76/NEXO-VEO-VISION/pull/15`.
 
-- **Data e ora UTC:** 2026-08-21 11:35:46 UTC; reporting riallineato dopo review alle 11:55 UTC.
-- **Obiettivo:** correggere esclusivamente il blocco della TestFlight run #12 causato dall'assenza di `ascAppId` nel profilo EAS Submit `production`, senza modificare il workflow o funzionalità NEXO.
-- **Stato finale:** `parziale`; configurazione corretta e verificata staticamente, PR #14 aperta e in attesa di nuova review indipendente, nuova pipeline TestFlight su `main` non ancora eseguita.
-- **Branch:** `nexo-codex/fix-ascappid-testflight-run12`
-- **Base verificata:** `main` `a123a3c5e5d22a757eac9dda9dd20e44e3362f17`.
-- **Pull request:** PR #14 — `https://github.com/UnNickk76/NEXO-VEO-VISION/pull/14`.
+## Commit creati prima del reporting
+- `0a6747e734cec67cf0e6e00044ede19b4cd71954` — `frontend/app.json`: aggiunto `expo.ios.appleTeamId`.
+- `f93aed5a99c1ffaf8b3ada26fee28a2ce453d179` — `frontend/eas.json`: aggiunto `submit.production.ios.appleTeamId` mantenendo `ascAppId`.
 
-## Commit creati
+I commit che pubblicano questo rapporto, `LATEST.md` e `FABIO_CONTROLLO.md` non possono includere il proprio SHA nel contenuto dello stesso commit senza auto-riferimento circolare. I relativi SHA finali vengono registrati sulla Coordination Board #11 insieme allo SHA esatto richiesto per la review.
 
-Commit presenti nella PR prima della correzione documentale richiesta dalla review 4992945074:
-
-- `168a19f2793261b98164d8e748fcc84e4472ca71` — configurazione funzionale `ascAppId` in `frontend/eas.json`;
-- `a65afd7400b84d94578a1f2a6505b0f4d28db95f` — creazione del rapporto storico;
-- `bd6d58a355d9a1451ff985c274067dbe236253a8` — aggiornamento `docs/codex-reports/LATEST.md`;
-- `8022b29f23d3be8272dab3211b0f626a50b5e68d` — aggiornamento `Fabio/FABIO_CONTROLLO.md`.
-
-La presente correzione di review viene pubblicata in un ulteriore commit atomico che aggiorna insieme rapporto storico, `LATEST.md` e `FABIO_CONTROLLO.md`. Il relativo SHA non può essere incorporato nel contenuto dello stesso commit senza auto-riferimento circolare; viene registrato sulla Coordination Board #11 e usato come nuovo SHA di review della PR #14.
-
-## READ e PLAN realmente eseguiti
-
+## READ / PLAN realmente eseguiti
 - Letto integralmente `AGENTS.md`.
-- Letta Issue #11 — NEXO Coordination Board e gli aggiornamenti recenti.
-- Verificata la review indipendente NEXO REVIEW `4992945074` sullo SHA `8022b29f23d3be8272dab3211b0f626a50b5e68d`.
-- Verificata `main` a `a123a3c5e5d22a757eac9dda9dd20e44e3362f17`.
-- Verificati PR #14, commenti e thread: nessun thread inline; review COMMENTED con P1 e P2; PR aperta e mergeable.
-- Verificati i lavori concorrenti: PR #12 resta aperta e condivide soltanto `docs/codex-reports/LATEST.md` e `Fabio/FABIO_CONTROLLO.md`; nessuna sovrapposizione funzionale con `frontend/eas.json`.
-- Riletti `frontend/eas.json`, `.github/workflows/testflight.yml` e `frontend/app.json` pertinenti.
+- Letta Coordination Board #11, inclusa la direttiva: PR operative DRAFT durante sviluppo/fallback review; nessuna menzione GitHub invocante verso l'account Codex.
+- Verificato `main` a `2679343a9e0766097cbc89263ecccca9861b97e7`.
+- Verificata PR #12: aperta, base `1c66a29...`, head `7bdb767...`, non mergeable allo stato letto; nessuna modifica a `frontend/app.json` o `frontend/eas.json`; sovrapposizione solo sui file di reporting.
+- Letti `frontend/app.json`, `frontend/eas.json`, `.github/workflows/testflight.yml` su `main`.
+- Verificata TestFlight run #13 `32486273893`, job `96783389638`: Expo Doctor `18/18` PASS; lint 0 errori/1 warning preesistente; EAS account autenticato; `ascAppId` letto; primo errore reale `Failed to authenticate with the App Store Connect API key from EAS credentials service: Input is required, but stdin is not readable. Failed to display prompt: Apple Team ID:`; build remota fallita in Prepare credentials.
+- Team ID `853F5S8843` trattato come dato primario verificato dal Coordinatore in Apple Developer Membership; Apple ID `6803879211` e bundle `com.fabioandreola.nexoveovision` già confermati dal Coordinatore/App Store Connect e dalla run #13.
+- Verificata documentazione Expo corrente: `expo.ios.appleTeamId` è supportato nell'app config; `submit.<profile>.ios.appleTeamId` è supportato nello schema EAS Submit insieme ad `ascAppId`.
 
-## File modificati nell'attività
+## File funzionali modificati
+1. `frontend/app.json`
+2. `frontend/eas.json`
 
-- `frontend/eas.json`
-- `docs/codex-reports/2026-08-21_113546_fix-ascappid-testflight-run12.md`
-- `docs/codex-reports/LATEST.md`
-- `Fabio/FABIO_CONTROLLO.md`
-
-`.github/workflows/testflight.yml`, `frontend/app.json`, package/lock, codice applicativo, concettuale e aree NEXO 1/2/3 non sono stati modificati.
-
-## Modifica funzionale applicata
-
-In `frontend/eas.json` il profilo submit production è configurato così:
-
+## Modifica funzionale
+### `frontend/app.json`
+Dentro `expo.ios` è stato aggiunto:
 ```json
-"submit": {
-  "production": {
-    "ios": {
-      "ascAppId": "6803879211"
-    }
-  }
+"appleTeamId": "853F5S8843"
+```
+Il bundle resta:
+```json
+"bundleIdentifier": "com.fabioandreola.nexoveovision"
+```
+
+### `frontend/eas.json`
+Il profilo submit production iOS è ora:
+```json
+"ios": {
+  "ascAppId": "6803879211",
+  "appleTeamId": "853F5S8843"
 }
 ```
+Non è stato aggiunto alcun `build.production.ios.appleTeamId`.
 
-Il bundle identifier resta `com.fabioandreola.nexoveovision`.
+## File deliberatamente non modificati
+- `.github/workflows/testflight.yml`
+- `frontend/package.json`
+- `frontend/package-lock.json`
+- codice applicativo NEXO
+- concettuale/roadmap
+- file funzionali PR #12/NEXO 1
+- credenziali Apple/EAS remote, API key, Distribution Certificate, Provisioning Profile, Push Key
 
-## Evidenza primaria del valore ascAppId
-
-Il Coordinatore/proprietario ha verificato direttamente nell'account App Store Connect, pagina **NEXO VEO VISION → Informazioni sull'App**, i seguenti dati:
-
-- **ID Apple:** `6803879211`;
-- **Bundle ID:** `com.fabioandreola.nexoveovision`.
-
-Questa è l'evidenza primaria App Store Connect fornita dal proprietario che conferma l'associazione tra l'`ascAppId` configurato e l'app NEXO VEO VISION. Il valore non è dedotto dal repository, dall'EAS projectId, dal Team ID o da altri identificatori e non viene modificato in questa correzione di review.
-
-## Controlli realmente eseguiti
-
-### Validità JSON di eas.json
-
-Controllo già eseguito sulla materializzazione esatta del contenuto pubblicato sul branch:
-
+## Verifiche realmente eseguite
+### JSON e assertion
+Contenuti remoti finali dei due file funzionali materializzati in `/tmp/nexo-app.json` e `/tmp/nexo-eas.json`, quindi eseguito:
 ```bash
-python3 -m json.tool /tmp/nexo-eas.json >/dev/null
-```
-
-- **Exit code:** `0`.
-- **Risultato:** JSON valido.
-
-### Assertion ascAppId e bundle identifier
-
-```bash
-python3 - <<'PY'
+python3 -m json.tool /tmp/nexo-app.json >/dev/null && python3 -m json.tool /tmp/nexo-eas.json >/dev/null && python3 - <<'PY'
 import json
-with open('/tmp/nexo-eas.json') as f: eas=json.load(f)
-with open('/tmp/nexo-app.json') as f: app=json.load(f)
-assert eas['submit']['production']['ios']['ascAppId'] == '6803879211'
-assert app['expo']['ios']['bundleIdentifier'] == 'com.fabioandreola.nexoveovision'
-print('ascAppId=6803879211')
-print('bundleIdentifier=com.fabioandreola.nexoveovision')
+app=json.load(open('/tmp/nexo-app.json'))
+eas=json.load(open('/tmp/nexo-eas.json'))
+assert app['expo']['ios']['appleTeamId']=='853F5S8843'
+assert app['expo']['ios']['bundleIdentifier']=='com.fabioandreola.nexoveovision'
+assert eas['submit']['production']['ios']['ascAppId']=='6803879211'
+assert eas['submit']['production']['ios']['appleTeamId']=='853F5S8843'
+assert 'ios' not in eas['build']['production'] or 'appleTeamId' not in eas['build']['production'].get('ios', {})
+print('assertions: PASS')
 PY
 ```
-
 - **Exit code:** `0`.
-- **Output:** `ascAppId=6803879211`; `bundleIdentifier=com.fabioandreola.nexoveovision`.
+- **Output:** `assertions: PASS`.
 
 ### Perimetro funzionale
+Confronto GitHub `2679343a9e0766097cbc89263ecccca9861b97e7...f93aed5a99c1ffaf8b3ada26fee28a2ce453d179`:
+- `ahead_by: 2`, `behind_by: 0`;
+- file modificati: solo `frontend/app.json` e `frontend/eas.json`;
+- `.github/workflows/testflight.yml` assente dal diff.
 
-Il confronto GitHub tra la base `a123a3c5e5d22a757eac9dda9dd20e44e3362f17` e il commit funzionale `168a19f2793261b98164d8e748fcc84e4472ca71` ha mostrato:
+### Stato PR iniziale
+PR #15 creata DRAFT da base `main` `2679343a...`, head iniziale `f93aed5a...`; nessun merge eseguito.
 
-- **Stato:** `ahead`, 1 commit;
-- **File funzionale modificato:** esclusivamente `frontend/eas.json`;
-- **Diff stats:** 5 aggiunte, 1 eliminazione;
-- **Workflow TestFlight:** non modificato.
+## Verificato realmente
+- `expo.ios.appleTeamId == "853F5S8843"`.
+- `expo.ios.bundleIdentifier == "com.fabioandreola.nexoveovision"`.
+- `submit.production.ios.ascAppId == "6803879211"`.
+- `submit.production.ios.appleTeamId == "853F5S8843"`.
+- assenza di `build.production.ios.appleTeamId`.
+- workflow TestFlight invariato nel diff funzionale.
+- nessuna modifica a credenziali remote.
 
-La correzione successiva alla review 4992945074 modifica soltanto i tre file di reporting. Il diff funzionale di `frontend/eas.json` rispetto allo SHA revisionato `8022b29f23d3be8272dab3211b0f626a50b5e68d` deve quindi restare invariato e viene ricontrollato sul nuovo SHA prima della nuova richiesta di review.
+## Dedotto ma non ancora provato da pipeline
+La presenza dei due campi `appleTeamId` nei percorsi supportati fornisce a EAS CLI il Team ID che la run #13 tentava di richiedere interattivamente. Questo rende ragionevole aspettarsi la scomparsa del prompt `Failed to display prompt: Apple Team ID:`, ma non viene dichiarato risolto finché una nuova pipeline reale su `main` non lo dimostra.
 
-### Controlli non ripetuti perché non influenzati dalla correzione documentale
+## Non verificato / limiti
+- Nessuna nuova EAS Build o submission avviata in questa attività.
+- Nessuna modifica o verifica diretta dell'associazione remota della API key EAS oltre alle evidenze della run #13.
+- Nessuna build ricevuta in App Store Connect/TestFlight.
+- Warning secondario `ITSAppUsesNonExemptEncryption` non trattato perché fuori perimetro e non primo blocco della run #13.
 
-- Expo Doctor e lint non vengono dichiarati nuovamente eseguiti: questa correzione di review non tocca dipendenze, lockfile o codice applicativo.
-- EAS Build/EAS Submit non vengono avviati prima della review/merge.
+## Errori e warning noti
+- Run #13: prompt Apple Team ID in CI e failure Prepare credentials.
+- Lint: 1 warning preesistente (`Text` inutilizzato in `frontend/app/index.tsx`), 0 errori.
+- Warning secondari Node/cache/cripto della run #13 non trattati in questo fix.
 
-## Fatti verificati
+## Concorrenza / rischio
+PR #12 condivide `docs/codex-reports/LATEST.md` e `Fabio/FABIO_CONTROLLO.md`, ma non i due file funzionali. Poiché #12 parte da una base precedente ed è non mergeable allo stato verificato, dovrà essere riallineata/serializzata prima del proprio merge; questa attività non modifica il suo branch.
 
-- `main` corrente è `a123a3c5e5d22a757eac9dda9dd20e44e3362f17`.
-- PR #14 esiste, è aperta e risulta mergeable allo stato verificato prima della correzione documentale.
-- `frontend/eas.json` contiene `submit.production.ios.ascAppId = "6803879211"`.
-- Il bundle identifier resta `com.fabioandreola.nexoveovision`.
-- Il workflow TestFlight usa `production`, `--non-interactive` e `--auto-submit` e non è stato modificato.
-- L'evidenza primaria App Store Connect fornita dal Coordinatore/proprietario associa ID Apple `6803879211` al bundle `com.fabioandreola.nexoveovision`.
-
-## Deduzioni
-
-- La configurazione aggiunta risolve il messaggio specifico `Set ascAppId in the submit profile (eas.json) or re-run this command in interactive mode` secondo la configurazione EAS. Questo non dimostra che l'intera submission TestFlight riuscirà.
-
-## Non verificato
-
-- Nuova pipeline su `main` dopo merge.
-- Nuovo esito Expo Doctor e lint dopo merge.
-- EAS Build completa sulla nuova pipeline.
-- EAS Submit completo verso Apple.
-- Ricezione/visibilità della build in App Store Connect/TestFlight.
-- Eventuali successivi requisiti Apple/EAS di autenticazione, accordi o ruoli.
-
-## Errori, warning e problemi residui
-
-- Review NEXO REVIEW 4992945074 sul vecchio SHA: P1 sulla provenienza dell'`ascAppId` e P2 sul reporting.
-- P1 è indirizzato registrando l'evidenza primaria App Store Connect fornita dal proprietario, senza cambiare il valore.
-- P2 è indirizzato registrando PR #14, tutti i quattro commit già presenti allo SHA revisionato e riallineando `FABIO_CONTROLLO.md` allo stato reale.
-- Resta un rischio di conflitto documentale con PR #12 sui soli `docs/codex-reports/LATEST.md` e `Fabio/FABIO_CONTROLLO.md`; non riguarda `frontend/eas.json`.
-
-## Dipendenze e credenziali
-
-- Nessuna nuova dipendenza software richiesta.
-- Le credenziali Apple/EAS non sono state lette, modificate o esposte.
-- La loro effettiva validità per EAS Submit sarà verificabile solo dalla pipeline successiva.
-
-## Rischi tecnici
-
-- Dopo la correzione `ascAppId` può emergere un blocco successivo Apple/EAS non ancora osservato; non vengono predisposti workaround preventivi.
-- PR #12 dovrà riallineare i file di reporting se viene mergeata dopo PR #14.
-
-## Prossimo passo consigliato
-
-1. Verificare il nuovo SHA della PR #14 e il diff completo.
-2. Confermare `ascAppId`, bundle identifier e invariabilità del diff funzionale rispetto allo SHA già revisionato.
-3. Richiedere una nuova review indipendente a NEXO REVIEW tramite Issue #11, indicando il nuovo SHA e senza usare `@codex review`.
-4. Non fare merge da NEXO CODEX.
-5. Dopo review e merge autorizzato, verificare separatamente nella nuova pipeline: Expo Doctor → PASS; Lint → PASS; EAS Build → PASS; EAS Submit → PASS; App Store Connect/TestFlight → build ricevuta.
+## Prossimo passo
+1. Completare reporting obbligatorio nella PR #15.
+2. Verificare SHA finale, diff completo e stato DRAFT.
+3. Richiedere review indipendente a NEXO REVIEW sullo SHA esatto tramite Coordination Board #11.
+4. Nessun merge da NEXO CODEX e nessun TestFlight manuale.
+5. Solo dopo review CLEAN e merge autorizzato, nuova pipeline reale: Expo Doctor → Lint → autenticazione EAS/ASC senza prompt Team ID → Prepare credentials → EAS Build → EAS Submit → ricezione TestFlight.
 
 ## Decisioni richieste a Fabio
-
-Nessuna in questa fase. Se la pipeline successiva espone un nuovo blocco Apple/EAS, verrà riportato integralmente senza workaround improvvisati.
+Nessuna prima della review. Se il prompt Apple Team ID ricompare con entrambi i campi presenti, fermarsi e registrare BLOCKED: servirà verificare/correggere l'associazione remota della credenziale EAS, senza workaround repository aggiuntivi.
