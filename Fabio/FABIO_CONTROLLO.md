@@ -1,38 +1,45 @@
 # Fabio Controllo
 
-> Cruscotto di sola consultazione per Fabio. Il rapporto tecnico completo resta in
+> Cruscotto di sola consultazione. Il rapporto tecnico completo è in
 > `docs/codex-reports/LATEST.md`.
 
-## Ultimo aggiornamento
+## Stato semplice
 
-- **Data e ora UTC:** 2026-08-20 22:17:30 UTC
-- **Attività:** correzione documentale successiva alla PR #7 e creazione del cruscotto permanente.
-- **Stato:** in preparazione su ramo dedicato.
-- **Ramo:** `codex/fabio-controllo-e-correzione-pr7`
-- **Pull request:** [PR #8](https://github.com/UnNickk76/NEXO-VEO-VISION/pull/8), aperta come bozza e non ancora autorizzata al merge.
+- **Data:** 21 agosto 2026, 06:49 UTC
+- **Attività:** aggiunta concettuale di Casa, Lavoro e luoghi salvati.
+- **Stato:** specifica completata su ramo separato; non è ancora implementata nell'app.
+- **Ramo:** `codex/luoghi-salvati-concetto`
+- **Pull request:** da creare.
+- **Priorità principale invariata:** prima build visibile su TestFlight tramite PR #9.
+- **Costi:** nessuna spesa.
 
-## Cosa è stato fatto realmente
+## Cosa è stato aggiunto realmente
 
-- Verificato su `main` che la PR #7 è stata unita.
-- Verificato che la correzione locale preparata da Codex non era inclusa nel merge.
-- Conservato il rapporto storico già unito, perché i rapporti storici non possono essere sovrascritti.
-- Preparato un nuovo rapporto correttivo con l'evidenza completa e riproducibile.
-- Aggiunta in `AGENTS.md` la regola che obbliga Codex ad aggiornare questo cruscotto dopo ogni attività.
+- Casa e Lavoro opzionali, rinominabili e con icone rapide dedicate.
+- Altri luoghi salvati con nome, icona, ordine, modifica ed eliminazione.
+- Accesso rapido da mappa, ricerca, menu e voce.
+- Suggerimenti contestuali basati su posizione, orario e abitudini soltanto con consenso.
+- Nessuna navigazione avviata automaticamente: serve sempre conferma.
+- Gestione completa fuori guida e scorciatoie essenziali Voice-First durante la guida.
+- Prima versione pianificata nella Fase 1.
 
 ## Controlli
 
-- **Superato:** lettura diretta dello stato della PR #7 e del contenuto su `main` tramite integrazione GitHub.
-- **Superato:** individuazione nel rapporto unito dei segnaposto `$endpoint`, `jq ...` e `{5,6}`.
-- **Non eseguito:** test runtime dell'app; questa attività modifica soltanto documentazione.
-- **Da verificare:** nuova Codex Review sul commit finale della pull request correttiva.
+### Superati
+- Letti direttamente Vision, UX/UI, Roadmap ed espansione concettuale.
+- Confermato che il requisito non era ancora definito con questa completezza.
+- Aggiornati i tre documenti sul ramo dedicato.
 
-## Problemi ancora aperti
+### Non eseguiti
+- UI, database, geocoding, suggerimenti runtime, lint, build e TestFlight: attività soltanto concettuale.
+- Codex Review: da richiedere dopo la creazione della PR.
 
-- I vecchi thread della PR #7 risultano formalmente irrisolti, ma la PR è già chiusa e unita.
-- La nuova pull request deve ricevere una review pulita prima del merge.
-- L'auto-merge resta disabilitato: il merge deve essere richiesto esplicitamente da Fabio.
+## Problemi e rischi
 
-## Prossimo passo per Fabio
+- I luoghi e le abitudini sono dati personali: dovranno essere opzionali, cancellabili e preferibilmente elaborati localmente.
+- Provider, database e schema tecnico non sono ancora scelti.
+- La funzione non deve distrarre durante la guida né anticipare una destinazione senza conferma.
 
-Attendere la nuova review. Non unire la pull request finché questo file non indica
-che la review sul commit corrente è pulita.
+## Cosa deve fare Fabio adesso
+
+Nulla. La specifica verrà proposta in una PR documentale separata. Il lavoro sulla PR #9 verso TestFlight continua indipendentemente.
