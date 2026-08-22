@@ -92,3 +92,52 @@ Canale report dedicato di NEXO REVIEW.
 - R3 completata CLEAN sullo SHA indicato.
 - PR #12 è pronta per decisione di serializzazione/merge del Coordinatore secondo governance.
 - Dopo eventuale merge/closure, il Coordinatore può rivalutare e liberare il gate dei file condivisi che blocca NEXO 3 / PR #17.
+
+---
+
+## 2026-08-22 01:10 UTC — R2 / PR #20 Surface Capabilities
+- Task ID: R2.
+- PR: #20 `feat(surface): add provider-neutral surface capabilities`.
+- Exact SHA revisionato: `6e13d42379a5cff26cb37a67944f89302b925ac4`.
+- Branch autore: `nexo2/f0-surface-capabilities`.
+- Stato PR verificato: OPEN, DRAFT, mergeable, non mergeata; 18 commit, 9 changed files.
+- Verdict: `CLEAN`.
+- P0: 0.
+- P1: 0.
+- P2: 0.
+
+### Review precedente e delta
+- Riletta la review CHANGES REQUIRED sullo SHA `dbb78f17fec64cabd3537e8c80ca7998da54b696`: i due P1 tecnici precedenti erano già stati considerati chiusi; restava un solo P1 reporting/AGENTS.md.
+- Compare diretto `dbb78f17...` → `6e13d423...`: ahead 5 / behind 0; sono cambiati soltanto tre file di reporting: `Fabio/FABIO_CONTROLLO.md`, `docs/codex-reports/2026-08-21_214943_f0-surface-capabilities.md`, `docs/codex-reports/LATEST.md`.
+- Nessun file funzionale, checker o conceptual è cambiato dopo la review precedente.
+
+### Fix tecnici preservati
+- `frontend/src/core/surface/policy.ts`: `resolveSurfaceCapability()` conserva `reportedAvailability` e calcola `usable` separatamente dalla policy; policy `prohibited` non riscrive più l'availability runtime.
+- `frontend/scripts/check-surface-capabilities.ts`: presenti assertion esplicite per `available + prohibited` e `degraded + prohibited`, con availability preservata e `usable=false`.
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md`: V05/V44/V45/V46 restano `[ ] / parziale` e riportano PR #20, commit/fix, test/checker e limiti runtime; nessun `[x]` improprio.
+
+### Reporting / governance
+- Rapporto storico `docs/codex-reports/2026-08-21_214943_f0-surface-capabilities.md` riletto sul final SHA: contiene data/ora UTC, obiettivo, stato finale `completato`, branch/base/PR, cronologia commit, inventario completo dei 9 file e nessun eliminato, spiegazione modifiche, comandi/check realmente eseguiti o esplicitamente non eseguiti, esiti/limiti, warning/errori, problemi residui, dipendenze/credenziali, rischi tecnici, prossimo passo e decisioni richieste a Fabio.
+- `docs/codex-reports/LATEST.md` verificato: prefisso con percorso + copia integrale dello stesso rapporto storico.
+- Il report non inventa il controllo locale di uguaglianza LATEST/historical: lo marca esplicitamente come previsto/riproducibile ma non eseguito; la conformità è stata verificata da REVIEW leggendo direttamente i due blob remoti.
+- `Fabio/FABIO_CONTROLLO.md` è incluso nel delta finale di reporting.
+
+### Check / stato GitHub
+- VERIFY funzionale mirato dichiarato e documentato dall'autore: TypeScript strict + checker Surface, exit 0, output `surface-capabilities checks: PASS`; limite esplicito: non equivale a lint globale.
+- Sul final SHA `6e13d423...` non risultano workflow PR-triggered né commit status; nessun CI PASS viene dichiarato.
+- Nessun review thread aperto.
+- Mergeability finale verificata direttamente: `true`.
+
+### Limiti
+- Nessun checkout/lint globale completo disponibile.
+- Nessun runtime CarPlay/Android Auto, entitlement/template/host nativo, test in auto/device, EAS/TestFlight o credenziale verificati; tutti fuori dal perimetro di questo slice.
+- I file di reporting/conceptual condivisi richiedono comunque serializzazione del Coordinatore prima di un eventuale merge con altre PR concorrenti.
+
+### Azioni GitHub
+- Review CLEAN pubblicata sulla PR #20, review ID `4998458851`, ancorata allo SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`.
+- Esito essenziale pubblicato su Issue #11, commento `5376975680`.
+
+### Stato finale
+- R2 completata CLEAN sullo SHA indicato.
+- Nessuna rettifica richiesta a NEXO 2 per questo exact SHA.
+- Serializzazione/merge resta al Coordinatore; NEXO REVIEW prosegue soltanto se una successiva queue item diventa realmente eleggibile.
