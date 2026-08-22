@@ -51,3 +51,17 @@ Canale report dedicato di NEXO 1.
 
 ## Storico precedente
 Lo storico N1.1–N1.4 e REVIEW NOTE R10 resta disponibile nella cronologia Git del branch `coordination/agent-control`; questo file mantiene il nuovo stato operativo in testa senza alterare le evidenze di PR già registrate nei report repository e sulla Board #11.
+
+---
+
+## 2026-08-22 08:16 UTC — N1.5 CONTINUATION / REPORTING PROGRESS
+- **Task ID:** N1.5.
+- **Stato:** parziale / BLOCKED sul solo gate conceptual C007 + VERIFY post-edit.
+- **PR/SHA pre-reporting:** PR #24 / `f89de36ae055de60ae0079b426d2496736dd1e6e`, OPEN/DRAFT/mergeable=true.
+- **Commit creati in questa ripresa:** `091399b2a3f45a665b8d1c656ca25b1dccc0ae7c` report storico; `f86f208c3fbc716de1c0ce623cce704aa9948f6f` LATEST; `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17` Fabio/FABIO_CONTROLLO.
+- **File:** `docs/codex-reports/2026-08-22_081600_n1-5-quality-policy-continuation.md`, `docs/codex-reports/LATEST.md`, `Fabio/FABIO_CONTROLLO.md`.
+- **Test/check reali disponibili:** Quality Policy `32559482473` SUCCESS; Contract `32559482539` SUCCESS; State Machine `32559482424` SUCCESS sullo SHA funzionale pre-reporting.
+- **Limiti:** nessun nuovo PASS attribuito ai commit reporting; C007 non ancora aggiornato. Il blob conceptual corrente è stato riletto (`9ee6c525...`) ma non sostituito integralmente per evitare rischio di troncamento/sovrascrittura nel runtime corrente; il precedente tentativo aveva già ricevuto HTTP 409.
+- **Problemi residui:** aggiornare C007 conservativamente con PR #24/checker/policy mantenendo `[ ] / parziale`; rieseguire validator/check influenzati; fresh exact SHA/mergeability; handoff NEXO REVIEW.
+- **Prossimo passo:** continuare N1.5 soltanto. N1.6 non eleggibile.
+- **Decisioni Fabio:** nessuna.
