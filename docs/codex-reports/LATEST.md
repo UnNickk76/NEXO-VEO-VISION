@@ -1,98 +1,143 @@
-Rapporto storico: `docs/codex-reports/2026-08-21_204600_nexo1-pr12-realign.md`
+Rapporto storico: `docs/codex-reports/2026-08-22_000600_pr12-multi-instance-fix.md`
 
-# NEXO 1 — riallineamento e chiusura F1 Saved Places core
+# NEXO 1 — PR #12 Saved Places: correzione serializzazione multi-instance
 
 ## Dati attività
-- Data e ora UTC: 2026-08-21 20:46 UTC.
-- Obiettivo: riprendere PR #12 `feat(f1): saved places local-first core`, riallinearne il contenuto alla main corrente e preservare il core Casa/Lavoro/preferiti senza perdere i lavori successivi.
-- Stato finale: parziale — riallineamento e correzioni P1 completati; PR mantenuta DRAFT e consegnata a NEXO REVIEW. Nessun merge eseguito.
+- Data e ora UTC: 2026-08-22 00:06 UTC.
+- Obiettivo: risolvere i P1 della review indipendente su PR #12, con priorità alla serializzazione globale delle mutazioni Saved Places e al gate del validatore concettuale.
+- Stato finale: **parziale / bloccato sul gate governance**. Il P1 funzionale è stato corretto e coperto da checker; il validatore canonico non è stato eseguito su un checkout completo finale e quindi non viene dichiarato PASS.
 - Branch: `nexo1/f1-saved-places-core`.
-- Pull request: PR #12.
+- Pull request: PR #12 `feat(f1): saved places local-first core`.
 - Base verificata: `main` `213fb129201230c3875e5fb8fc157260f995fe04`.
-- Backup precedente head: `backup/nexo1-pr12-before-realign-20260821` → `7bdb7677659e0f2774da3291f5fdebc392d7527a`.
+- PR verificata prima della consegna: OPEN, DRAFT, mergeable, non mergeata.
 
-## Commit creati
-1. `9c25cdf856d88a6abdd7de39773aa7963590cad0` — `feat(f1): realign saved places core with current main`; ricostruzione controllata sopra la main corrente.
-2. `8988aad4e70d6081dec12e4454c37c983c01e03d` — `fix(f1): close saved places review findings`; correzione dei tre P1 funzionali e aggiornamento checker/reporting.
-3. `HEAD` — commit documentale conclusivo che registra la cronologia completa e riallinea rapporto/LATEST/Fabio. Il proprio SHA non può essere hardcodato nello stesso contenuto senza auto-riferimento circolare; lo SHA esatto viene registrato sulla Coordination Board #11 e nella richiesta di NEXO REVIEW.
+## READ realmente eseguito
+Sono stati riletti/verificati tramite GitHub connector:
+- `AGENTS.md`;
+- Issue #11 — NEXO Coordination Board, inclusi mandato lungo NEXO 1 e CHANGES REQUIRED di NEXO REVIEW;
+- PR #12 e review/thread pertinenti;
+- stato reale di `main` e della PR #12;
+- `frontend/src/features/saved-places/{types,codec,repository,service,index}.ts`;
+- `frontend/scripts/check-saved-places.mjs`;
+- `scripts/check_conceptual_master.py` e i file che esso richiede;
+- aree concorrenti: PR #17/#18 e vincolo di non interferenza con iOS/EAS/TestFlight.
 
-## READ / PLAN
-- `AGENTS.md` letto integralmente.
-- Issue #11 e aggiornamenti successivi alla precedente attività letti.
-- Incarico NEXO 1 verificato: chiusura PR #12 con riallineamento controllato.
-- Vincolo Coordinatore rispettato: nessuna modifica o rilancio iOS/EAS/TestFlight, credenziali, `app.json`, `eas.json`, workflow TestFlight, voice core, surface contracts o Android build config.
-- Vecchio head salvato prima del riallineamento.
-- Branch ricostruito direttamente sopra la main corrente, preservando solo core saved-places, checker, registro concettuale e reporting aggiornato.
+## P1 funzionale — diagnosi
+La prima correzione spostava la coda dalla singola `SavedPlacesService` al repository, ma la coda era inizialmente indicizzata per **identità dell'oggetto storage**. Questo proteggeva due repository che condividono la stessa istanza `SavedPlacesStorage`, ma non due adapter distinti che puntano allo stesso backend AsyncStorage globale e alla stessa chiave.
 
-## Correzioni P1 applicate
-1. **Read failure non più confuso con lista vuota.** Il feature adapter usa AsyncStorage direttamente e restituisce un risultato `ok/value`; `LocalSavedPlacesRepository.list()` lancia `SavedPlacesStorageReadError` su failure e blocca qualsiasi successiva mutazione basata su fallback.
-2. **Mutazioni serializzate.** `SavedPlacesService` usa una queue interna per serializzare create/update/remove/reorder e impedire lost update da snapshot concorrenti.
-3. **Conferma destinazione versionata.** `confirmNavigation(id)` produce una conferma con `savedPlaceId`, `destinationText`, `updatedAt`; `navigationRequest()` rifiuta con `SavedPlaceStaleConfirmationError` se il luogo è cambiato dopo la conferma.
+Durante VERIFY questo limite è stato individuato prima della riconsegna. La soluzione finale serializza quindi le mutazioni per **namespace/chiave canonica di Saved Places**, non per identità dell'adapter. In questo modo repository e service distinti nello stesso runtime JS non possono eseguire contemporaneamente read-modify-write sulla stessa collezione `nexo.saved-places.v1`.
 
-## File funzionali
-- `frontend/src/features/saved-places/types.ts`
-- `frontend/src/features/saved-places/codec.ts`
-- `frontend/src/features/saved-places/repository.ts`
-- `frontend/src/features/saved-places/service.ts`
-- `frontend/src/features/saved-places/index.ts`
-- `frontend/scripts/check-saved-places.mjs`
+## Modifiche funzionali reali
+Commit della correzione successiva allo SHA revisionato `c5bb2e2b358f1319453697304a9e23ec775d81cc`:
+1. `32153cad7277a274c8d2dea6026013b50fc61aeb` — prima serializzazione condivisa nel repository.
+2. `c5df731e81c8bc46bf0dba556faed1b8d6030003` — contratto `SavedPlacesRepository.mutate<T>` / `SavedPlacesMutation<T>`.
+3. `9048424ebbc857e09ee52f9c45bd4ed315c10fee` — service migrato da queue per istanza a transazioni repository.
+4. `fdb641cedb9d56f7db1b6ca961d4ab95b9456b1c` — prima regressione cross-instance.
+5. `fe7cebb31b8ed5fd35238c93c654adaa3b7cbb00` — serializzazione rinforzata per namespace/chiave, indipendente dall'identità dell'adapter storage.
+6. `3fba5b39ad1aaccbf99353db2be8a42e247ec745` — regressione con **due adapter storage distinti** sullo stesso backend simulato.
 
-## File di governance/reporting
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md`
-- `docs/codex-reports/2026-08-21_204600_nexo1-pr12-realign.md`
-- `docs/codex-reports/LATEST.md`
-- `Fabio/FABIO_CONTROLLO.md`
+File funzionali modificati in questa correzione:
+- `frontend/src/features/saved-places/repository.ts`;
+- `frontend/src/features/saved-places/types.ts`;
+- `frontend/src/features/saved-places/service.ts`;
+- `frontend/scripts/check-saved-places.mjs`.
 
-## Registro concettuale
-- `C001`: `[ ]`, `parziale` — core locale presente, UI non integrata.
-- `C002`: `[ ]`, `parziale` — CRUD/reorder locale presente, UI non integrata.
-- `C003`: `concettuale`, fuori perimetro funzionale.
-- `C005`: `[ ]`, `parziale` — guardia core presente, integrazione suggerimenti/UI assente.
+Nessuna modifica funzionale a iOS/EAS/TestFlight, credenziali, mappe/provider, voice core, surface core, PR #17 o PR #18.
 
 ## VERIFY realmente eseguito
-### TypeScript strict
-Working directory ricostruita dal contenuto letto via GitHub connector.
-```sh
-tsc --strict --target ES2022 --module commonjs --moduleResolution node --skipLibCheck --outDir out/features/saved-places src/features/saved-places/*.ts
-```
-Esito: PASS, exit code 0.
+### 1. Confronto remoto della correzione iniziale
+Tramite GitHub connector è stato confrontato `c5bb2e2...` → `fdb641c...`:
+- `ahead_by=4`;
+- `behind_by=0`;
+- file toccati: esattamente i quattro file Saved Places sopra indicati.
 
-### Checker comportamentale
+Dopo questo controllo sono stati aggiunti i due commit di rinforzo `fe7cebb...` e `3fba5b3...`; il diff finale remoto deve essere nuovamente verificato prima della consegna a review.
+
+### 2. TypeScript / checker comportamentale in harness locale ricostruito
+Il runtime di questa chat non dispone del checkout GitHub né delle dipendenze del repository. I file Saved Places correnti sono stati ricostruiti in `/tmp/nexo1verify` dai contenuti letti via connector. Per permettere il caricamento runtime di `repository.js` è stato creato **solo nel workspace temporaneo**, non nel repository, uno stub di `@react-native-async-storage/async-storage`.
+
+Primo tentativo di output directory:
 ```sh
+cd /tmp/nexo1verify/frontend
+npx tsc --strict --target ES2022 --module node16 --moduleResolution node16 --skipLibCheck --outDir ../../out/features/saved-places src/features/saved-places/*.ts
 node scripts/check-saved-places.mjs
 ```
-Esito: PASS, exit code 0. Output: `saved-places checks: PASS`.
-Copertura: create Home/Work concorrenti senza lost update, unicità Home, persistenza, caratteri speciali/newline, icone rapide, stale confirmation rifiutata, conferma fresca accettata, reorder, read failure senza perdita dati, delete, write failure.
+Esito: TypeScript exit `0`; checker exit `1` perché l'output era stato scritto un livello troppo in alto rispetto all'import `../../out/...` del checker. Questo tentativo **non è PASS**.
 
-### Confronto branch rispetto a main
-Verifica GitHub connector dopo il commit funzionale `8988aad...`: branch `ahead_by=2`, `behind_by=0`; esattamente 10 file nel diff, tutti appartenenti al perimetro saved-places + conceptual/reporting. Nessun file iOS/EAS/TestFlight presente.
+Secondo tentativo con output relativo corretto:
+```sh
+cd /tmp/nexo1verify/frontend
+npx tsc --strict --target ES2022 --module node16 --moduleResolution node16 --skipLibCheck --outDir ../out/features/saved-places src/features/saved-places/*.ts
+node scripts/check-saved-places.mjs
+```
+Esito iniziale: TypeScript exit `0`; checker exit `1` per `MODULE_NOT_FOUND: @react-native-async-storage/async-storage` nel workspace temporaneo.
 
-### Review thread
-Tre P1 funzionali precedenti (read fallback distruttivo, race read-modify-write, stale confirmation) sono stati ricontrollati dopo la correzione e risolti. I vecchi rilievi documentali su percorso checker e copia LATEST sono diventati obsoleti e sono stati risolti dopo la sostituzione del rapporto.
+È stato quindi aggiunto soltanto nel test harness `/tmp/nexo1verify/node_modules/@react-native-async-storage/async-storage/index.js` uno stub minimale, perché i test usano `MemoryStorage` e non invocano l'adapter reale. Nuova esecuzione:
+```sh
+cd /tmp/nexo1verify/frontend
+node scripts/check-saved-places.mjs
+```
+Esito: exit `0`; output `saved-places checks: PASS`.
 
-### Limite ambiente — validatore concettuale
-Il clone diretto del repository nell'ambiente shell è fallito con `Could not resolve host: github.com`. Questa sessione non dispone quindi di un checkout completo da passare a `python3 scripts/check_conceptual_master.py .`. Il validatore globale non è stato eseguito e **non viene dichiarato PASS**. Il relativo vecchio rilievo resta intenzionalmente non nascosto: NEXO REVIEW deve valutarlo come limite di ambiente o richiedere un'esecuzione da un ambiente con checkout completo.
+Copertura del checker corrente:
+- create Home/Work concorrenti;
+- unicità Home/Work;
+- persistenza e codec con caratteri speciali/newline;
+- icone rapide Home/Work;
+- update/delete/reorder;
+- read failure senza perdita dati;
+- write failure;
+- stale navigation confirmation;
+- **due `SavedPlacesService` distinti, due `LocalSavedPlacesRepository` distinti e due adapter `MemoryStorage` distinti che condividono lo stesso backend simulato**, con create Home/Work concorrenti e verifica che entrambe le scritture sopravvivano.
 
-## Verificato
-- main corrente e head PR precedente;
-- backup del vecchio head;
-- branch riallineato alla main corrente;
-- correzioni dei 3 P1 funzionali;
-- compilazione strict e checker comportamentale post-correzione;
-- diff/perimetro tramite GitHub connector;
-- nessuna modifica a iOS/EAS/TestFlight o credenziali;
-- stato concettuale conservativo.
+**Limite importante:** questo controllo è stato eseguito su un harness ricostruito dai contenuti letti via connector, non su un checkout byte-per-byte del branch. Per questo viene registrato come evidenza comportamentale utile, ma non sostituisce un controllo finale su checkout completo.
 
-## Non verificato / fuori perimetro
-- UI reale e test su device;
-- map/search/voice/routing;
-- comportamento reale AsyncStorage su device;
-- EAS Build, TestFlight, firma Apple e credenziali;
-- validatore globale del registro, per limite ambiente sopra descritto.
+### 3. Validatore canonico `scripts/check_conceptual_master.py`
+È stato letto realmente lo script corrente. Il validatore usa esclusivamente file locali e non richiede rete durante l'esecuzione, ma questa sessione non possiede un checkout completo da passargli.
+
+Tentativo di ottenere i file direttamente dal runtime via GitHub/raw URL:
+- rete del container non disponibile per GitHub / DNS (`Temporary failure in name resolution` / precedente `Could not resolve host: github.com`).
+
+Di conseguenza il comando richiesto:
+```sh
+python3 scripts/check_conceptual_master.py .
+```
+**NON è stato eseguito contro un checkout completo finale e NON viene dichiarato PASS.** Questo resta il blocco reale che impedisce a NEXO 1 di dichiarare PR #12 CLEAN/completata.
+
+## Verificato realmente
+- PR #12 resta DRAFT e non mergeata;
+- il P1 multi-instance esisteva nello SHA revisionato;
+- il service corrente usa il contratto repository `mutate` invece della queue per singola istanza;
+- la serializzazione finale è per namespace Saved Places nel runtime, quindi non dipende dall'identità dell'adapter storage;
+- il checker contiene una regressione con due adapter distinti sullo stesso backend simulato;
+- il checker dell'harness ricostruito termina PASS dopo la predisposizione locale dello stub runtime;
+- nessun file iOS/EAS/TestFlight è stato intenzionalmente modificato in questa correzione.
+
+## Deducibile ma non dichiarato come verifica finale
+La nuova serializzazione per chiave elimina nel singolo runtime JavaScript il lost-update fra repository/service distinti che operano sulla stessa collezione Saved Places. Non dimostra atomicità fra processi/runtime separati; tale scenario non è richiesto dal core local-first corrente e richiederebbe un meccanismo di storage transazionale esterno.
+
+## Non verificato / blocchi
+- `python3 scripts/check_conceptual_master.py .` su checkout completo finale: **BLOCCATO dall'assenza di checkout/materializzazione completa nel runtime della chat**.
+- test su device/UI: non eseguiti, fuori perimetro del core.
+- workflow CI sullo SHA corrente: nessun run dedicato disponibile al momento del controllo.
+
+## Stato requisito concettuale
+Nessuna casella viene promossa a `[x]`:
+- C001: `[ ]`, `parziale`;
+- C002: `[ ]`, `parziale`;
+- C003: `concettuale`, fuori perimetro;
+- C005: `[ ]`, `parziale`.
 
 ## Rischi residui
-- Il core non è ancora integrato nella UI; C001/C002/C005 restano correttamente parziali.
-- Review indipendente ancora necessaria sullo SHA finale.
+- Gate governance del validatore concettuale ancora aperto.
+- PR #12 deve restare DRAFT finché NEXO REVIEW non rivaluta il nuovo SHA e il Coordinatore non autorizza diversamente.
+- La serializzazione è in-process; non è una transazione cross-process.
 
-## Prossimo passo
-PR #12 resta DRAFT. Richiedere NEXO REVIEW indipendente sullo SHA esatto finale. Solo il Coordinatore potrà renderla ready e decidere il merge dopo verdetto CLEAN. Nessun `@codex review`.
+## Prossimo passo consigliato
+1. verificare il diff remoto finale e lo SHA dopo reporting;
+2. consegnare PR #12 a NEXO REVIEW dichiarando esplicitamente il gate validator non chiuso;
+3. non effettuare merge;
+4. appena disponibile un ambiente con checkout completo, eseguire `python3 scripts/check_conceptual_master.py .`, registrare exit code/output e riconsegnare lo SHA finale.
+
+## Decisioni richieste a Fabio
+Nessuna decisione di prodotto. Il blocco è esclusivamente di evidenza/verifica; nessun workaround o rilancio iOS è necessario.
