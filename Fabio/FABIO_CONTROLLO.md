@@ -4,36 +4,44 @@
 > `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
-- **Data:** 21 agosto 2026, 20:46 UTC
-- **Attività:** NEXO 1 — riallineamento e correzione PR #12 Saved Places core.
-- **Stato:** core riallineato alla main corrente e tre P1 funzionali corretti; PR #12 resta DRAFT in attesa di NEXO REVIEW.
+- **Data:** 22 agosto 2026, 00:06 UTC
+- **Attività:** NEXO 1 — correzione CHANGES REQUIRED PR #12 Saved Places core.
+- **Stato:** P1 funzionale multi-instance corretto e rinforzato; PR #12 resta DRAFT. Gate governance del validatore concettuale ancora BLOCCATO nell'ambiente di questa chat.
 - **Branch:** `nexo1/f1-saved-places-core`
 - **Pull request:** PR #12
 - **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`
-- **Commit funzionali creati:** `9c25cdf856d88a6abdd7de39773aa7963590cad0`, `8988aad4e70d6081dec12e4454c37c983c01e03d`; commit documentale finale registrato come `HEAD` nel rapporto e con SHA esatto sulla Board.
 
 ## Cosa è stato fatto realmente
-- Vecchio head salvato in `backup/nexo1-pr12-before-realign-20260821`.
-- Read failure storage ora blocca la mutazione invece di simulare una lista vuota.
-- Create/update/remove/reorder sono serializzati per evitare lost update concorrenti.
-- La conferma navigazione è legata a destinazione + `updatedAt` e viene rifiutata se stale.
+- La serializzazione non è più confinata alla singola `SavedPlacesService`.
+- Create/update/remove/reorder usano `SavedPlacesRepository.mutate`.
+- La coda finale è indicizzata dal namespace/chiave canonica Saved Places, quindi copre repository e adapter storage distinti nello stesso runtime che puntano alla stessa collezione.
+- Il checker include una regressione con due service, due repository e due adapter storage distinti sullo stesso backend simulato.
+- Restano invariati read-failure safety e stale navigation confirmation.
 - C001/C002/C005 restano `[ ]` e `parziale`; C003 resta `concettuale`.
-- Nessuna modifica a iOS/EAS/TestFlight, credenziali, `app.json`, `eas.json`, workflow, voice core, surface contracts o Android build config.
+- Nessuna modifica a iOS/EAS/TestFlight, credenziali, map provider, voice core, surface core o PR #17/#18.
+
+## Commit della correzione dopo lo SHA revisionato
+- `32153cad7277a274c8d2dea6026013b50fc61aeb`
+- `c5df731e81c8bc46bf0dba556faed1b8d6030003`
+- `9048424ebbc857e09ee52f9c45bd4ed315c10fee`
+- `fdb641cedb9d56f7db1b6ca961d4ab95b9456b1c`
+- `fe7cebb31b8ed5fd35238c93c654adaa3b7cbb00`
+- `3fba5b39ad1aaccbf99353db2be8a42e247ec745`
+- reporting successivo registrato nel rapporto più recente e sulla Board.
 
 ## Controlli
-- TypeScript strict post-correzione: **PASS**, exit `0`.
-- `node scripts/check-saved-places.mjs`: **PASS**, exit `0`, output `saved-places checks: PASS`.
-- Checker copre concorrenza Home/Work, stale confirmation, read failure senza perdita dati, CRUD/reorder e write failure.
-- Diff/perimetro verificato via GitHub connector: branch riallineato, nessun file iOS/EAS/TestFlight nel diff.
-- Clone GitHub nell'ambiente shell: **NON DISPONIBILE** (`Could not resolve host: github.com`).
-- Validatore globale concettuale: **NON ESEGUITO** perché la sessione non dispone di checkout completo e il clone di rete non è disponibile; non dichiarato PASS.
-- Test UI/device: **non eseguito**, fuori perimetro.
+- TypeScript strict nel test harness ricostruito: **exit 0**.
+- Checker comportamentale nel test harness ricostruito: **PASS**, exit `0`, output `saved-places checks: PASS` dopo uno stub temporaneo locale di AsyncStorage non committato.
+- Il primo tentativo checker con output directory errata e il secondo senza modulo runtime sono stati registrati come **FAIL**, non nascosti.
+- GitHub diff della prima parte della correzione verificato; VERIFY remoto finale da rieseguire dopo reporting.
+- `scripts/check_conceptual_master.py .` su checkout completo finale: **NON ESEGUITO / BLOCCATO** perché il runtime della chat non dispone del checkout completo e la rete container verso GitHub fallisce per DNS. Nessun PASS dichiarato.
+- Test UI/device: non eseguito, fuori perimetro.
 
 ## Problemi / residui
-- UI, map/search/voice/routing restano separati.
-- Il vecchio rilievo sul validatore concettuale resta noto e non viene nascosto; NEXO REVIEW deve valutarlo sullo SHA finale.
-- PR #12 deve ottenere verdetto CLEAN da NEXO REVIEW.
+- Il P1 funzionale è corretto, ma la review non può essere dichiarata CLEAN da NEXO 1.
+- Il gate del validatore concettuale richiede un ambiente con checkout completo.
+- PR #12 deve restare DRAFT e va riconsegnata a NEXO REVIEW con lo SHA finale.
 - Merge vietato finché il Coordinatore non autorizza il passo successivo.
 
 ## Cosa deve fare Fabio adesso
-Nulla. NEXO 1 consegna PR #12 a NEXO REVIEW; nessun intervento manuale richiesto.
+Nulla. Il blocco residuo è tecnico/di verifica e non richiede una decisione di prodotto.
