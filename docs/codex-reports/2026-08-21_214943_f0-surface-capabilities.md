@@ -1,86 +1,94 @@
 # NEXO 2 — F0 Surface Capabilities provider-neutral
 
+- **Data/ora UTC handoff N2.1:** 2026-08-22 00:26 UTC
 - **Branch:** `nexo2/f0-surface-capabilities`
-- **Base verificata:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`
+- **Base originaria verificata:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`
 - **PR:** #20 — DRAFT
 - **Requisiti/ID:** V05, V44, V45, V46
-- **Stato:** correzioni P1 di NEXO REVIEW applicate; nuova review richiesta dopo VERIFY finale.
+- **Task Control Plane:** N2.1 — CLOSE PR #20 REPORTING / VERIFY P1
+- **Stato finale N2.1:** completato per handoff; PR resta DRAFT in attesa di NEXO REVIEW.
 
 ## Obiettivo
 
-Creare il primo contratto provider-neutral delle Surface NEXO (`ios-phone`, `android-phone`, `carplay`, `android-auto`) senza implementare UI/runtime automotive reale, provider, entitlement, template CarPlay o host Android Auto.
+Chiudere il P1 di reporting/VERIFY senza ricominciare il lavoro: preservare il fix funzionale già presente, rendere coerenti rapporto storico, `LATEST.md` e `Fabio/FABIO_CONTROLLO.md`, registrare exact SHA e riconsegnare PR #20 a NEXO REVIEW.
 
-## Implementazione
+## Verificato realmente
 
-Il modulo `frontend/src/core/surface/` definisce contratto versionato, capability, availability runtime, policy prodotto, vincoli moving/stopped, ruolo Driver/Passenger e profili conservativi phone/automotive. Il core non importa API Apple/Google e non deduce availability dal nome della Surface.
+- `AGENTS.md` letto su `main`.
+- Issue #11 letta per governance/conflitti/ownership e stato storico.
+- `coordination/agents/README.md`, `coordination/agents/NEXO_2.md` e `coordination/reports/NEXO_2_REPORT.md` letti sul branch `coordination/agent-control`.
+- PR #20 verificata OPEN / DRAFT / mergeable prima del commit N2.1, HEAD `dbb78f17fec64cabd3537e8c80ca7998da54b696`, 13 commit e 9 file modificati.
+- Stato CI sullo SHA `dbb78f17...`: nessun commit status restituito da GitHub; quindi nessun CI PASS viene dichiarato.
+- `frontend/src/core/surface/policy.ts` verificato sul branch: `availability` preserva `reportedAvailability`; `usable` è false quando policy è `prohibited`.
+- `frontend/scripts/check-surface-capabilities.ts` verificato sul branch: contiene assertion esplicite per `available + prohibited` e `degraded + prohibited`.
+- conceptual verificato: V05/V44/V45/V46 restano `[ ]` / `parziale` con riferimenti a PR #20, fix, test/checker e limiti runtime.
 
-La funzione `resolveSurfaceCapability` mantiene **ortogonali** policy e availability: `availability` conserva sempre il valore riportato dal runtime/adattatore; `policy = prohibited` rende `usable = false` senza riscrivere l'availability a `unsupported`.
+## Implementazione già presente e preservata
 
-## Correzioni review PR #20
+- `3541d2fda8f10929ffa253b2f35d833d424102f1` — fix policy/availability.
+- `a69af5635e591cbfa985bfb8c173b124cce1f85f` — checker ortogonalità.
+- `f52e2f24882becb612439c24dc9fdc3fbf2541e8` — evidenze conceptual.
 
-NEXO REVIEW sullo SHA `5a98d959370f95a66dc1ac6e9f8ec6ab7bc9c765` ha rilevato due P1.
+N2.1 non altera il comportamento funzionale Surface: corregge e chiude esclusivamente reporting/handoff sul lavoro già esistente.
 
-### P1.1 — policy/availability
+## Test/check realmente eseguiti e recuperati
 
-Corretto in:
-- `3541d2fda8f10929ffa253b2f35d833d424102f1` — `frontend/src/core/surface/policy.ts` preserva `reportedAvailability` anche con policy `prohibited`, con `usable = false`.
-- `a69af5635e591cbfa985bfb8c173b124cce1f85f` — checker aggiornato con prova esplicita `available + prohibited` e ulteriore caso `degraded + prohibited`; in entrambi availability resta quella runtime e la capability resta inutilizzabile.
-
-### P1.2 — evidenze concettuali
-
-Corretto in:
-- `f52e2f24882becb612439c24dc9fdc3fbf2541e8` — `docs/product/NEXO_CONCEPTUAL_MASTER.md` mantiene V05/V44/V45/V46 `[ ]` / `parziale` e aggiunge evidenze riproducibili con PR #20, commit di fix, commit test e checker pertinente.
-
-Nessuna voce è stata marcata `[x]`.
-
-## VERIFY realmente eseguito dopo le correzioni
-
-Il clone Git completo del repository nel runtime shell continua a fallire per DNS (`Could not resolve host: github.com`), quindi non viene dichiarato alcun checkout completo o lint globale PASS.
-
-È stato ricostruito localmente il modulo Surface esatto dai contenuti GitHub del branch e sono stati eseguiti:
+Il VERIFY funzionale post-fix già eseguito sul modulo Surface ricostruito dai contenuti GitHub del branch è:
 
 ```sh
 tsc --strict --target ES2022 --module node16 --moduleResolution node16 --skipLibCheck --outDir /tmp/nexo2verify/out src/core/surface/*.ts scripts/check-surface-capabilities.ts
 node /tmp/nexo2verify/out/scripts/check-surface-capabilities.js
 ```
 
-**Exit code:** 0  
-**Output:** `surface-capabilities checks: PASS`
+- **Exit code:** 0
+- **Output:** `surface-capabilities checks: PASS`
+- **Limite:** checkout Git completo non disponibile nel runtime shell per DNS (`Could not resolve host: github.com`); lint globale/repository checkout non dichiarati PASS.
 
-Casi verificati includono:
-- quattro Surface presenti;
-- regole automotive precedono il ruolo;
-- availability `available` preservata con policy `prohibited`;
-- availability `degraded` preservata con policy `prohibited`;
-- `usable = false` quando policy proibisce la capability;
-- free text bloccato su automotive e telefono in movimento;
-- touch budget conservativo;
-- runtime `unsupported` non viene inferito/alterato dal `SurfaceKind`;
-- Passenger non bypassa i limiti automotive.
+Per N2.1 è stato inoltre interrogato GitHub sul commit status dello SHA pre-handoff `dbb78f17...`: lista status vuota. Questo è registrato come **nessun check CI disponibile**, non come PASS.
 
-## Limiti dichiarati
+## File della PR
 
-Non verificati né implementati: runtime CarPlay/Android Auto, entitlement, template/host nativi, UI finale, mappe/routing reali, test in auto, EAS/TestFlight, credenziali. Nessuna nuova dipendenza aggiunta.
+Funzionali/check già presenti:
+- `frontend/src/core/surface/types.ts`
+- `frontend/src/core/surface/profiles.ts`
+- `frontend/src/core/surface/policy.ts`
+- `frontend/src/core/surface/index.ts`
+- `frontend/scripts/check-surface-capabilities.ts`
 
-## Concorrenza
+Concettuale/reporting:
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md`
+- `docs/codex-reports/2026-08-21_214943_f0-surface-capabilities.md`
+- `docs/codex-reports/LATEST.md`
+- `Fabio/FABIO_CONTROLLO.md`
 
-Non toccati: saved-places/location NEXO 1, voice NEXO 3, navigation NEXO CODEX, Android workflow, `app.json`, `eas.json`, TestFlight/credenziali. I file documentali condivisi restano da serializzare dal Coordinatore prima di un eventuale merge.
+Nessun file location/saved-places, voice, navigation, Android workflow, `app.json`, `eas.json`, TestFlight o credenziale viene toccato da N2.1.
 
-## Commit principali
+## Dedotto ma non dimostrato runtime
 
-- `dfc1380ae5934d753450068ed1475cbcd8c8f8f0` — tipi Surface.
-- `1dde5afb9669003a4823d4a294cb42f4b64534a1` — profili Surface.
-- `ae9d809f50bda52133e51d67f03f6402873d5b20` — policy iniziale.
-- `a1e8bbf7269b867625c8cdd2e7cdec955367fb43` — API pubblica.
-- `4f4759c0d5f1b43aeee91037e31a195d928d96d4` — checker iniziale.
-- `6abb17c5addf847282941727591ffae55e10f53a` — conceptual iniziale.
-- `5a98d959370f95a66dc1ac6e9f8ec6ab7bc9c765` — reporting/consegna iniziale revisionata.
-- `3541d2fda8f10929ffa253b2f35d833d424102f1` — fix availability/policy.
-- `a69af5635e591cbfa985bfb8c173b124cce1f85f` — checker ortogonalità rafforzato.
-- `f52e2f24882becb612439c24dc9fdc3fbf2541e8` — evidenze conceptual riproducibili.
+Il contratto è predisposto per adapter futuri phone/CarPlay/Android Auto, ma non dimostra entitlement, template, host, UI automotive o funzionamento in auto.
 
-Il commit finale che aggiorna reporting viene registrato sulla Board dopo la pubblicazione, evitando auto-riferimenti circolari.
+## Non verificato / limiti
+
+- Nessun runtime CarPlay/Android Auto.
+- Nessun test in auto o simulatore automotive.
+- Nessun lint globale del repository.
+- Nessuna EAS Build/TestFlight.
+- Nessuna credenziale Apple/EAS modificata.
+- Nessun CI status disponibile sullo SHA pre-handoff.
+
+## Errori e warning
+
+- Limite storico shell: clone Git completo fallito per DNS.
+- Nessun nuovo errore funzionale rilevato nel perimetro N2.1.
+- I file documentali condivisi della PR possono richiedere serializzazione/riallineamento dal Coordinatore prima del merge.
+
+## Stato review
+
+PR #20 resta DRAFT. N2.1 produce un nuovo SHA documentale e richiede una nuova review indipendente NEXO REVIEW sullo SHA esatto risultante. Nessun CLEAN viene dichiarato da NEXO 2 e nessun merge viene eseguito.
 
 ## Prossimo passo
 
-VERIFY remoto finale di PR #20 sul nuovo SHA, conferma DRAFT/mergeability/perimetro, quindi nuova review indipendente NEXO REVIEW. N2.2 non parte finché N2.1 non è riconsegnato secondo la coda Batch.
+1. Verificare il nuovo HEAD remoto dopo questo aggiornamento e dopo l'allineamento di `LATEST.md`/`FABIO_CONTROLLO.md`.
+2. Registrare exact SHA nel Control Plane/report personale.
+3. Handoff a NEXO REVIEW.
+4. N2.2 resta non eleggibile finché NEXO REVIEW non revisiona il nuovo SHA.
