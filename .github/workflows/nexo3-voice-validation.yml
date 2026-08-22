@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -20,9 +20,6 @@ jobs:
     steps:
       - name: Checkout exact branch content
         uses: actions/checkout@v4
-        with:
-          ref: nexo3/f0-voice-command-core
-          fetch-depth: 0
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -31,57 +28,6 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - name: Install frontend dependencies
         run: npm ci
-      - name: Align N3.2R conceptual and reporting once
-        working-directory: .
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          master = Path('docs/product/NEXO_CONCEPTUAL_MASTER.md')
-          text = master.read_text(encoding='utf-8')
-          replacements = {
-            "| [ ] | `V02` | NEXO + VEO — un solo assistente | concettuale | — | memory/NEXO_VEO_VISION.md §2 |":
-            "| [ ] | `V02` | NEXO + VEO — un solo assistente | parziale | PR #17 provider-neutral Voice Intent → Command core; exact-head checker/strict compile tramite NEXO 3 Voice Validation; nessun STT/TTS/wake-word runtime | memory/NEXO_VEO_VISION.md §2 |",
-            "| [ ] | `V03` | Voice-First | concettuale | — | memory/NEXO_VEO_VISION.md §3 |":
-            "| [ ] | `V03` | Voice-First | parziale | PR #17 command path provider-neutral e fail-closed; exact-head checker/strict compile tramite NEXO 3 Voice Validation; microfono/STT/TTS e parity touch runtime non implementati | memory/NEXO_VEO_VISION.md §3 |",
-            "| [ ] | `V34` | Navigazione conversazionale | concettuale | — | memory/NEXO_VEO_VISION.md §34 |":
-            "| [ ] | `V34` | Navigazione conversazionale | parziale | PR #17 parser deterministico per comandi base con destinazione pre-risolta; nessuna destinazione inventata; NLU conversazionale completa non implementata | memory/NEXO_VEO_VISION.md §34 |",
-          }
-          changed = False
-          for old, new in replacements.items():
-            if old in text:
-              text = text.replace(old, new, 1)
-              changed = True
-            elif new not in text:
-              raise SystemExit(f'Expected conceptual row not found: {old}')
-          if changed:
-            master.write_text(text, encoding='utf-8')
-
-          report_path = Path('docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md')
-          report = '''# NEXO 3 — N3.2R finalizzazione PR #17 Voice Intent → Command\n\n- Data e ora UTC: 2026-08-22 09:58 UTC\n- Task: N3.2R — PR #17 minimal reconciliation to current main + final evidence / review handoff\n- Stato: completato lato autore, in attesa di NEXO REVIEW\n- Branch: `nexo3/f0-voice-command-core`\n- PR: #17 (DRAFT)\n- Base incorporata: `ba39d977072231d69ef848b1cc9ae2637b556c72`\n- Exact SHA finale: non noto al momento della generazione del rapporto; verificare l'HEAD della PR #17 e la run `NEXO 3 Voice Validation` associata.\n\n## Verificato realmente\n- PR #17 è stata riconciliata sulla main corrente preservando il Voice core e il TestFlight manual-only introdotto da main.\n- V02, V03 e V34 restano `[ ]` e sono aggiornati conservativamente a `parziale`.\n- Nessun STT, TTS, microfono, wake-word runtime, provider mappe, runtime CarPlay/Android Auto o TestFlight è stato implementato o rilanciato.\n- La workflow dedicata `NEXO 3 Voice Validation` esegue sul checkout completo: `npm ci`, `node frontend/scripts/check-voice-command-core.mjs` e `python3 scripts/check_conceptual_master.py .`.\n\n## Comandi/check riproducibili\n- `cd frontend && npm ci`\n- `cd frontend && node scripts/check-voice-command-core.mjs`\n- `python3 scripts/check_conceptual_master.py .`\n\n## Esito\nL'esito conclusivo deve essere letto dalla run GitHub Actions associata all'exact HEAD finale. Il rapporto non anticipa né inventa PASS.\n\n## File pertinenti\n- `frontend/src/voice/command-core.ts`\n- `frontend/scripts/check-voice-command-core.mjs`\n- `docs/product/NEXO_CONCEPTUAL_MASTER.md`\n- `.github/workflows/nexo3-voice-validation.yml`\n- questo rapporto\n- `docs/codex-reports/LATEST.md`\n- `Fabio/FABIO_CONTROLLO.md`\n\n## Limiti residui\nIl core è foundation provider-neutral, non una Voice UX completa. V02/V03/V34 non sono implementati come funzioni utente e restano `[ ] / parziale`.\n\n## Prossimo passo\nHandoff dell'exact SHA a NEXO REVIEW. Nessun merge o passaggio Ready autonomo.\n'''
-          if not report_path.exists():
-            report_path.write_text(report, encoding='utf-8')
-
-          latest = Path('docs/codex-reports/LATEST.md')
-          expected_latest = f"Rapporto corrente: `{report_path.as_posix()}`\n\n" + report
-          if latest.read_text(encoding='utf-8') != expected_latest:
-            latest.write_text(expected_latest, encoding='utf-8')
-
-          dashboard = Path('Fabio/FABIO_CONTROLLO.md')
-          dash = dashboard.read_text(encoding='utf-8')
-          marker = '## NEXO 3 — PR #17 Voice core — 2026-08-22 09:58 UTC'
-          block = f'''\n\n{marker}\n- Stato: consegna autore in preparazione per NEXO REVIEW; PR #17 resta DRAFT.\n- Main incorporata: `ba39d977072231d69ef848b1cc9ae2637b556c72`.\n- Modifiche: Voice Intent → Command core provider-neutral + checker; V02/V03/V34 `[ ] / parziale`.\n- Verifica: GitHub Actions `NEXO 3 Voice Validation` esegue Voice checker/TypeScript strict e conceptual validator sul checkout completo.\n- Limiti: nessun STT/TTS/microfono/wake-word runtime, provider o automotive runtime.\n- Prossimo passo per Fabio: nessuna azione; attesa NEXO REVIEW/Coordinatore.\n'''
-          if marker not in dash:
-            dashboard.write_text(dash.rstrip() + block, encoding='utf-8')
-          PY
-          if ! git diff --quiet; then
-            git config user.name "NEXO 3"
-            git config user.email "actions@users.noreply.github.com"
-            git add docs/product/NEXO_CONCEPTUAL_MASTER.md docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md docs/codex-reports/LATEST.md Fabio/FABIO_CONTROLLO.md
-            git commit -m "docs(voice): finalize N3.2R evidence"
-            git push origin HEAD:nexo3/f0-voice-command-core
-          fi
       - name: Voice checker
         run: node scripts/check-voice-command-core.mjs
       - name: Conceptual master validator
