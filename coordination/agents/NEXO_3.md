@@ -5,24 +5,26 @@ OWNER: NEXO 3
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
-- PR #17 `feat(voice): provider-neutral intent command core`: OPEN / DRAFT, exact HEAD `63accc216634a11c6235b1b7d88875d558d70cfc`.
-- N3.2 previously reconciled PR #17 to main `47b9d0a5...`; at that point PR became mergeable and diff was four voice-owned files.
-- PR #22 Location Contract has now merged. Current main is `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- Fresh PR metadata after the main advance reports PR #17 `mergeable=false`. Therefore the previous mergeability evidence is historical and N3.2 must reconcile again before conceptual/reporting finalization.
-- No workflow runs were associated with exact reconciliation HEAD `63accc216...`; do not invent final PASS.
+- Current main verified: `8d8dee4a31416acb38c2e654082ca15efafd6fec` (PR #22 Location Contract merged).
+- PR #17 `feat(voice): provider-neutral intent command core`: OPEN / DRAFT / **mergeable=true** on fresh metadata.
+- Current exact HEAD: `fc5932b685406dd566848afc0ab40f098cd00f2a`.
+- Current PR diff is reduced to 2 voice-owned files / 8 commits; no review threads are open.
+- No GitHub Actions workflow is associated with exact HEAD `fc5932b...`; therefore no exact-head CI PASS is claimed.
+- The old shared-file blocker from PR #12 is obsolete: PR #12 is merged and PR #22 is also merged. The remaining gate is now final N3.2 completion/evidence, not ownership blocking.
 - Do not touch location/surface/navigation/automotive native/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
 
 - [x] **N3.1 — PR #17 CURRENT-HEAD AUDIT / SAFE FREEZE**
-  - COMPLETED EVIDENCE: audited exact PR #17 HEAD `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317`; functional changes confined to voice core/checker; no CI PASS invented.
+  - COMPLETED EVIDENCE: audited prior voice-core state and preserved provider-neutral/fail-closed scope without inventing CI evidence.
 
-- [ ] **N3.2 — CURRENT-MAIN RECONCILIATION + PR #17 COMPLETION**
-  - START CONDITION: SATISFIED — current main is known and location PR #22 is merged; voice ownership remains isolated.
-  - FIRST REQUIRED ACTION: reconcile PR #17 against current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`, preserving Saved Places + Location Contract/C007 and reintroducing only legitimate voice-owned delta. Do not overwrite current-main conceptual/reporting.
-  - Goal remaining: finish PR #17 conceptual/reporting/test gates, rerun applicable checks on final content, exact-SHA handoff to NEXO REVIEW.
-  - PROOF REQUIRED: new exact SHA; PR mergeable; compare shows current main preserved; voice diff + necessary current-main-aware conceptual/reporting only; reproducible checker/test + conceptual validator evidence; explicit review handoff.
-  - CURRENT EVIDENCE: old HEAD `63accc216...` is now non-mergeable after PR #22 merge; N3.2 remains `[ ]` and must not be handed off until new reconciliation/final verify.
+- [ ] **N3.2 — PR #17 FINAL COMPLETION / EVIDENCE / REVIEW HANDOFF**
+  - START CONDITION: SATISFIED NOW — PR #12 and PR #22 are merged; fresh PR #17 metadata is mergeable=true on current main.
+  - CURRENT HEAD: `fc5932b685406dd566848afc0ab40f098cd00f2a`.
+  - FIRST REQUIRED ACTION: verify the exact current diff against main and confirm only legitimate voice-owned changes remain; do not reintroduce stale shared reporting state.
+  - Goal remaining: finish the minimum conceptual/reporting/test gates required by AGENTS.md, rerun reproducible voice checker/TypeScript/conceptual validator where applicable, produce a final exact SHA, keep PR DRAFT, and hand off to NEXO REVIEW.
+  - PROOF REQUIRED: final exact SHA; PR mergeable; current main preserved; voice checker/test evidence actually executed; conceptual/reporting evidence current-main-aware; no stale PR #12/#22 reporting overwrite; explicit REVIEW handoff + chat/GitHub report.
+  - IMPORTANT: current `mergeable=true` is necessary but NOT sufficient for merge. N3.2 remains `[ ]` until final evidence and REVIEW handoff exist.
 
 - [ ] **N3.3 — VOICE INTENT NORMALIZATION**
   - START CONDITION: N3.2 completed/reviewable and no exact-SHA review conflict.
@@ -48,6 +50,8 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, write chat + GitHub report, then immediately reread and start the next eligible task. A blocked task remains `[ ]` with blocker recorded.
 
 ## LAST EVIDENCE
-- 2026-08-22 04:05 UTC — main advanced via CLEAN PR #22 to `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- Fresh PR #17 metadata after that advance: OPEN/DRAFT, HEAD `63accc216...`, `mergeable=false`.
-- N3.2 remains ACTIONABLE but reconciliation is again the first gate; old mergeability=true must not be reused.
+- 2026-08-22 coordinator refresh: current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- PR #17 fresh metadata: OPEN / DRAFT / mergeable=true, exact HEAD `fc5932b685406dd566848afc0ab40f098cd00f2a`, 2 changed files.
+- Review threads: none.
+- Exact-head workflow runs: none.
+- N3.2 is ACTIONABLE NOW; do not wait for the obsolete PR #12 blocker.
