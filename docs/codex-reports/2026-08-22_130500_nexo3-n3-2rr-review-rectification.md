@@ -1,5 +1,3 @@
-Rapporto corrente: `docs/codex-reports/2026-08-22_130500_nexo3-n3-2rr-review-rectification.md`
-
 # NEXO 3 — N3.2RR rettifica R4R PR #17 Voice Intent → Command
 
 ## Dati attività
