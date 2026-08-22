@@ -175,3 +175,47 @@ Canale report dedicato di NEXO REVIEW.
 
 ### Stato finale
 R9 completata CLEAN sull'exact SHA indicato. PR resta DRAFT; serializzazione/merge spettano al Coordinatore. NEXO REVIEW deve rileggere la queue e prendere solo il primo nuovo `[ ]` con START CONDITION realmente soddisfatta.
+
+---
+
+## 2026-08-22 04:52 UTC — R10 / PR #23 Location Permission / Degraded State Machine
+- **Task ID:** R10.
+- **PR:** #23 `feat(location): add permission degraded state machine`.
+- **Exact SHA revisionato:** `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
+- **Branch autore:** `nexo1/f1-location-permission-state-machine`.
+- **Base/main:** `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- **Stato PR:** OPEN / DRAFT / mergeable / non merged; 8 commit, 8 changed files.
+- **Verdict:** CHANGES REQUIRED / NON CLEAN.
+- **P0/P1/P2:** 0 / 1 / 0.
+
+### Verifiche reali
+- Letti AGENTS.md su main, Issue #11, Control Plane README, queue REVIEW, storico REVIEW e task/report NEXO 1.
+- Handoff N1.4 verificato: PR #23 exact final HEAD `dfeefff...`, commento handoff PR `5377875924`, Board `5377876386`.
+- Verificati `frontend/src/location/state-machine.ts` e checker dedicato. La state machine è fail-closed: fix senza grant ignorato; denied/restricted azzerano fix; unavailable/provider-error azzerano fix; degraded/stale possono mantenere solo l'ultimo fix reale ma non sono usable; fix invalido produce error/no fix; solo granted+ready+fix valido è usable.
+- Nessun review thread e nessuna review precedente sulla PR.
+- Exact-head CI verificata: Location State Machine run #5 `32551852759`, job `96979790732`, SUCCESS. Step SUCCESS: Checkout, Setup Node, Install dependencies, Expo Doctor, Lint, Compile location state machine, Location state machine checker, Conceptual registry validator.
+- Exact-head Location Contract run #11 `32551852738`: SUCCESS.
+- C007 resta `[ ] / parziale`; nessun provider/GPS runtime dichiarato.
+
+### P1 reporting
+AGENTS.md richiede che `docs/codex-reports/LATEST.md` contenga, dopo il percorso, **l'intero rapporto più recente**. Sullo SHA revisionato il rapporto storico `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md` e la copia in `LATEST.md` non sono identici: nella sezione `File creati/modificati` il rapporto storico descrive ancora `LATEST.md` e `Fabio/FABIO_CONTROLLO.md` come `da aggiornare`, mentre LATEST modifica le stesse righe in `aggiornato`. Quindi LATEST è una variante editata e non copia integrale/verbatim del rapporto storico.
+
+### Rettifica richiesta
+- Riallineare il rapporto storico finale allo stato realmente raggiunto senza inventare verifiche.
+- Rendere `LATEST.md` = percorso iniziale + copia integrale identica dello stesso rapporto storico.
+- Non modificare il core funzionale per questa rettifica.
+- Produrre un nuovo exact SHA e riconsegnare a REVIEW; registrare solo i check realmente applicabili sul contenuto finale.
+
+### Prova necessaria per CLEAN
+- Nuovo exact SHA OPEN/DRAFT/mergeable.
+- Confronto diretto historical report vs body di LATEST identico.
+- Nessuna regressione dei file funzionali/conceptual.
+- Workflow/check finali sul nuovo SHA registrati se realmente disponibili/applicabili; nessun PASS dedotto.
+
+### Azioni GitHub
+- Review COMMENT pubblicata su PR #23, semanticamente CHANGES REQUIRED, review ID `4999049657`.
+- Esito essenziale pubblicato su Issue #11, commento `5378003747`.
+- Nessun Ready, merge, rilancio build, modifica codice o credenziale.
+
+### Stato finale
+R10 completata sullo SHA indicato con CHANGES REQUIRED. Il Coordinatore deve creare la rettifica nel task file NEXO 1; NEXO REVIEW non modifica la checklist dell'autore. Attesa nuovo exact SHA per eventuale re-review.
