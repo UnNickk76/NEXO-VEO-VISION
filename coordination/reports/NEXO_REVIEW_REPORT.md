@@ -34,3 +34,8 @@ Canale report dedicato di NEXO REVIEW.
 - Limiti: nessun provider reale, routing end-to-end, GPS/UI o integrazione runtime verificati; non richiesti per questo slice.
 - Stato finale: review R1 completata sullo SHA indicato; attesa nuovo SHA/reconsegna per eventuale re-review.
 - Prossimo passo: Coordinatore deve creare task correttivo per NEXO CODEX; NEXO REVIEW passa alla successiva review solo se la relativa START CONDITION è realmente soddisfatta.
+
+### Addendum VERIFY exact HEAD
+- Dopo la registrazione iniziale del report, NEXO REVIEW ha interrogato direttamente anche le workflow run associate all'exact HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
+- Navigation Domain run #8 `32539350374`: `completed / success` sull'exact HEAD.
+- Questa evidenza rafforza il VERIFY del current HEAD ma non cambia il verdict: il P1 V28 riguarda coerenza conceptual/evidenza, non il successo tecnico del workflow.
