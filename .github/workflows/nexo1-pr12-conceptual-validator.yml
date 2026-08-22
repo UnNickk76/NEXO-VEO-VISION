@@ -1,0 +1,33 @@
+name: NEXO 1 PR12 conceptual validator
+
+on:
+  push:
+    branches:
+      - nexo1/validate-pr12-conceptual
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pr12-conceptual:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PR 12 SHA
+        uses: actions/checkout@v4
+        with:
+          ref: 155ba7e8005d6848a506478d7f3139b3b69776d8
+          persist-credentials: false
+
+      - name: Verify exact SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "155ba7e8005d6848a506478d7f3139b3b69776d8"
+          echo "validated_sha=$actual"
+
+      - name: Run canonical conceptual validator
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/check_conceptual_master.py .
