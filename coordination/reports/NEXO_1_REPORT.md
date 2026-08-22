@@ -132,3 +132,14 @@ Nessun blocco tecnico N1.1 residuo. N1.2 dipende ora esclusivamente dalla review
 
 ### Prossimo passo
 Attendere l'esito indipendente NEXO REVIEW sullo SHA `75b661afffc45887cad1e64c7845d56b6c658288`. Se arriva CHANGES REQUIRED, N1.2 procederà esclusivamente sulle rettifiche richieste; se arriva CLEAN, il ciclo seguirà la governance senza merge autonomo.
+
+---
+
+## REVIEW NOTE — 2026-08-22 01:07 UTC — PR #12 / SHA `75b661afffc45887cad1e64c7845d56b6c658288`
+- **Verdict:** CLEAN.
+- **P0/P1/P2:** 0 / 0 / 0.
+- **Cosa è corretto:** il P1 multi-instance è chiuso: le mutazioni passano da `SavedPlacesRepository.mutate()` e la serializzazione è condivisa per namespace canonico; il checker contiene regressione con due service/repository/storage adapter distinti sullo stesso backing. Il gate conceptual validator è chiuso con evidenza persistita `exit_code=0` sullo SHA `155ba7e...`; compare al final HEAD dimostra che dopo il PASS sono cambiati solo tre file di reporting. `LATEST.md` contiene percorso + rapporto integrale. Stati C001/C002/C005 restano `[ ] / parziale`, C003 `[ ] / concettuale`.
+- **Rettifiche richieste:** nessuna.
+- **Prova necessaria:** nessuna ulteriore prova per il CLEAN su questo exact SHA. Qualsiasi nuovo SHA richiede nuova valutazione secondo governance.
+- **Governance:** PR resta DRAFT; NEXO REVIEW non esegue merge né modifica la checklist NEXO 1. La serializzazione/merge e l'eventuale rilascio dei file condivisi spettano al Coordinatore.
+- **Review GitHub:** ID `4998454274`.
