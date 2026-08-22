@@ -6,8 +6,6 @@ on:
       - 'frontend/src/navigation/**'
       - 'frontend/scripts/check-navigation-domain.mjs'
       - 'docs/product/NEXO_CONCEPTUAL_MASTER.md'
-      - 'docs/codex-reports/**'
-      - 'Fabio/FABIO_CONTROLLO.md'
       - '.github/workflows/navigation-domain.yml'
   workflow_dispatch:
 
