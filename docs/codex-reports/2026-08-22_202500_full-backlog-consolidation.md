@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_202500_full-backlog-consolidation.md`
-
 # NEXO COORDINATOR — FULL BACKLOG CONSOLIDATION COMPLETATO
 
 ## Dati attività

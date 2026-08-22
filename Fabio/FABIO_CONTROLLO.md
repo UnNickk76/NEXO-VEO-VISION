@@ -3,36 +3,43 @@
 > Cruscotto di sola consultazione. Il rapporto tecnico completo è in
 > `docs/codex-reports/LATEST.md`.
 
-## NEXO 2 — PR #20 Surface Capabilities
-- **Data:** 22 agosto 2026, 20:18 UTC.
-- **Stato:** reconciliation e VERIFY completati; PR #20 DRAFT in attesa di NEXO REVIEW exact-SHA.
-- **Branch:** `nexo2/f0-surface-capabilities`.
-- **Main di riferimento:** `84c4799307adb6e63421bc0fa58ccb3dd0ad8a76`.
-- **Backup:** `backup/pr20-before-84c47993` → `6e13d42379a5cff26cb37a67944f89302b925ac4`.
+## FULL BACKLOG CONSOLIDATION — COMPLETATO
+- **Data:** 22 agosto 2026, 20:25 UTC.
+- **Functional main consolidata:** `8cdfff156ca0e1a5f11e42bbd08db1e4469285db` prima del merge del presente report docs-only.
+- **Backlog:** #24, #18, #19 e #20 tutte mergeate; #17 già mergeata; #25 resta chiusa senza merge.
+- **PR aperte:** nessuna prima della PR docs-only del report.
+- **Freeze funzionale:** resta attivo finché Fabio non sceglie il prossimo macro-obiettivo.
 
-## Fatto realmente
-- Surface Capabilities provider-neutral preservate per phone/CarPlay/Android Auto.
-- Availability runtime e product policy restano ortogonali; `prohibited` rende `usable=false` senza fingere `unsupported`.
-- Vincoli moving/stopped, touch, free-text, rich details e passenger preservati.
-- V05/V44/V45/V46 restano `[ ] / parziale`; nessun runtime automotive dichiarato.
-- Aggiunta CI Surface di sola validazione; nessun nuovo slice funzionale.
+## Cosa c'è davvero in main
+- Saved Places local-first core.
+- Location Contract + Permission/Degraded State Machine + Freshness/Quality Policy.
+- Voice Intent → Command core provider-neutral.
+- Android Readiness non-EAS.
+- Navigation Domain Core provider-neutral con lifecycle, alternative e recalculation foundation.
+- Surface Capabilities/constraints provider-neutral.
+- TestFlight workflow manuale (`workflow_dispatch`).
 
-## VERIFY reale sul contenuto functional+conceptual `4a12effd...`
-- Surface Capabilities `32595962428`: **SUCCESS**.
-- Voice Validation `32595962430`: **SUCCESS**.
-- Navigation Domain `32595962460`: **SUCCESS**.
-- Android Readiness `32595962426`: **SUCCESS**.
-- Location Quality Policy `32595962463`: **SUCCESS**.
-- Location State Machine `32595962436`: **SUCCESS**.
-- Location Contract `32595962371`: **SUCCESS**.
+## Cosa NON c'è ancora
+- GPS OS reale collegato all'app.
+- mappa/provider reale e posizione utente visualizzata.
+- geocoding/destinazione e routing reale end-to-end.
+- STT/TTS/wake-word runtime completo.
+- CarPlay/Android Auto runtime reale.
+- APK/AAB o test Android device.
+- nuova TestFlight dopo il consolidamento.
 
-Surface Validation comprende npm ci, Expo Doctor, lint, TypeScript strict, checker Surface e conceptual validator.
+## Stato TestFlight / Android
+- TestFlight: nessun EAS/build/submit eseguito durante il consolidamento; resta manuale e richiede autorizzazione Fabio.
+- Android: prebuild/readiness verificata; nessuna EAS Build, APK/AAB o Google Play.
 
-## Limiti
-Nessun runtime CarPlay/Android Auto, nessun test in auto, nessuna UI automotive finale, nessun EAS/TestFlight, nessuna credenziale.
+## Agenti
+NEXO 1, NEXO CODEX, NEXO 2, NEXO 3 e NEXO REVIEW non hanno più vecchie PR bloccanti. Restano disponibili/standby senza avviare automaticamente nuovi task.
 
-## Prossimo passo
-NEXO REVIEW sul final exact HEAD; se CLEAN, Ready + merge #20. Poi report finale di consolidamento. Nessuna nuova feature parte automaticamente.
+## Prossimo macro-obiettivo proposto
+Primo vertical slice runtime provabile su iPhone:
+**Avvio NEXO → permission Location reale → GPS reale → mappa reale → posizione utente → destinazione → routing reale → percorso visualizzato.**
+
+Nessun TestFlight/EAS va avviato senza autorizzazione esplicita.
 
 ## Cosa deve fare Fabio adesso
-Nulla fino al report di consolidamento.
+Valutare e autorizzare il prossimo macro-obiettivo. Il vecchio backlog è chiuso.
