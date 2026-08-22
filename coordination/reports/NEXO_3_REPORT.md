@@ -93,3 +93,50 @@ Nessun handoff finale ancora: PR resta DRAFT. NEXO REVIEW va coinvolto soltanto 
 
 ### Prossimo passo
 Continuare esclusivamente N3.2 al prossimo ciclo; N3.3 non è eleggibile.
+
+---
+
+## 2026-08-22 08:00 UTC — N3.2 CURRENT-MAIN RECONCILIATION / FINAL EVIDENCE BLOCKED
+
+- Task ID: N3.2.
+- Stato finale di questa ripresa: PARTIAL / BLOCKED sul solo gate di verifica runtime; checkbox resta `[ ]`.
+- PR: #17 `feat(voice): provider-neutral intent command core`, OPEN / DRAFT / mergeable.
+- Branch: `nexo3/f0-voice-command-core`.
+- Current main verificata: `b011808ec1a46827d27ccb258ef68ea01dee8b41` (merge CLEAN PR #23).
+- HEAD iniziale: `c80964fab1895a44a999e687ab50934d364c94cd`.
+- Exact HEAD dopo riconciliazione: `468e4118adfa71d7500842304715fd5c55e27312`.
+- Commit pertinente: `468e4118adfa71d7500842304715fd5c55e27312` — `chore(voice): reconcile ancestry with current main`; parent Voice `c80964f...` + parent current main `b011808...`.
+
+### READ / governance realmente verificati
+Riletti `AGENTS.md` su main, Issue #11, Control Plane README, task NEXO 3 e report NEXO 3. Verificati PR #17 metadata, compare main→branch, review e thread. Nessuna REVIEW NOTE CHANGES REQUIRED presente nel report NEXO 3; unica review PR #17 è un vecchio COMMENTED del Coordinatore, nessun inline thread.
+
+### WRITE realmente eseguito
+È stato creato un tree dalla current main `b011808...` e sono stati sovrapposti esclusivamente i blob Voice già auditati:
+- `frontend/src/voice/command-core.ts` blob `6aaef7a6a8f5a828572769436ff0369b012835e3`;
+- `frontend/scripts/check-voice-command-core.mjs` blob `eb92d90288c979cae5d8740f4980f1f86b074b6a`.
+Il commit di riconciliazione a due parent preserva la storia Voice e rende current main antenato della PR senza reintrodurre versioni stale di conceptual/reporting.
+
+### VERIFY realmente eseguito
+- Fresh compare `main` → `nexo3/f0-voice-command-core`: `status=ahead`, `behind_by=0`, merge-base `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
+- Diff exact current main → PR #17: esattamente 2 file, i due Voice sopra; nessun Location/shared reporting/conceptual file differisce.
+- Fresh PR metadata: OPEN, DRAFT, `mergeable=true`, exact HEAD `468e4118...`, changed_files=2.
+- `fetch_commit_workflow_runs` su exact HEAD `468e4118...`: nessuna run.
+- Contenuto exact-head `command-core.ts` e checker riletto via GitHub; provider-neutral/fail-closed invariants staticamente preservati.
+
+### Test/check finali NON eseguiti
+Non esiste in questa esecuzione un checkout repository eseguibile collegato al contenuto GitHub, e non esiste una GitHub Actions run sull'exact HEAD. Pertanto NON sono stati eseguiti su `468e4118...`:
+- `node frontend/scripts/check-voice-command-core.mjs`;
+- `python3 scripts/check_conceptual_master.py .`.
+Nessun PASS viene dedotto da lettura statica o da run storiche.
+
+### Warning / errori / limiti
+Il precedente tentativo runtime aveva fallito il clone per DNS (`Could not resolve host: github.com`). In questa ripresa il connector GitHub consente lettura/scrittura repository ma non fornisce un filesystem checkout sul quale eseguire gli script. Nessun workflow Voice è presente da rilanciare automaticamente. Questo impedisce di soddisfare la Definition of Done di N3.2 senza inventare evidenza.
+
+### Problemi residui / dipendenze
+Serve una esecuzione reale sull'exact content corrente del voice checker e del conceptual validator. Solo dopo si potranno ripristinare in modo conservativo V02/V03/V34 sul current conceptual, creare il rapporto storico finale/LATEST/Fabio dashboard nella PR #17, registrare exact final SHA e fare handoff a NEXO REVIEW.
+
+### Review
+Nessun handoff finale: PR resta DRAFT. Nessun CLEAN dichiarato.
+
+### Prossimo passo
+Ritentare esclusivamente N3.2 quando è disponibile un runtime/CI capace di eseguire i due check sull'exact content. N3.3 resta non eleggibile. Nessuna azione richiesta a Fabio.
