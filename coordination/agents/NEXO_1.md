@@ -6,11 +6,10 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - PR #12 Saved Places: MERGED after CLEAN; merge commit `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
-- PR #22 Location Contract: CLEAN and MERGED; main base used by PR #23 `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- PR #23 `feat(location): add permission degraded state machine`: OPEN / DRAFT, new exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` after N1.4R reporting-only correction.
+- PR #22 Location Contract: CLEAN and MERGED; current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- PR #23 `feat(location): add permission degraded state machine`: OPEN / DRAFT / **mergeable=true**, exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` after N1.4R reporting-only correction.
 - R10 on old SHA `dfeefff17...`: CHANGES REQUIRED, P1 reporting-only. N1.4R corrected historical/LATEST mismatch; compare old reviewed SHA → new HEAD changes only the two report files.
-- Fresh PR metadata after N1.4R reports `mergeable=false`; therefore Definition of Done is not satisfied and N1.4R remains `[ ]`.
-- Functional evidence remains accepted and unchanged: Location State Machine run #5 `32551852759` SUCCESS; Location Contract run #11 `32551852738` SUCCESS. No new workflow PASS is invented for reporting-only HEAD.
+- Fresh exact-head workflows on `73a017...`: Location State Machine run #7 `32554330952` SUCCESS; Location Contract run #13 `32554330936` SUCCESS.
 - C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
 - Do not touch voice/surface/navigation/automotive/EAS/TestFlight areas owned elsewhere.
 
@@ -26,14 +25,14 @@ COORDINATOR: NEXO Coordinator
   - COMPLETED EVIDENCE: PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; CLEAN review ID `4998866766`; exact-head run #6 `32546418961` SUCCESS; merged as main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
 
 - [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF**
-  - COMPLETED EVIDENCE: PR #23 old reviewed SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; functional state machine/checker accepted by REVIEW; exact-head Location State Machine run #5 `32551852759` SUCCESS and Location Contract run #11 `32551852738` SUCCESS.
+  - COMPLETED EVIDENCE: PR #23 old reviewed SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; functional state machine/checker accepted by REVIEW; Location State Machine run #5 `32551852759` SUCCESS and Location Contract run #11 `32551852738` SUCCESS.
   - NOTE: implementation slice complete; reporting-only correction isolated as N1.4R.
 
-- [ ] **N1.4R — PRIORITY: PR #23 REPORTING RECTIFICATION / RE-HANDOFF**
-  - START CONDITION: SATISFIED / IN PROGRESS-BLOCKED — R10 P1 correction executed on new HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
+- [ ] **N1.4R — PRIORITY: PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE**
+  - START CONDITION: SATISFIED — correction exists on exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520`; fresh GitHub metadata is mergeable=true and exact-head workflows are SUCCESS.
   - CORRECTION EVIDENCE: historical report finalized; `LATEST.md` = path header + verbatim integral historical body; compare `dfeefff...` → `73a017...` changes only historical report + LATEST; PR re-handoff comment `5378187983`.
-  - BLOCKER: fresh PR metadata reports `mergeable=false`. Do not mark `[x]` because Definition of Done requires mergeable. Do not improvise rebase/functional changes under a reporting-only task.
-  - REQUIRED NEXT: R11/Coordinator evaluate new exact SHA and non-mergeability; if explicit reconciliation task is authorized, perform it preserving current main and Location ownership. Until then STANDBY/BLOCKED.
+  - FRESH VERIFY: Location State Machine run #7 `32554330952` SUCCESS; Location Contract run #13 `32554330936` SUCCESS on exact HEAD `73a017...`.
+  - REQUIRED NEXT: NEXO REVIEW R11 must review this exact SHA now. Do not change implementation/reporting while review is pending. Mark `[x]` only after CLEAN; merge remains Coordinator responsibility.
   - Do not merge autonomously.
 
 - [ ] **N1.5 — LOCATION FRESHNESS / QUALITY POLICY**
@@ -56,8 +55,7 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 05:35 UTC — N1.4R reporting correction committed on PR #23 new exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
-- Identity proof satisfied by direct re-fetch of historical and LATEST; compare from R10 SHA changes only two reporting files.
-- Fresh PR #23: OPEN / DRAFT / `mergeable=false`; N1.4R remains `[ ] / BLOCKED` on mergeability/reconciliation gate.
-- Re-handoff PR comment `5378187983`; Board blocker comment `5378188302`.
-- N1.5 remains gated.
+- 2026-08-22 05:56 UTC coordinator refresh — PR #23 exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` is OPEN / DRAFT / mergeable=true.
+- Exact-head workflows: Location State Machine #7 `32554330952` SUCCESS; Location Contract #13 `32554330936` SUCCESS.
+- N1.4R remains `[ ]` only because independent R11 CLEAN is still required; prior mergeability blocker is obsolete.
+- N1.5 remains gated until CLEAN + serialization/explicit authorization.
