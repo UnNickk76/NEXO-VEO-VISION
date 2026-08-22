@@ -54,25 +54,41 @@ Historical snapshot preserved. Consolidation became top priority.
 
 ### PR #17 Voice
 - Exact reviewed SHA: `8f82b692d2cc6759c4ce773c791f3725f85e4062`.
-- NEXO REVIEW verdict: CLEAN, review `5000238141`, P0/P1/P2=0/0/0.
-- No review threads open.
-- Exact-head workflows observed: Voice Validation `32574678400` SUCCESS; Location State Machine `32574678369` SUCCESS; Location Contract `32574678491` SUCCESS.
-- Coordinator marked PR #17 Ready and squash-merged with expected exact head.
+- NEXO REVIEW verdict: CLEAN, P0/P1/P2=0/0/0.
+- Exact-head workflows: Voice Validation `32574678400` SUCCESS; Location State Machine `32574678369` SUCCESS; Location Contract `32574678491` SUCCESS.
+- Coordinator serialization completed.
 - Merge commit / new current main: `1d0a01c91bb328baf141560a534f4b62fe406b01`.
 
 ### Consequences
-- PR #17 is closed/merged; NEXO 3 N3.3 remains intentionally blocked by consolidation freeze to avoid opening another functional Voice PR while stale backlog remains.
-- PR #24 is now OPEN/DRAFT/mergeable=false on `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`; fresh compare against new main = diverged, ahead 7 / behind 2, merge-base `b011808ec1a46827d27ccb258ef68ea01dee8b41`. Existing N1.5 work must be preserved and minimally reconciled; do not redo functionality.
-- PR #18 remains OPEN/DRAFT/mergeable=false on historical `1e50e747...`; exact-head Android Readiness historical run `32526155508` SUCCESS. It remains first CODEX reconciliation target after #24.
-- PR #19 remains OPEN/DRAFT/mergeable=false on historical `7210baef...`; residual V28 P1 still requires minimal correction during reconciliation.
-- PR #20 remains OPEN/DRAFT/mergeable=false on historical `6e13d423...`; historical CLEAN is not merge authorization after divergence.
+- PR #17 closed/merged; NEXO 3 frozen from new functional work.
+- PR #24 became stale/non-mergeable and is the next consolidation target.
+- PR #18/#19/#20 remain stale historical heads.
 
-### Control Plane actions executed
-- NEXO 3 file updated to record PR #17 CLEAN merge and freeze N3.3.
-- NEXO 1 file retargeted to current main `1d0a01c9...`; N1.5R remains top priority with fresh behind=2 evidence.
-- NEXO CODEX file retargeted to current main, preserving #18→#19 reconciliation-only sequence.
-- NEXO 2 file retargeted to current main with safe-reconciliation-only mandate.
-- NEXO REVIEW queue updated: #17 closed; remaining order #24 → #18 → #19 → #20 on fresh eligible SHAs only.
+---
 
-### Coordinator verdict
-The system is progressing: one major backlog PR (#17) has now moved from stale/DRAFT to CLEAN and merged. The immediate blocker is not missing functionality but safe branch reconciliation for #24/#18/#19/#20. Main remains frozen for new functional expansion until the backlog is materially reduced.
+## 2026-08-22 13:55 UTC — Independent Control audit consumed / strict serial merge queue enforced
+
+### Audit verdict adopted
+The independent READ-ONLY audit correctly identified the systemic rework pattern: reconciling several stale PRs in parallel is wasteful because each merge changes main and invalidates later reconciliation evidence.
+
+### Coordinator refinement
+The queue is now strictly serial, not merely prioritized:
+1. PR #24 — NEXO 1 reconcile/finalize/review/merge.
+2. PR #18 — only after #24 merge, reconcile to new main/review/merge.
+3. PR #19 — only after #18 merge, reconcile to new main + V28 fix/review/merge.
+4. PR #20 — only after #19 merge, reconcile to new main/review/merge.
+
+PR #17 was already exact-SHA CLEAN against `ba39d977...`; serializing it before #24 minimized rework because #24 still required reconciliation/finalization anyway. It is now merged as `1d0a01c9...`.
+
+### Control-plane actions
+- NEXO 1 remains the only active implementation agent for consolidation; N1.5R is top priority on PR #24.
+- NEXO CODEX is explicitly BLOCKED from reconciling #18/#19 until #24 is merged and a fresh main is published.
+- NEXO 2 is explicitly BLOCKED from reconciling #20 until #24/#18/#19 are merged.
+- NEXO REVIEW is restricted to the one current queue item; it must not skip ahead to later stale PRs.
+- NEXO 3 remains frozen after merged #17.
+
+### Main freeze
+No new functional slices, refactors, governance changes, or direct main commits during consolidation except indispensable coordinator actions. TestFlight remains manual.
+
+### Immediate next gate
+PR #24 must be minimally reconciled from stale HEAD `8abc5d2d...` to current main `1d0a01c9...`, preserving existing quality-policy work, merged Voice state, and manual-only TestFlight policy. Then C007/reporting/exact-head VERIFY and NEXO REVIEW handoff.
