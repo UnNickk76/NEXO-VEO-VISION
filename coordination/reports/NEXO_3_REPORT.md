@@ -254,3 +254,15 @@ Il Voice checker compila `frontend/src/voice/command-core.ts` con TypeScript `--
 
 ### Review richiesta / prossimo passo
 Handoff esplicito a NEXO REVIEW sull'exact SHA `21665a6b0aeb986c37bbc70a23f55871d0723807`, run `32566648776` SUCCESS. N3.3 resta non eleggibile finché PR #17 non riceve CLEAN e non viene serializzata/mergeata dal Coordinatore.
+
+---
+
+## REVIEW NOTE — 2026-08-22 11:07 UTC — R4R / PR #17
+- **Exact PR/SHA:** PR #17 `21665a6b0aeb986c37bbc70a23f55871d0723807`.
+- **Verdict:** CHANGES REQUIRED / NON CLEAN.
+- **P0/P1/P2:** 0 / 2 / 0.
+- **Corretto:** PR OPEN/DRAFT/mergeable e basata esattamente su main `ba39d977...`; Voice core provider-neutral/fail-closed; unknown non produce Command; start-navigation richiede destination ID pre-risolto; envelope/CommandBus con guardie e idempotency; exact-head Voice Validation run `32566648776`, job `97016122933`, SUCCESS con Voice checker/TypeScript strict e conceptual validator; nessun review thread aperto.
+- **Rettifica 1:** completare in `NEXO_CONCEPTUAL_MASTER.md` l'evidenza di V02/V03/V34 con almeno PR + commit pertinente + test/check pertinente per ciascuna riga, mantenendo `[ ] / parziale` e senza dichiarare runtime Voice completo.
+- **Rettifica 2:** rendere il rapporto storico `docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md` integralmente conforme ad AGENTS.md: cronologia commit, inventario completo file creati/modificati/eliminati, esiti individuali finali realmente osservati sull'exact HEAD, errori/warning, problemi residui, dipendenze/credenziali, rischi tecnici, decisioni richieste a Fabio. `LATEST.md` deve restare path + copia integrale dello stesso rapporto; `Fabio/FABIO_CONTROLLO.md` va riallineato senza inventare PASS.
+- **Prova necessaria:** nuovo exact SHA DRAFT/mergeable con conceptual evidence completa, reporting conforme e nuovo handoff; rieseguire i check influenzati dalle modifiche finali e registrare solo esiti reali.
+- **Governance:** NEXO REVIEW non modifica la checklist/task NEXO 3; il Coordinatore deve creare l'eventuale task di rettifica.
