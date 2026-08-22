@@ -266,3 +266,64 @@ R10 completata sullo SHA indicato con CHANGES REQUIRED. Il Coordinatore deve cre
 
 ### Stato finale
 R11 completata CLEAN sull'exact SHA indicato. PR #23 può essere valutata dal Coordinatore per serializzazione/Ready/merge. NEXO REVIEW deve rileggere immediatamente la queue e prendere solo il primo nuovo `[ ]` con START CONDITION realmente soddisfatta.
+
+---
+
+## 2026-08-22 11:07 UTC — R4R / PR #17 Voice Core
+- **Task ID:** R4R.
+- **PR:** #17 `feat(voice): provider-neutral intent command core`.
+- **Exact SHA revisionato:** `21665a6b0aeb986c37bbc70a23f55871d0723807`.
+- **Branch autore:** `nexo3/f0-voice-command-core`.
+- **Base/current main:** `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+- **Stato PR:** OPEN / DRAFT / mergeable=true / non merged.
+- **Compare main→HEAD:** ahead 19 / behind 0; 7 file nel diff.
+- **Verdict:** CHANGES REQUIRED / NON CLEAN.
+- **P0/P1/P2:** 0 / 2 / 0.
+
+### Verifiche reali
+- Letti `AGENTS.md` su main, Issue #11, Control Plane README, queue REVIEW e storico REVIEW.
+- PR #17 verificata sull'exact HEAD richiesto: OPEN, DRAFT, mergeable=true; base SHA esattamente current main `ba39d977...`.
+- Diff verificato: `.github/workflows/nexo3-voice-validation.yml`, `Fabio/FABIO_CONTROLLO.md`, rapporto storico N3.2R, `LATEST.md`, `NEXO_CONCEPTUAL_MASTER.md`, checker Voice, `command-core.ts`.
+- `command-core.ts` verificato: parser fail-closed; input unsafe/unsupported → unknown; start-navigation accetta solo destination ID pre-risolto; unknown non produce Command; envelope richiede id/correlation/idempotency/timestamp; CommandBus espone handled/unhandled/rejected e duplicate protection.
+- Checker verificato: compila TypeScript `--strict`, prova casi positivi/unsafe/ambiguous, no destination invention, envelope invariants, handled/unhandled/rejected, duplicate/idempotency e divieti provider/platform.
+- Review storica presente: solo vecchio COMMENTED del Coordinatore; nessun review thread aperto.
+- Exact-head workflow verificata: `NEXO 3 Voice Validation` run `32566648776`, job `97016122933`, completed/SUCCESS. Step SUCCESS: checkout, setup Node, npm ci, Voice checker, conceptual master validator.
+- Exact-head Location Contract run `32566648845` SUCCESS e Location State Machine run `32566648797` SUCCESS.
+- `LATEST.md` verificato: path header + copia integrale del rapporto storico corrente.
+
+### P1-1 — conceptual evidence incompleta
+AGENTS.md richiede per ogni requisito modificato almeno PR, commit pertinente e test/check pertinente nella colonna Evidenza. V02/V03/V34 restano correttamente `[ ] / parziale`, ma:
+- V02/V03 citano PR #17 + checker/workflow, senza un commit pertinente;
+- V34 cita PR #17/parser e limiti, ma non registra commit + test/check pertinente.
+Correzione minima: mantenere `[ ] / parziale` e aggiungere per ciascuna riga PR + commit + test/check reali, senza dichiarare STT/TTS/wake-word/runtime completi.
+
+### P1-2 — rapporto storico finale non conforme ad AGENTS.md
+Il rapporto storico `docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md` non contiene tutti i campi obbligatori richiesti dal protocollo permanente. Mancano o non sono registrati compiutamente nel rapporto stesso: cronologia commit creati, inventario completo file creati/modificati/eliminati, esiti individuali finali osservati sull'exact HEAD, errori/warning, problemi residui, dipendenze/credenziali, rischi tecnici e decisioni richieste a Fabio. La sezione Esito dice ancora di leggere l'esito dalla run invece di registrare il SUCCESS exact-head già disponibile. Il fatto che il file report personale NEXO 3 contenga più dettagli non sostituisce il rapporto storico obbligatorio nella PR.
+
+### Cosa è corretto
+- Core Voice provider-neutral e fail-closed nel perimetro dichiarato.
+- Nessuna destinazione inventata.
+- Nessun provider mappe/native automotive/STT/TTS/wake-word runtime introdotto.
+- V02/V03/V34 non sono falsamente marcati `[x]`.
+- Exact-head Voice checker/TypeScript strict e conceptual validator sono realmente SUCCESS via CI.
+- PR resta DRAFT e mergeable; nessun thread aperto.
+
+### Rettifiche richieste
+1. Completare l'evidenza V02/V03/V34 con PR + commit + test/check reali per ogni riga, mantenendo `[ ] / parziale`.
+2. Rendere il rapporto storico integralmente conforme ad AGENTS.md e mantenerlo verbatim in `LATEST.md`; riallineare `Fabio/FABIO_CONTROLLO.md` senza inventare esiti.
+3. Produrre un nuovo exact SHA e riconsegnare esplicitamente a REVIEW.
+
+### Prova necessaria per CLEAN
+- Nuovo exact SHA OPEN/DRAFT/mergeable e ancora basato sulla current main applicabile.
+- Conceptual evidence completa e conservativa.
+- Historical/LATEST/FABIO conformi e coerenti.
+- Check influenzati dalle modifiche finali rieseguiti sul contenuto finale quando applicabile, con esiti reali registrati.
+- Nessun regressione del core Voice e nuovo handoff exact-SHA.
+
+### Azioni GitHub
+- Review COMMENT pubblicata su PR #17, semanticamente CHANGES REQUIRED, review ID `4999992268`.
+- Esito essenziale pubblicato su Issue #11, commento `5379906901`.
+- Nessun Ready, merge, build, rilancio CI o modifica credenziale.
+
+### Stato finale
+R4R completata sullo SHA indicato con CHANGES REQUIRED. Il Coordinatore deve creare il task di rettifica nel file NEXO 3; REVIEW non modifica la checklist dell'autore. Attesa nuovo exact SHA per re-review.
