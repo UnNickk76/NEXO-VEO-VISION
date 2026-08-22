@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_200500_pr19-navigation-reconciliation.md`
-
 # NEXO CODEX — PR #19 Navigation Domain Core reconciliation finalization
 
 ## Dati attività
