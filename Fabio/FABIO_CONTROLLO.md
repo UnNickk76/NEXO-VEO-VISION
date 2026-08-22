@@ -4,44 +4,51 @@
 > `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
-- **Data:** 22 agosto 2026, 00:06 UTC
-- **Attività:** NEXO 1 — correzione CHANGES REQUIRED PR #12 Saved Places core.
-- **Stato:** P1 funzionale multi-instance corretto e rinforzato; PR #12 resta DRAFT. Gate governance del validatore concettuale ancora BLOCCATO nell'ambiente di questa chat.
+- **Data:** 22 agosto 2026, 00:31 UTC
+- **Attività:** NEXO 1 — N1.1 chiusura gate validatore concettuale PR #12 Saved Places core.
+- **Stato:** gate del validatore concettuale **CHIUSO CON PASS REALE** sullo SHA esatto PR #12 `155ba7e8005d6848a506478d7f3139b3b69776d8`; PR #12 resta DRAFT e deve essere rivalutata da NEXO REVIEW.
 - **Branch:** `nexo1/f1-saved-places-core`
 - **Pull request:** PR #12
 - **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`
 
 ## Cosa è stato fatto realmente
-- La serializzazione non è più confinata alla singola `SavedPlacesService`.
-- Create/update/remove/reorder usano `SavedPlacesRepository.mutate`.
-- La coda finale è indicizzata dal namespace/chiave canonica Saved Places, quindi copre repository e adapter storage distinti nello stesso runtime che puntano alla stessa collezione.
-- Il checker include una regressione con due service, due repository e due adapter storage distinti sullo stesso backend simulato.
-- Restano invariati read-failure safety e stale navigation confirmation.
-- C001/C002/C005 restano `[ ]` e `parziale`; C003 resta `concettuale`.
-- Nessuna modifica a iOS/EAS/TestFlight, credenziali, map provider, voice core, surface core o PR #17/#18.
-
-## Commit della correzione dopo lo SHA revisionato
-- `32153cad7277a274c8d2dea6026013b50fc61aeb`
-- `c5df731e81c8bc46bf0dba556faed1b8d6030003`
-- `9048424ebbc857e09ee52f9c45bd4ed315c10fee`
-- `fdb641cedb9d56f7db1b6ca961d4ab95b9456b1c`
-- `fe7cebb31b8ed5fd35238c93c654adaa3b7cbb00`
-- `3fba5b39ad1aaccbf99353db2be8a42e247ec745`
-- reporting successivo registrato nel rapporto più recente e sulla Board.
+- Non è stato rifatto né modificato il core Saved Places già corretto.
+- Per chiudere il solo gate mancante è stato creato un branch diagnostico separato `nexo1/validate-pr12-conceptual` con PR diagnostica #21, non destinata al merge.
+- Il workflow diagnostico ha fatto checkout esplicito dello SHA PR #12 `155ba7e8005d6848a506478d7f3139b3b69776d8`, ha verificato l'identità di HEAD e ha eseguito il validatore canonico.
+- L'evidenza è stata persistita sul branch diagnostico in `validation/nexo1-pr12-conceptual-result.txt`.
+- Nessuna modifica a iOS/EAS/TestFlight, credenziali, map provider, voice core, surface core, navigation core o Android readiness.
 
 ## Controlli
-- TypeScript strict nel test harness ricostruito: **exit 0**.
-- Checker comportamentale nel test harness ricostruito: **PASS**, exit `0`, output `saved-places checks: PASS` dopo uno stub temporaneo locale di AsyncStorage non committato.
-- Il primo tentativo checker con output directory errata e il secondo senza modulo runtime sono stati registrati come **FAIL**, non nascosti.
-- GitHub diff della prima parte della correzione verificato; VERIFY remoto finale da rieseguire dopo reporting.
-- `scripts/check_conceptual_master.py .` su checkout completo finale: **NON ESEGUITO / BLOCCATO** perché il runtime della chat non dispone del checkout completo e la rete container verso GitHub fallisce per DNS. Nessun PASS dichiarato.
-- Test UI/device: non eseguito, fuori perimetro.
+Comando realmente eseguito su GitHub Actions contro lo SHA esatto PR #12:
+```sh
+python3 scripts/check_conceptual_master.py .
+```
+Esito: **PASS, exit code 0**.
+
+Output essenziale verificato:
+- `PASS V: exact stable ID set (51 rows)`
+- `PASS E: exact stable ID set (47 rows)`
+- `PASS U: exact stable ID set (31 rows)`
+- `PASS C: exact stable ID set (6 rows)`
+- tutte le assertion canoniche PASS;
+- `PASS: conceptual master registry is coherent`.
+
+Evidenza SHA:
+- `validated_sha=155ba7e8005d6848a506478d7f3139b3b69776d8`
+- `expected_sha=155ba7e8005d6848a506478d7f3139b3b69776d8`
+
+I precedenti tentativi non osservabili/non riproducibili non sono stati usati come PASS.
+
+## Stato funzionale Saved Places già recuperato
+- Serializzazione multi-instance rinforzata per namespace canonico `nexo.saved-places.v1`.
+- Checker regressivo con due service, due repository e due adapter storage distinti sullo stesso backend simulato.
+- Read-failure safety e stale navigation confirmation preservati.
+- C001/C002/C005 restano `[ ]` / `parziale`; C003 resta `[ ]` / `concettuale`.
 
 ## Problemi / residui
-- Il P1 funzionale è corretto, ma la review non può essere dichiarata CLEAN da NEXO 1.
-- Il gate del validatore concettuale richiede un ambiente con checkout completo.
-- PR #12 deve restare DRAFT e va riconsegnata a NEXO REVIEW con lo SHA finale.
-- Merge vietato finché il Coordinatore non autorizza il passo successivo.
+- NEXO 1 **non dichiara CLEAN**: la review indipendente spetta a NEXO REVIEW.
+- PR #12 resta DRAFT; merge non autorizzato.
+- Il test concettuale è chiuso; il prossimo gate è esclusivamente la review del nuovo SHA finale dopo il reporting.
 
 ## Cosa deve fare Fabio adesso
-Nulla. Il blocco residuo è tecnico/di verifica e non richiede una decisione di prodotto.
+Nulla. NEXO 1 completa reporting/Control Plane e riconsegna automaticamente PR #12 a NEXO REVIEW.
