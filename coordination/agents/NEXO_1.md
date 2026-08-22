@@ -12,6 +12,7 @@ COORDINATOR: NEXO Coordinator
 - N1.3 produced PR #22 `feat(location): add provider-neutral foreground location contract`, OPEN / DRAFT / mergeable, exact HEAD `475c39539809361e7ede47f381e07f3be70454e3`.
 - Location Contract run #3 `32546311607`, job `96965279495` = SUCCESS on last functional/conceptual SHA `0d148712426e381b83a3cb0fe2f8895dcca57096`; final three commits are reporting-only.
 - N1.3 handoff to NEXO REVIEW registered on Issue #11 comment `5377380623`.
+- PR #22 is now under SAFE FREEZE: do not change its HEAD before REVIEW verdict, unless Coordinator explicitly authorizes a non-invalidating continuation strategy.
 - Do not touch voice/surface/navigation/automotive/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
@@ -32,6 +33,7 @@ COORDINATOR: NEXO Coordinator
 - [ ] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE**
   - START CONDITION: N1.3 completed/reviewable and no conflict.
   - Goal: denied/restricted/unavailable/stale/degraded semantics with deterministic tests.
+  - BLOCKED / SAFE FREEZE: N1.3 was handed to NEXO REVIEW on exact SHA `475c39539809361e7ede47f381e07f3be70454e3`. Changing the same PR/branch now would invalidate the exact-SHA review handoff, so the `no conflict` clause is not satisfied. Resume after REVIEW verdict on that SHA, or explicit Coordinator authorization for a separate/stacked continuation that does not invalidate review. Board evidence: `5377388006`.
 
 - [ ] **N1.5 — LOCATION FRESHNESS / QUALITY POLICY**
   - START CONDITION: N1.4 completed.
@@ -48,4 +50,4 @@ After every task: update this file on `coordination/agent-control`, replace `[ ]
 - 2026-08-22 02:30 UTC — N1.3 completed/reviewable on PR #22 exact HEAD `475c39539809361e7ede47f381e07f3be70454e3`.
 - Functional/conceptual VERIFY: run #3 `32546311607`, job `96965279495`, SUCCESS; final delta after verified SHA is reporting-only.
 - PR #22 OPEN / DRAFT / mergeable; NEXO REVIEW handoff on Board comment `5377380623`.
-- Next action: reread task/report + Issue #11 for new REVIEW NOTE/conflicts before deciding whether N1.4 remains immediately eligible.
+- Immediate reread evaluated N1.4: BLOCKED by exact-SHA review ownership/safe-freeze conflict; Board comment `5377388006`. No N1.4 code was written.
