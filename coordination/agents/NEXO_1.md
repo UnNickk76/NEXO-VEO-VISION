@@ -6,10 +6,11 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - PR #12 Saved Places: MERGED after CLEAN; merge commit `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
-- PR #22 Location Contract: CLEAN and MERGED; current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- PR #23 `feat(location): add permission degraded state machine`: OPEN / DRAFT / mergeable=true, exact HEAD `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
-- NEXO REVIEW R10 on that exact SHA: CHANGES REQUIRED, review ID `4999049657`, P0/P1/P2=0/1/0. Functional core/checker accepted; P1 is reporting-only: `LATEST.md` is not a verbatim integral copy of historical report `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`.
-- Exact-head CI already observed SUCCESS on reviewed SHA: Location State Machine run #5 `32551852759` / job `96979790732`; Location Contract run #11 `32551852738`.
+- PR #22 Location Contract: CLEAN and MERGED; main base used by PR #23 `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- PR #23 `feat(location): add permission degraded state machine`: OPEN / DRAFT, new exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` after N1.4R reporting-only correction.
+- R10 on old SHA `dfeefff17...`: CHANGES REQUIRED, P1 reporting-only. N1.4R corrected historical/LATEST mismatch; compare old reviewed SHA → new HEAD changes only the two report files.
+- Fresh PR metadata after N1.4R reports `mergeable=false`; therefore Definition of Done is not satisfied and N1.4R remains `[ ]`.
+- Functional evidence remains accepted and unchanged: Location State Machine run #5 `32551852759` SUCCESS; Location Contract run #11 `32551852738` SUCCESS. No new workflow PASS is invented for reporting-only HEAD.
 - C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
 - Do not touch voice/surface/navigation/automotive/EAS/TestFlight areas owned elsewhere.
 
@@ -25,15 +26,15 @@ COORDINATOR: NEXO Coordinator
   - COMPLETED EVIDENCE: PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; CLEAN review ID `4998866766`; exact-head run #6 `32546418961` SUCCESS; merged as main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
 
 - [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF**
-  - COMPLETED EVIDENCE: PR #23 exact reviewed SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; functional state machine/checker accepted by REVIEW; exact-head Location State Machine run #5 `32551852759` SUCCESS and Location Contract run #11 `32551852738` SUCCESS.
-  - NOTE: implementation slice is complete, but PR is not CLEAN due to reporting-only P1; correction is isolated as N1.4R below.
+  - COMPLETED EVIDENCE: PR #23 old reviewed SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; functional state machine/checker accepted by REVIEW; exact-head Location State Machine run #5 `32551852759` SUCCESS and Location Contract run #11 `32551852738` SUCCESS.
+  - NOTE: implementation slice complete; reporting-only correction isolated as N1.4R.
 
 - [ ] **N1.4R — PRIORITY: PR #23 REPORTING RECTIFICATION / RE-HANDOFF**
-  - START CONDITION: SATISFIED NOW — REVIEW NOTE / GitHub review `4999049657` is CHANGES REQUIRED on exact SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
-  - PROBLEM: historical report and `docs/codex-reports/LATEST.md` are not verbatim identical after the required leading report-path line; historical report still says `LATEST.md` / `Fabio/FABIO_CONTROLLO.md` `da aggiornare`, while the copied body in LATEST says `aggiornato`.
-  - REQUIRED FIX: choose/finalize the historical report so it truthfully reflects the reached state, then make `LATEST.md` = report path + exact integral verbatim copy of that historical report. Align only true final references; do not change functional/conceptual code.
-  - PROOF REQUIRED: NEW exact PR #23 SHA; direct historical-vs-LATEST-body identity proof; PR remains DRAFT and mergeable; compare proves no functional/conceptual regression; record any final workflow/check actually associated with new SHA without inventing results; append personal report and explicit NEXO REVIEW handoff.
-  - DEFINITION OF DONE: new exact SHA handed to R11; task stays `[ ]` until correction + proof + handoff are real. Do not merge autonomously.
+  - START CONDITION: SATISFIED / IN PROGRESS-BLOCKED — R10 P1 correction executed on new HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
+  - CORRECTION EVIDENCE: historical report finalized; `LATEST.md` = path header + verbatim integral historical body; compare `dfeefff...` → `73a017...` changes only historical report + LATEST; PR re-handoff comment `5378187983`.
+  - BLOCKER: fresh PR metadata reports `mergeable=false`. Do not mark `[x]` because Definition of Done requires mergeable. Do not improvise rebase/functional changes under a reporting-only task.
+  - REQUIRED NEXT: R11/Coordinator evaluate new exact SHA and non-mergeability; if explicit reconciliation task is authorized, perform it preserving current main and Location ownership. Until then STANDBY/BLOCKED.
+  - Do not merge autonomously.
 
 - [ ] **N1.5 — LOCATION FRESHNESS / QUALITY POLICY**
   - START CONDITION: N1.4R receives CLEAN and PR #23 is merged/closed, or Coordinator explicitly authorizes a separate safe slice after CLEAN.
@@ -52,9 +53,11 @@ COORDINATOR: NEXO Coordinator
   - Goal: consolidate evidence/invariants, remove stale reporting assumptions, final NEXO REVIEW handoff for the location foundation; no provider invention.
 
 ## UPDATE RULE
-After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
+After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 04:55 UTC — REVIEW R10 on PR #23 SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`: CHANGES REQUIRED, P1 reporting-only, review `4999049657`.
-- PR #23 metadata freshly verified: OPEN / DRAFT / mergeable=true against main `8d8dee4a...`.
-- N1.4R is ACTIONABLE NOW and takes priority over N1.5. N1.5 remains gated until CLEAN/serialization strategy.
+- 2026-08-22 05:35 UTC — N1.4R reporting correction committed on PR #23 new exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
+- Identity proof satisfied by direct re-fetch of historical and LATEST; compare from R10 SHA changes only two reporting files.
+- Fresh PR #23: OPEN / DRAFT / `mergeable=false`; N1.4R remains `[ ] / BLOCKED` on mergeability/reconciliation gate.
+- Re-handoff PR comment `5378187983`; Board blocker comment `5378188302`.
+- N1.5 remains gated.
