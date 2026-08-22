@@ -77,10 +77,10 @@ Independent READ-ONLY audit from NEXO CONTROLLO reviewed and cross-checked again
 
 ### Coordinator decisions executed
 - Updated `coordination/agents/NEXO_3.md`: obsolete PR #12 blocker removed; current PR #17 head/mergeability recorded; N3.2 is ACTIONABLE NOW for final evidence/handoff, not blocked.
-- Updated `coordination/agents/NEXO_CODEX.md`: added explicit NC.1B to reconcile/re-review stale CLEAN PR #18 after PR #19 serialization, before starting new navigation hardening. This prevents Android Readiness from remaining indefinitely outside main.
+- Updated `coordination/agents/NEXO_CODEX.md`: added explicit NC.1B to reconcile/re-review stale CLEAN PR #18 after PR #19 serialization, before starting new navigation hardening.
 - NEXO 1 already has active N1.4R for PR #23 reporting correction; no duplicate task created.
-- NEXO 2 already has N2.3 current-main reconciliation task and remains legitimately blocked on safe Git reconciliation capability; no force reconstruction authorized.
-- NEXO REVIEW already has R11 for PR #23 plus re-review gates R4/R6/R7/R8; no duplicate review work created.
+- NEXO 2 already has N2.3 current-main reconciliation task.
+- NEXO REVIEW already has R11 for PR #23 plus re-review gates R4/R6/R7/R8.
 
 ### Consolidation order
 1. NEXO 1: close PR #23 reporting-only P1 → REVIEW R11 → if CLEAN Coordinator serializes/merges.
@@ -88,35 +88,48 @@ Independent READ-ONLY audit from NEXO CONTROLLO reviewed and cross-checked again
 3. NEXO CODEX: reconcile/fix PR #19 → REVIEW → serialize/merge when CLEAN.
 4. NEXO CODEX: immediately reconcile stale CLEAN PR #18 on then-current main → REVIEW → serialize/merge.
 5. NEXO 2: reconcile PR #20 when safe capability exists → REVIEW → serialize/merge.
-6. Only after this backlog is consolidated should new major parallel F1 slices be allowed to expand again.
-
-### Safety / non-actions
-- No implementation code written by Coordinator.
-- No blind merge of conflict-diverged PRs.
-- No TestFlight/EAS rerun.
-- No credentials touched.
-
-### Coordinator verdict
-The independent audit is directionally correct, but current live GitHub already advanced beyond parts of it. The immediate risk is not lack of work; it is stale parallel PRs drifting behind main. Consolidation is now the top coordination priority while still allowing agents to finish only the currently assigned gates.
 
 ---
 
 ## 2026-08-22 09:29 UTC — TestFlight auto-build trigger disabled
 
 ### Cause verified
-`.github/workflows/testflight.yml` was still configured with both `workflow_dispatch` and an automatic `push` trigger on `main` for any change under `frontend/**` or the workflow file itself. With the multi-agent merge cadence, every functional merge touching `frontend/**` could therefore launch `eas build --platform ios --profile production --non-interactive --wait --auto-submit` automatically.
+`.github/workflows/testflight.yml` was still configured with both `workflow_dispatch` and an automatic `push` trigger on `main` for any change under `frontend/**` or the workflow file itself.
 
 ### Coordinator action executed
 - Updated `.github/workflows/testflight.yml` directly on `main`.
-- Removed the entire automatic `push` trigger.
+- Removed automatic `push` trigger.
 - Preserved `workflow_dispatch` as the only trigger.
-- Preserved all build/submit steps unchanged.
-- Commit created on main: `ba39d977072231d69ef848b1cc9ae2637b556c72` (`ci(testflight): disable automatic builds on main pushes`).
+- Commit: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
 
 ### New policy
-TestFlight production build/submission is now MANUAL / Coordinator-controlled only. Normal CI/checker workflows may continue to run automatically on PRs and merges, but they must not implicitly invoke EAS iOS production build/submission.
+TestFlight production build/submission is manual / Coordinator-controlled only.
+
+---
+
+## 2026-08-22 — Latest-main reconciliation batch + consolidation freeze
+
+### Independent audit consumed
+Read-only control audit reported that current main advanced to `ba39d977072231d69ef848b1cc9ae2637b556c72` after several agents had reconciled to the previous main. The audit correctly identified a renewed behind/diverged condition for backlog PRs.
+
+### Coordinator decision
+Main enters temporary **CONSOLIDATION FREEZE**: no new independent functional slices or direct main commits unless emergency/required to unblock consolidation. Each remaining PR must be reconciled, verified, reviewed on exact HEAD, and serialized one at a time.
+
+### Control Plane updates executed
+- `NEXO_1.md`: created priority task `N1.5R` — minimal PR #24 reconciliation to `ba39d977...`, preserve functional work, finish C007/reporting/VERIFY/handoff; no N1.6 before CLEAN + merge.
+- `NEXO_3.md`: created `N3.2R` — minimal PR #17 reconciliation to `ba39d977...`, preserve Voice core, rerun checker/strict/conceptual validator, reporting and exact-SHA handoff; no N3.3 before CLEAN + merge.
+- `NEXO_CODEX.md`: reordered consolidation to PR #18 first (`NC.1A`), then PR #19 (`NC.1`) per latest audit; both are reconciliation-only with exact-head VERIFY and new REVIEW handoff; no new Navigation hardening before both are serialized.
+- `NEXO_2.md`: created `N2.3R` safe reconciliation-only mandate for PR #20; preserve historical CLEAN implementation, stop on ambiguous shared-file conflicts, no new Surface work before CLEAN + merge.
+- `NEXO_REVIEW.md`: review queue reset to reconciled exact-head order: PR #24 → #17 → #18 → #19 → #20. Historical CLEAN on stale SHAs is evidence only, not merge authorization.
+
+### Merge/serialization discipline
+After every CLEAN merge, Coordinator must reread current main and invalidate stale mergeability snapshots for all remaining PRs before the next review/merge. Only Coordinator may Ready/merge.
+
+### Deferred governance debt
+After backlog consolidation, redesign global reporting ownership so agent PRs do not all rewrite `docs/codex-reports/LATEST.md` and `Fabio/FABIO_CONTROLLO.md`; likely agent-specific immutable reports + Coordinator-owned global summary. Do not change this governance during the current open-PR consolidation.
 
 ### Safety
-- No EAS build was launched by this coordinator action.
-- No credentials, certificates, provisioning profiles or Expo secrets changed.
-- No application code changed.
+- No implementation code written by Coordinator.
+- No TestFlight/EAS build launched.
+- No credentials changed.
+- No existing agent functional work discarded or rewritten.
