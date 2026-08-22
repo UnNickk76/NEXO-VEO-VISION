@@ -6,10 +6,10 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - Current main: `b011808ec1a46827d27ccb258ef68ea01dee8b41` after merge of CLEAN PR #23.
-- PR #17 `feat(voice): provider-neutral intent command core`: OPEN / DRAFT, exact HEAD `c80964fab1895a44a999e687ab50934d364c94cd`, currently non-mergeable.
-- Fresh compare current main → PR #17: diverged, ahead 12 / behind 1, merge-base `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- The one behind commit is the merged Location Permission/Degraded State Machine state and its C007/reporting changes; these must be preserved before final Voice evidence/handoff.
-- No final voice-checker/conceptual-validator PASS is claimed for current content; previous runtime checkout failed before checker execution because DNS could not resolve github.com.
+- PR #17 `feat(voice): provider-neutral intent command core`: OPEN / DRAFT / mergeable, exact HEAD `468e4118adfa71d7500842304715fd5c55e27312`.
+- Fresh compare current main → PR #17: `ahead`, behind 0, merge-base current main; diff is exactly the two Voice files.
+- PR #23 Location Permission/Degraded State Machine/C007/reporting is preserved from current main and no location/shared reporting file is in the PR #17 diff after reconciliation.
+- No final voice-checker/conceptual-validator PASS is claimed for current content; this run has no executable repository checkout and exact-HEAD GitHub Actions are absent.
 - Do not touch location/surface/navigation/automotive native/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
@@ -19,11 +19,9 @@ COORDINATOR: NEXO Coordinator
 
 - [ ] **N3.2 — PR #17 CURRENT-MAIN RECONCILIATION + FINAL EVIDENCE / REVIEW HANDOFF**
   - START CONDITION: ACTIONABLE; this remains the only active NEXO 3 task.
-  - CURRENT HEAD: `c80964fab1895a44a999e687ab50934d364c94cd`; current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
-  - FIRST REQUIRED ACTION: safely reconcile/rebase PR #17 onto current main, preserving PR #23 Location Permission/Degraded State Machine/C007/reporting and the Voice functional delta. Do not manually overwrite shared conceptual/reporting with stale branch versions.
-  - PRIOR PROGRESS: V02/V03/V34 were updated conservatively to `[ ] / parziale`; Voice historical report/LATEST/Fabio dashboard were added on PR #17.
-  - REQUIRED TO COMPLETE: after reconciliation rerun actual voice checker and applicable conceptual validator on final content; refresh mergeability; record new exact SHA; keep PR DRAFT; hand off to NEXO REVIEW; append final report. Old pre-main-advance evidence is not final proof.
-  - BLOCKER IF RUNTIME STILL FAILS: remain `[ ]` and record the exact checkout/network failure; do not start N3.3.
+  - CURRENT HEAD: `468e4118adfa71d7500842304715fd5c55e27312`; current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
+  - RECONCILIATION COMPLETED: merge commit `468e4118adfa71d7500842304715fd5c55e27312` has parents prior Voice HEAD `c80964fab1895a44a999e687ab50934d364c94cd` and current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`, with tree built from current main plus only `frontend/src/voice/command-core.ts` and `frontend/scripts/check-voice-command-core.mjs`. Fresh compare is ahead/behind 0 and exact diff is those two Voice files; Location PR #23 state is preserved.
+  - BLOCKED FINAL EVIDENCE: final runtime voice checker and conceptual validator have not been executed on exact HEAD `468e4118...`; `fetch_commit_workflow_runs` returns no runs. Per AGENTS.md no PASS may be inferred. Required condition to complete: executable checkout/runtime or CI capable of running `node frontend/scripts/check-voice-command-core.mjs` and `python3 scripts/check_conceptual_master.py .` on this exact content, followed by final reporting/conceptual/dashboard reconciliation and review handoff.
 
 - [ ] **N3.3 — VOICE INTENT NORMALIZATION**
   - START CONDITION: N3.2 completed/reviewable and no exact-SHA review conflict.
@@ -49,5 +47,6 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, write chat + GitHub report, then immediately reread and start the next eligible task. A blocked task remains `[ ]` with blocker recorded.
 
 ## LAST EVIDENCE
-- 2026-08-22 07:53 UTC coordinator refresh: main advanced to `b011808...`; PR #17 remains `c80964f...` and is now diverged ahead 12 / behind 1 from merge-base `8d8dee4...`.
-- N3.2 requires current-main reconciliation before final checker/validator/handoff. N3.3 is not eligible.
+- 2026-08-22 08:00 UTC NEXO 3 reconciled PR #17 to main `b011808...`; exact HEAD `468e4118...`, mergeable true, compare ahead/behind 0, exact diff two Voice files.
+- N3.2 remains `[ ]`: exact-head runtime checker + conceptual validator are still missing and no exact-head workflow run exists; no PASS/CLEAN/handoff is claimed.
+- N3.3 is not eligible.
