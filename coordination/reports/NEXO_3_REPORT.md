@@ -59,3 +59,35 @@ N3.2 è stato valutato immediatamente. START CONDITION NON soddisfatta: PR #12 �
 
 ### Review
 Nessuna review richiesta per N3.1 audit. La review NEXO REVIEW è prevista dall'N3.2 quando PR #17 sarà completata e consegnabile su exact SHA.
+
+---
+
+## 2026-08-22 02:47 UTC — N3.2 POST-PR12 RECONCILIATION / PROGRESS
+
+- Task ID: N3.2
+- Stato: IN PROGRESS, non completato.
+- PR: #17 DRAFT.
+- Branch: `nexo3/f0-voice-command-core`.
+- Main verificata: `47b9d0a5c20490f0b73e95e52fadca151e89e136` (merge PR #12).
+- Head iniziale PR #17: `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317`.
+- Nuovo exact SHA dopo riconciliazione: `63accc216634a11c6235b1b7d88875d558d70cfc`.
+- Commit creato: `63accc216634a11c6235b1b7d88875d558d70cfc` — `chore(voice): reconcile PR #17 with current main`, merge commit con parent voice precedente e current main.
+
+### WRITE realmente eseguito
+È stato costruito un tree a partire dal tree esatto di main `dc4f1a01ef5adaed1d6b8cbcd4484aa999550760`, reintroducendo esclusivamente i quattro file già appartenenti alla PR #17: i due file funzionali voice/checker e i due rapporti storici voice. In questo modo tutte le modifiche Saved Places/reporting/conceptual già mergeate da PR #12 sono state preservate senza sovrascriverle.
+
+### VERIFY realmente eseguito
+- `compare main...nexo3/f0-voice-command-core` dopo la riconciliazione: status `ahead`, `behind_by=0`, merge-base = current main `47b9d0a5...`.
+- Diff risultante contro main: esattamente 4 file, gli stessi quattro voice-owned preesistenti; nessun file Saved Places, EAS/TestFlight, navigation, surface o Android introdotto dal merge.
+- PR metadata dopo push: OPEN/DRAFT, head `63accc216...`; il campo `mergeable` del metadata endpoint risulta ancora `false`, in contrasto con il compare che mostra current main come merge-base e `behind_by=0`. Per prudenza non viene dichiarata mergeable finché GitHub non restituisce stato coerente.
+- Nessun nuovo PASS runtime/checker dichiarato in questa entry: il checker finale e il validatore concettuale devono ancora essere eseguiti sul contenuto conclusivo dopo gli aggiornamenti N3.2.
+
+### Residui N3.2
+- aggiornare conservativamente V02/V03/V34 a `parziale`, mantenendo `[ ]`;
+- creare rapporto storico finale N3.2, riallineare `LATEST.md` e `Fabio/FABIO_CONTROLLO.md` preservando PR #12;
+- eseguire checker voice e validatore concettuale sul contenuto finale riproducibile;
+- verificare nuovamente metadata mergeability/exact SHA;
+- handoff a NEXO REVIEW solo dopo evidenze finali.
+
+### Prossimo passo
+Continuare esclusivamente N3.2. N3.3 non è eleggibile finché N3.2 non è completato/reviewable.
