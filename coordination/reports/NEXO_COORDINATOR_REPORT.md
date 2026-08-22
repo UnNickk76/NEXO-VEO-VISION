@@ -57,3 +57,26 @@ Verificare direttamente GitHub dopo i report degli agenti/REVIEW, distinguere i 
 
 ### Decisioni richieste a Fabio
 Nessuna decisione tecnica immediata. Il sistema può procedere attraverso Control Plane + Review Queue; Fabio non deve trasferire manualmente i report tra agenti.
+
+---
+
+## 2026-08-22 — Autonomous follow-through after coordinator verdict
+
+### Regola operativa applicata
+Quando il Coordinatore dichiara che deve compiere un'azione operativa concreta, deve eseguirla nello stesso ciclo senza attendere un ulteriore comando di Fabio, salvo necessità reale di autorizzazione esterna o rischio distruttivo.
+
+### Azioni completate
+- Verificato che `coordination/agents/NEXO_CODEX.md` contiene già NC.1 attivo e immediatamente eseguibile per il P1 V28 su PR #19, basato sulla review ID `4998361255` e exact SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
+- Aggiornato `coordination/agents/NEXO_REVIEW.md` con ordine vincolante: PR #12 final SHA `75b661afffc45887cad1e64c7845d56b6c658288` PRIORITÀ 1, poi PR #20 SHA `6e13d42379a5cff26cb37a67944f89302b925ac4` PRIORITÀ 2, poi rilettura immediata della coda. Control Plane commit `e7b162d7d04603c7effb0982a4b8085e8e8258b8`.
+- Verificato che `coordination/agents/NEXO_3.md` è già stato riallineato al nuovo stato reale PR #12: validator gate chiuso ma shared files ancora non rilasciati finché PR #12 resta OPEN/DRAFT e non serializzata/chiusa.
+- NEXO 1 e NEXO 2 restano correttamente in attesa delle rispettive review su nuovi exact SHA; nessun task artificiale aggiunto.
+
+### Stato risultante
+- NEXO CODEX: ACTIONABLE NOW su NC.1.
+- NEXO REVIEW: ACTIONABLE NOW su PR #12, poi PR #20.
+- NEXO 1: WAITING REVIEW su PR #12.
+- NEXO 2: WAITING REVIEW su PR #20.
+- NEXO 3: BLOCKED reale sul release gate PR #12.
+
+### Limiti e sicurezza
+Nessun merge, nessun cambio DRAFT/READY, nessun TestFlight/EAS rerun, nessuna credenziale modificata.
