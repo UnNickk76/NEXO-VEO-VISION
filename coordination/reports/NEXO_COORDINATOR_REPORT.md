@@ -80,3 +80,39 @@ Quando il Coordinatore dichiara che deve compiere un'azione operativa concreta, 
 
 ### Limiti e sicurezza
 Nessun merge, nessun cambio DRAFT/READY, nessun TestFlight/EAS rerun, nessuna credenziale modificata.
+
+---
+
+## 2026-08-22 — Audit mergeability delle 5 PR aperte e piano di serializzazione
+
+### Verifica reale
+Tutte e cinque le PR aperte risultano `mergeable=true` rispetto al main corrente e tutte restano DRAFT:
+- PR #12 HEAD `75b661afffc45887cad1e64c7845d56b6c658288` — mergeable tecnicamente, ma attende review indipendente sul nuovo SHA. Un vecchio thread P1 del validator resta unresolved ma outdated; la nuova evidenza validator esiste e deve essere chiusa/valutata da NEXO REVIEW.
+- PR #17 HEAD `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317` — mergeable tecnicamente, ma non review-ready; shared reporting/conceptual gate dipende da PR #12.
+- PR #18 HEAD `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1` — mergeable, CLEAN indipendente, nessun review thread, Android Readiness run #2 `32526155508` SUCCESS. È l'unica PR oggi governance-ready, ma viene mantenuta in HOLD strategico.
+- PR #19 HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe` — mergeable tecnicamente ma NON CLEAN; P1 V28 ancora aperto. Navigation Domain run #8 `32539350374` SUCCESS sullo SHA corrente, ma il P1 concettuale impedisce il merge.
+- PR #20 HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4` — mergeable tecnicamente ma attende review indipendente sul nuovo SHA; nessun workflow PR-triggered osservato sullo SHA corrente.
+
+### Overlap che impone serializzazione
+- PR #12 / #18 / #19 / #20 toccano `Fabio/FABIO_CONTROLLO.md` e `docs/codex-reports/LATEST.md`.
+- PR #12 / #19 / #20 toccano anche `docs/product/NEXO_CONCEPTUAL_MASTER.md`.
+- PR #17 non tocca attualmente quei shared files, ma deve ancora completarli prima del final handoff.
+
+### Decisione Coordinatore
+Non mergeare PR #18 immediatamente nonostante CLEAN, perché far avanzare main con i reporting condivisi prima di #12 rischia rework/conflitti e ritarda il gate che sblocca NEXO 3.
+
+Ordine operativo corrente:
+1. NEXO REVIEW processa PR #12 exact SHA `75b661a...` come PRIORITÀ 1.
+2. Se CLEAN, Coordinatore ricontrolla exact HEAD/main/thread e serializza/mergea PR #12 senza attendere un nuovo comando, se non emergono nuovi rischi.
+3. Dopo merge #12, rivalutare immediatamente mergeability delle PR #18/#19/#20 e aggiornare i rispettivi task per riconciliare solo i shared files eventualmente in conflitto.
+4. Liberare esplicitamente NEXO 3 per N3.2 appena i shared files sono realmente liberi.
+5. NEXO REVIEW processa PR #20 new SHA come PRIORITÀ 2.
+6. NEXO CODEX completa NC.1 su PR #19 e riconsegna nuovo SHA.
+7. PR #18 resta CLEAN/HOLD e verrà serializzata nel primo punto sicuro dopo #12, evitando di richiedere modifiche funzionali inutili.
+
+### Azioni eseguite
+- Pubblicati commenti Coordinatore sulle PR #12, #17, #18, #19 e #20 con il relativo merge gate/stato.
+- PR #18 ha ricevuto esplicito `SERIALIZATION HOLD`: CLEAN confermato, nessun fix richiesto, merge differito solo per evitare rework.
+
+### Stato finale
+`coordinamento attivo / nessun merge prematuro / pipeline di lavoro preservata`
