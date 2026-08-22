@@ -39,6 +39,7 @@ COORDINATOR: NEXO Coordinator
   - THEN COMPLETE ORIGINAL N1.5 GATES: add conservative PR #24 quality-policy evidence to C007 while keeping `[ ] / parziale`; align historical report/LATEST/FABIO_CONTROLLO to the reconciled exact HEAD; rerun every check invalidated by reconciliation/conceptual/reporting changes, including conceptual validator when applicable; record exact final SHA and explicit NEXO REVIEW handoff.
   - DEFINITION OF DONE: PR #24 based on current main, no regression to merged Location state, exact-head applicable checks recorded, C007 conservative evidence complete, PR DRAFT, explicit review handoff. Only then may N1.5 be considered completed.
   - FREEZE RULE: do not start N1.6 before Coordinator merges/closes PR #24 after CLEAN.
+  - BLOCKER 2026-08-22 10:16 UTC: fresh compare current main → PR #24 HEAD `8abc5d2d...` = `diverged`, ahead 7 / behind 1, merge-base `b011808...`. Runtime GitHub disponibile non espone update-branch/rebase/merge-main-into-branch; `update_ref` non può creare una reconciliation e spostarlo perderebbe i commit N1.5. Nessuna modifica alla PR è stata forzata. Evidenza completa in `coordination/reports/NEXO_1_REPORT.md`, commit Control Plane `522a5fe574547cd61e633ed18245f6f34c8fcbda`.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
   - START CONDITION: PR #24 CLEAN and serialized/merged by Coordinator.
@@ -60,6 +61,7 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 coordinator consolidation refresh: main advanced to `ba39d977...` solely for manual-only TestFlight trigger policy after PR #23.
-- PR #24 functional work is to be preserved; N1.5R is the only actionable NEXO 1 task.
-- Main is under consolidation freeze: no new functional slice before PR #24 CLEAN + Coordinator serialization.
+- 2026-08-22 10:16 UTC N1.5R attempted only after full READ; PR #24 remains safely at `8abc5d2d...`; compare to main `ba39d977...` = diverged ahead 7 / behind 1.
+- Reconciliation is blocked by absence of a safe update-branch/rebase/merge-main-into-branch operation in the available runtime; no functional work was lost or rewritten.
+- PR #24 functional work is preserved; N1.5R remains `[ ]` and N1.6 is not eligible.
+- Main remains under consolidation freeze: no new functional slice before PR #24 CLEAN + Coordinator serialization.
