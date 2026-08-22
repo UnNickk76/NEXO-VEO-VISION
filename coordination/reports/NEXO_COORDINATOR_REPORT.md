@@ -45,24 +45,10 @@ Historical audit preserved: PR #12 was prioritized and subsequently merged after
 
 ### Consequences for open work
 Fresh PR metadata after main advance:
-- PR #17 Voice: old HEAD `63accc216634a11c6235b1b7d88875d558d70cfc`, now `mergeable=false`; N3.2 must reconcile again with new main before final conceptual/reporting/check/handoff.
+- PR #17 Voice: old HEAD `63accc216634a11c6235b1b7d88875d558d70cfc`, then `mergeable=false`; N3.2 required another reconciliation before final handoff.
 - PR #18 Android Readiness: HEAD `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`, `mergeable=false`; historical CLEAN remains evidence only until safe reconciliation/new SHA.
-- PR #19 Navigation: HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`, `mergeable=false`; CHANGES REQUIRED P1 V28 still active; NC.1 must now reconcile with `8d8dee4a...` and preserve C007/location.
-- PR #20 Surface: HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4`, `mergeable=false`; historical CLEAN remains evidence only; N2.3 reconciliation base updated to `8d8dee4a...`.
-
-### Control Plane writes executed
-- NEXO 1: N1.3 evidence updated with CLEAN+merge; N1.4 unblocked and made ACTIONABLE NOW on a new dedicated branch from current main; queue extended through N1.8.
-- NEXO 3: stale `mergeable=true` evidence invalidated by new main; N3.2 remains `[ ]`, first action changed to current-main reconciliation; queue extended through N3.7.
-- NEXO 2: N2.3 reconciliation target updated to current main and queue extended through N2.7; remains legitimately BLOCKED on safe Git reconciliation capability.
-- NEXO CODEX: NC.1 target updated to current main; V28 correction unchanged and still priority.
-- NEXO REVIEW: R9 recorded merged; R4/R6/R7/R8 updated to require new current-main exact SHA; currently legitimate STANDBY until a new handoff arrives.
-
-### Checkbox/evidence audit
-- No `[x]` reopened: N1.1/N1.2/N1.3, N2.1/N2.2, N3.1 and completed REVIEW items have sufficient historical exact-SHA evidence.
-- No new `[x]` added without proof.
-- N3.2 remains `[ ]`; old reconciliation is insufficient after main advanced.
-- N2.3 and NC.1 remain `[ ]`.
-- No duplicate CHANGES REQUIRED task created; PR #19 P1 already represented by NC.1.
+- PR #19 Navigation: HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`, `mergeable=false`; CHANGES REQUIRED P1 V28 still active.
+- PR #20 Surface: HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4`, `mergeable=false`; historical CLEAN remains evidence only until reconciliation.
 
 ### Safety
 - No implementation code written by Coordinator.
@@ -70,9 +56,45 @@ Fresh PR metadata after main advance:
 - No Apple/EAS credentials touched.
 - No Android paid build or store submission.
 
-### Next autonomous flow
-1. NEXO 1 can start N1.4 now from a fresh branch based on `8d8dee4a...`.
-2. NEXO 3 must reconcile PR #17 again to `8d8dee4a...`, then finish N3.2 and hand off exact SHA.
-3. NEXO CODEX continues NC.1 against `8d8dee4a...` including V28 minimal correction.
-4. NEXO 2 remains reconciliation-blocked until safe Git capability is available; do not force-reset shared files.
-5. NEXO REVIEW waits for the first genuinely new reviewable exact SHA and reviews immediately, without duplicating old SHA.
+---
+
+## 2026-08-22 05:18 UTC — Independent audit consumed + consolidation verdict
+
+### Input consumed
+Independent READ-ONLY audit from NEXO CONTROLLO reviewed and cross-checked against live GitHub metadata instead of accepted blindly.
+
+### Main
+- Current main verified: `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- PR #12 Saved Places is merged as `47b9d0a5...`.
+- PR #22 Location Contract is merged as `8d8dee4a...`.
+
+### Five open PRs — fresh state
+- PR #17 Voice: OPEN / DRAFT / **mergeable=true**, current HEAD `fc5932b685406dd566848afc0ab40f098cd00f2a`; no review threads; no exact-head workflow runs. This supersedes stale Control Plane evidence that still referenced old HEAD `63accc216...` and mergeable=false. PR is NOT merge-ready until N3.2 final evidence + REVIEW handoff/CLEAN.
+- PR #18 Android Readiness: OPEN / DRAFT / mergeable=false, HEAD `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`. Historical CLEAN remains valid only for that old branch state; current-main reconciliation + re-review required before merge.
+- PR #19 Navigation: OPEN / DRAFT / mergeable=false, HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`; existing CHANGES REQUIRED P1 V28 remains active. Reconcile with current main + minimal V28 correction + new VERIFY/review required.
+- PR #20 Surface: OPEN / DRAFT / mergeable=false, HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4`; historical CLEAN cannot authorize merge after main divergence. N2.3 reconciliation + re-review required.
+- PR #23 Location Permission/Degraded: OPEN / DRAFT / mergeable=true, HEAD `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; REVIEW CHANGES REQUIRED P1 reporting-only. Functional core/checker accepted; N1.4R must correct historical/LATEST verbatim mismatch, produce new exact SHA, then R11 re-review.
+
+### Coordinator decisions executed
+- Updated `coordination/agents/NEXO_3.md`: obsolete PR #12 blocker removed; current PR #17 head/mergeability recorded; N3.2 is ACTIONABLE NOW for final evidence/handoff, not blocked.
+- Updated `coordination/agents/NEXO_CODEX.md`: added explicit NC.1B to reconcile/re-review stale CLEAN PR #18 after PR #19 serialization, before starting new navigation hardening. This prevents Android Readiness from remaining indefinitely outside main.
+- NEXO 1 already has active N1.4R for PR #23 reporting correction; no duplicate task created.
+- NEXO 2 already has N2.3 current-main reconciliation task and remains legitimately blocked on safe Git reconciliation capability; no force reconstruction authorized.
+- NEXO REVIEW already has R11 for PR #23 plus re-review gates R4/R6/R7/R8; no duplicate review work created.
+
+### Consolidation order
+1. NEXO 1: close PR #23 reporting-only P1 → REVIEW R11 → if CLEAN Coordinator serializes/merges.
+2. NEXO 3: complete N3.2 on current mergeable PR #17 → REVIEW; merge only after CLEAN and exact-head verification.
+3. NEXO CODEX: reconcile/fix PR #19 → REVIEW → serialize/merge when CLEAN.
+4. NEXO CODEX: immediately reconcile stale CLEAN PR #18 on then-current main → REVIEW → serialize/merge.
+5. NEXO 2: reconcile PR #20 when safe capability exists → REVIEW → serialize/merge.
+6. Only after this backlog is consolidated should new major parallel F1 slices be allowed to expand again.
+
+### Safety / non-actions
+- No implementation code written by Coordinator.
+- No blind merge of conflict-diverged PRs.
+- No TestFlight/EAS rerun.
+- No credentials touched.
+
+### Coordinator verdict
+The independent audit is directionally correct, but current live GitHub already advanced beyond parts of it. The immediate risk is not lack of work; it is stale parallel PRs drifting behind main. Consolidation is now the top coordination priority while still allowing agents to finish only the currently assigned gates.
