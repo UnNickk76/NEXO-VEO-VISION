@@ -32,6 +32,7 @@ COORDINATOR: NEXO Coordinator
   - START CONDITION: SATISFIED — N1.4R CLEAN and PR #23 merged. Start from a fresh dedicated branch based on current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
   - Goal: stale fix, invalid coordinates, accuracy/freshness thresholds and conservative fallback; deterministic checker required.
   - Preserve current C007 state and do not claim OS/GPS runtime.
+  - CURRENT EVIDENCE: PR #24 OPEN/DRAFT, branch `nexo1/f1-location-quality-policy`, HEAD `f89de36ae055de60ae0079b426d2496736dd1e6e`; 4 functional/check/workflow files changed. VERIFY exact-head non ancora disponibile; conceptual/reporting repository non ancora completati. Stato: IN PROGRESS/BLOCKED sul completamento dei gate, quindi resta `[ ]`.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
   - START CONDITION: N1.5 completed/reviewable.
@@ -53,6 +54,7 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 07:03 UTC — PR #23 exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520` CLEAN and mergeable; Coordinator marked Ready and squash-merged.
-- Current main independently verified: `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
-- N1.4R is now `[x]` with direct CLEAN+workflow+merge evidence. N1.5 is ACTIONABLE NOW from fresh current main.
+- 2026-08-22 07:24 UTC — N1.5 avviato da current main verificato `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
+- PR #24 OPEN/DRAFT; HEAD `f89de36ae055de60ae0079b426d2496736dd1e6e`.
+- Workflow exact-head interrogati immediatamente dopo apertura PR: nessuna run disponibile; nessun PASS dichiarato.
+- N1.5 resta `[ ]`; N1.6 non è eleggibile.
