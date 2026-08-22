@@ -7,8 +7,8 @@ COORDINATOR: NEXO Coordinator
 ## CURRENT VERIFIED STATE
 - Review operates independently and never modifies implementation code or merges.
 - Review one PR/SHA at a time, then update this file and immediately continue to the next eligible review.
-- PR #12 exact SHA `75b661afffc45887cad1e64c7845d56b6c658288` has now been independently reviewed CLEAN; Coordinator must serialize/merge before shared-file release is assumed.
-- PR #20 exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4` remains reviewable and is now the first eligible `[ ]` item.
+- PR #12 exact SHA `75b661afffc45887cad1e64c7845d56b6c658288` independently reviewed CLEAN; Coordinator must serialize/merge before shared-file release is assumed.
+- PR #20 exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4` independently reviewed CLEAN; Coordinator must serialize against updated main/shared reporting before merge.
 
 ## REVIEW QUEUE — ONE AT A TIME
 
@@ -26,11 +26,12 @@ COORDINATOR: NEXO Coordinator
   - Multi-instance repository-scoped serialization and canonical conceptual-validator gate verified; reporting coherent.
   - Coordinator must decide serialization/merge; CLEAN alone does not release shared files until governance condition is satisfied.
 
-- [ ] **R2 — PR #20 Surface Capabilities — NEW SHA REVIEW — PRIORITY 2**
-  - START CONDITION: SATISFIED.
-  - Exact SHA handed off by NEXO 2: `6e13d42379a5cff26cb37a67944f89302b925ac4`.
-  - Prior reviewed SHA `dbb78f17fec64cabd3537e8c80ca7998da54b696` had one remaining reporting P1; NEXO 2 states this was corrected in the new SHA.
-  - Goal: independently verify exact new SHA, reporting protocol, final checks, preservation of policy/availability fix and conceptual evidence; emit CLEAN or CHANGES REQUIRED. Do not review the old SHA again.
+- [x] **R2 — PR #20 Surface Capabilities — NEW SHA REVIEW — PRIORITY 2**
+  - Reviewed exact SHA: `6e13d42379a5cff26cb37a67944f89302b925ac4`.
+  - Result: CLEAN — P0=0, P1=0, P2=0.
+  - Review ID: `4998458851`.
+  - Reporting P1 closed; functional policy/availability fix and conceptual evidence preserved; final PR OPEN/DRAFT/mergeable with no open review threads.
+  - Coordinator must decide serialization/merge against current main and shared reporting/conceptual overlap.
 
 - [ ] **R4 — PR #17 Voice / Command Core**
   - START CONDITION: NEXO 3 completes shared-file gate and explicitly hands off exact SHA.
@@ -41,13 +42,12 @@ COORDINATOR: NEXO Coordinator
   - No duplicate review unless HEAD changes.
 
 ## REVIEW ORDER — COORDINATOR DIRECTIVE
-Process eligible reviews strictly one at a time in this order unless a newer Coordinator directive changes it:
+Process eligible reviews strictly one at a time unless a newer Coordinator directive changes it:
 1. R3 / PR #12 — completed CLEAN.
-2. Immediately reread this file.
-3. R2 / PR #20 exact SHA `6e13d42...` — now first eligible.
-4. Immediately reread this file.
-5. If NEXO CODEX has handed off a new PR #19 SHA after NC.1, review that new SHA next.
-6. If PR #12 CLEAN/closure releases NEXO 3 and PR #17 becomes reviewable, add/take R4 only after exact-SHA handoff.
+2. R2 / PR #20 — completed CLEAN.
+3. Immediately reread this file.
+4. If NEXO CODEX has handed off a new PR #19 SHA after NC.1 and Coordinator/queue records it, review that new SHA next.
+5. If PR #12 CLEAN/closure releases NEXO 3 and PR #17 becomes reviewable, take R4 only after exact-SHA handoff.
 
 After each review: update this file, write the three required reports/notes, reread immediately and continue with the next eligible review. Do not stop merely because one review report was emitted.
 
@@ -56,6 +56,7 @@ For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact
 
 ## LAST EVIDENCE
 - PR #12 SHA `75b661afffc45887cad1e64c7845d56b6c658288`: CLEAN, review ID `4998454274`; Issue #11 comment `5376965972`.
-- PR #20 SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`: START CONDITION satisfied and now first eligible review.
-- PR #19 SHA `7210baef...`: CHANGES REQUIRED; await new SHA after NC.1.
+- PR #20 SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`: CLEAN, review ID `4998458851`; Issue #11 comment `5376975680`.
+- PR #19 SHA `7210baef...`: CHANGES REQUIRED; await new exact SHA handoff after NC.1.
 - PR #18 SHA `1e50e747...`: CLEAN.
+- R4 remains blocked pending Coordinator serialization/release of PR #12 shared files plus explicit NEXO 3 exact-SHA handoff.
