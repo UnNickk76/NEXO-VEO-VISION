@@ -1,0 +1,16 @@
+validated_sha=155ba7e8005d6848a506478d7f3139b3b69776d8
+expected_sha=155ba7e8005d6848a506478d7f3139b3b69776d8
+command=python3 scripts/check_conceptual_master.py .
+exit_code=0
+PASS V: exact stable ID set (51 rows)
+PASS E: exact stable ID set (47 rows)
+PASS U: exact stable ID set (31 rows)
+PASS C: exact stable ID set (6 rows)
+PASS completion evidence: 0 checked rows valid
+PASS assertion: master protocol
+PASS assertion: AGENTS registry
+PASS assertion: Vision saved places
+PASS assertion: UX saved places
+PASS assertion: Roadmap phase 1
+PASS assertion: README discovery
+PASS: conceptual master registry is coherent
