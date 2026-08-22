@@ -97,8 +97,8 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | Fatto | ID | Requisito | Stato | Evidenza | Fonte dettagliata |
 | --- | --- | --- | --- | --- | --- |
 | [ ] | `V01` | Identità | concettuale | — | memory/NEXO_VEO_VISION.md §1 |
-| [ ] | `V02` | NEXO + VEO — un solo assistente | parziale | PR #17; commit `471934b4fa2cbcc963cceb195eda548f5546c59e`; `node scripts/check-voice-command-core.mjs` + TypeScript strict in NEXO 3 Voice Validation run `32566648776`, job `97016122933`, SUCCESS; nessun STT/TTS/microfono/wake-word/provider/native runtime | memory/NEXO_VEO_VISION.md §2 |
-| [ ] | `V03` | Voice-First | parziale | PR #17; commit `471934b4fa2cbcc963cceb195eda548f5546c59e`; `node scripts/check-voice-command-core.mjs` + TypeScript strict in NEXO 3 Voice Validation run `32566648776`, job `97016122933`, SUCCESS; microfono/STT/TTS e parity touch runtime non implementati | memory/NEXO_VEO_VISION.md §3 |
+| [ ] | `V02` | NEXO + VEO — un solo assistente | parziale | PR #17; commit `471934b4fa2cbcc963cceb195eda548f5546c59e`; PR #25 N3.3 normalization commit `684f71ccbc27015cf8346705fd0dfb363ddc8e16`; checker `frontend/scripts/check-voice-command-core.mjs` + TypeScript strict; nessun STT/TTS/microfono/wake-word/provider/native runtime | memory/NEXO_VEO_VISION.md §2 |
+| [ ] | `V03` | Voice-First | parziale | PR #17; commit `471934b4fa2cbcc963cceb195eda548f5546c59e`; PR #25 N3.3 normalization commit `684f71ccbc27015cf8346705fd0dfb363ddc8e16`; checker `frontend/scripts/check-voice-command-core.mjs` + TypeScript strict; confidence 1 per intent esatto / 0 per unknown; microfono/STT/TTS e parity touch runtime non implementati | memory/NEXO_VEO_VISION.md §3 |
 | [ ] | `V04` | Audio / Radio / Musica / Telefonate | concettuale | — | memory/NEXO_VEO_VISION.md §4 |
 | [ ] | `V05` | CarPlay & Android Auto (requisiti fondamentali, non opzionali) | concettuale | — | memory/NEXO_VEO_VISION.md §5 |
 | [ ] | `V06` | Cartografia & Motore di navigazione | concettuale | — | memory/NEXO_VEO_VISION.md §6 |
@@ -129,7 +129,7 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `V31` | Road Ask | concettuale | — | memory/NEXO_VEO_VISION.md §31 |
 | [ ] | `V32` | Guarda avanti | concettuale | — | memory/NEXO_VEO_VISION.md §32 |
 | [ ] | `V33` | Memoria stradale personale | concettuale | — | memory/NEXO_VEO_VISION.md §33 |
-| [ ] | `V34` | Navigazione conversazionale | parziale | PR #17; commit `471934b4fa2cbcc963cceb195eda548f5546c59e`; parser deterministico verificato da `node scripts/check-voice-command-core.mjs` + TypeScript strict in NEXO 3 Voice Validation run `32566648776`, job `97016122933`, SUCCESS; destinazione solo pre-risolta, nessuna invenzione; NLU conversazionale completa/STT/TTS/provider/native runtime non implementati | memory/NEXO_VEO_VISION.md §34 |
+| [ ] | `V34` | Navigazione conversazionale | parziale | PR #17; commit `471934b4fa2cbcc963cceb195eda548f5546c59e`; PR #25 N3.3 normalization commit `684f71ccbc27015cf8346705fd0dfb363ddc8e16`; checker `frontend/scripts/check-voice-command-core.mjs` + TypeScript strict; normalizzazione Unicode/whitespace deterministica, ambiguità control esplicita, destinazione solo pre-risolta e nessuna invenzione; NLU conversazionale completa/STT/TTS/provider/native runtime non implementati | memory/NEXO_VEO_VISION.md §34 |
 | [ ] | `V35` | POI contestuali | concettuale | — | memory/NEXO_VEO_VISION.md §35 |
 | [ ] | `V36` | Journey Points | concettuale | — | memory/NEXO_VEO_VISION.md §36 |
 | [ ] | `V37` | Safe Stop | concettuale | — | memory/NEXO_VEO_VISION.md §37 |
