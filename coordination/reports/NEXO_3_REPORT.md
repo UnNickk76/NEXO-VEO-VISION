@@ -140,3 +140,45 @@ Nessun handoff finale: PR resta DRAFT. Nessun CLEAN dichiarato.
 
 ### Prossimo passo
 Ritentare esclusivamente N3.2 quando è disponibile un runtime/CI capace di eseguire i due check sull'exact content. N3.3 resta non eleggibile. Nessuna azione richiesta a Fabio.
+
+---
+
+## 2026-08-22 08:44 UTC — N3.2 EXACT-HEAD VOICE CHECKER RECOVERED
+
+- Task ID: N3.2.
+- Stato finale di questa ripresa: PARTIAL / BLOCKED sul solo conceptual-validator gate; checkbox resta `[ ]`.
+- PR: #17 `feat(voice): provider-neutral intent command core`, OPEN / DRAFT / mergeable.
+- Branch: `nexo3/f0-voice-command-core`.
+- Current main/base verificata: `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
+- Exact PR HEAD verificato dopo il test: `468e4118adfa71d7500842304715fd5c55e27312`; changed_files=2.
+
+### READ / verifica stato
+Riletti AGENTS.md, Issue #11, Control Plane README, task/report NEXO 3. Nessuna REVIEW NOTE `CHANGES REQUIRED` presente. PR #17 verificata nuovamente OPEN/DRAFT/mergeable con exact HEAD invariato `468e4118...`.
+
+### Recupero del runtime senza clone
+Il clone GitHub continua a essere impossibile nel container per DNS. Per non dedurre il risultato, sono stati letti via GitHub sull'exact HEAD i due blob funzionali reali:
+- `frontend/src/voice/command-core.ts` blob `6aaef7a6a8f5a828572769436ff0369b012835e3`;
+- `frontend/scripts/check-voice-command-core.mjs` blob `eb92d90288c979cae5d8740f4980f1f86b074b6a`.
+I contenuti exact-head sono stati materializzati localmente senza modificarli e il checker versionato è stato eseguito realmente.
+
+### Test/check realmente eseguito
+Comando:
+`cd /tmp/nexo3 && node frontend/scripts/check-voice-command-core.mjs`
+
+Esito: exit code `0`.
+Output: `voice-command-core checks: PASS`.
+
+Il checker include compilazione TypeScript `--strict` del file exact-head prima dei test comportamentali; pertanto il PASS copre il core Voice materializzato dai due blob esatti della PR #17.
+
+### Conceptual validator
+È stato nuovamente tentato accesso diretto raw GitHub dal runtime:
+`curl -L --fail --silent --show-error --max-time 10 https://raw.githubusercontent.com/.../scripts/check_conceptual_master.py -o /tmp/check.py`
+
+Esito: exit code `6`, `Could not resolve host: raw.githubusercontent.com`.
+Il connector GitHub consente di leggere `scripts/check_conceptual_master.py` e i file del repository, ma in questa ripresa non è stato materializzato un checkout completo exact-head di tutti i file letti dal validator. Perciò `python3 scripts/check_conceptual_master.py .` NON è stato eseguito sul repository exact-head e nessun PASS concettuale viene dichiarato.
+
+### Limiti / problemi residui
+Unico gate di prova N3.2 ancora mancante: esecuzione reale del conceptual validator sul contenuto completo exact-head. Nessuna modifica funzionale, conceptual/shared reporting o TestFlight è stata effettuata in questa ripresa.
+
+### Review / prossimo passo
+Nessun handoff finale a NEXO REVIEW finché il conceptual validator non è realmente eseguito. N3.3 resta non eleggibile. Prossimo passo: continuare esclusivamente N3.2 e chiudere il solo gate concettuale, poi reporting finale/exact SHA/handoff.
