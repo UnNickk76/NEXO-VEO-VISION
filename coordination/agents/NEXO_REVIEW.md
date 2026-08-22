@@ -1,15 +1,15 @@
 # NEXO REVIEW — Dedicated Review File
 
-CONTROL BRANCH: `coordination/agent-control`
+CONTROL BRANCH: `coordination/agent-control`.
 OWNER: NEXO REVIEW
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - Review operates independently and never modifies implementation code or merges.
 - Current `main`: `8d8dee4a31416acb38c2e654082ca15efafd6fec`, merge of CLEAN PR #22 Location Contract.
-- PR #23 old SHA `dfeefff17...` was CHANGES REQUIRED reporting-only. New exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` is OPEN / DRAFT / mergeable=true; author correction is reporting-only and exact-head Location State Machine #7 `32554330952` + Location Contract #13 `32554330936` are SUCCESS. R11 is eligible NOW.
-- PR #17 is OPEN / DRAFT / mergeable=true on exact HEAD `fc5932b685406dd566848afc0ab40f098cd00f2a`, but N3.2 final evidence/handoff is not yet complete and there are no exact-head workflow runs.
-- PR #18/#19/#20 remain non-mergeable against current main and require reconciliation/new handoff before re-review.
+- PR #23 exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` è stato revisionato in R11 ed è CLEAN; PR OPEN / DRAFT / mergeable=true. Exact-head Location State Machine #7 `32554330952` e Location Contract #13 `32554330936` sono SUCCESS.
+- PR #17 è OPEN / DRAFT / mergeable=true su exact HEAD `fc5932b685406dd566848afc0ab40f098cd00f2a`, ma N3.2 final evidence/handoff non è ancora completo e non risultano exact-head workflow run.
+- PR #18/#19/#20 restano non-mergeable contro current main e richiedono reconciliation/new handoff prima della re-review.
 
 ## REVIEW QUEUE — ONE AT A TIME
 
@@ -28,11 +28,10 @@ COORDINATOR: NEXO Coordinator
 - [x] **R10 — PR #23 Location Permission / Degraded State Machine**
   - Reviewed exact SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`: CHANGES REQUIRED, P0/P1/P2=0/1/0; review ID `4999049657`; functional slice accepted, P1 reporting-only.
 
-- [ ] **R11 — PRIORITY NOW: PR #23 REPORTING RE-REVIEW**
-  - START CONDITION: SATISFIED NOW.
-  - EXACT SHA: `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
-  - EVIDENCE TO VERIFY: reporting-only delta from R10 SHA; historical/LATEST verbatim alignment; PR OPEN/DRAFT/mergeable=true; Location State Machine run #7 `32554330952` SUCCESS; Location Contract run #13 `32554330936` SUCCESS.
-  - REQUIRED OUTPUT: CLEAN or CHANGES REQUIRED on this exact SHA; append full review report + REVIEW NOTE to NEXO 1 report; no implementation edits, no Ready/merge.
+- [x] **R11 — PR #23 REPORTING RE-REVIEW**
+  - CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review ID `4999414769`, P0/P1/P2=0/0/0.
+  - Delta da R10 SHA: ahead 2 / behind 0, esclusivamente historical report + `LATEST.md`; body di LATEST verbatim rispetto al rapporto storico; PR OPEN/DRAFT/mergeable=true; exact-head Location State Machine #7 `32554330952` SUCCESS e Location Contract #13 `32554330936` SUCCESS.
+  - Nessuna rettifica residua; serializzazione/Ready/merge spettano al Coordinatore.
 
 - [ ] **R4 — PR #17 Voice / Command Core**
   - START CONDITION: NEXO 3 completes N3.2 final conceptual/reporting/check evidence and explicitly hands off current/new exact SHA. Current `fc5932b...` is mergeable but lacks final N3.2 handoff/evidence; do not review prematurely.
@@ -50,13 +49,13 @@ COORDINATOR: NEXO Coordinator
   - START CONDITION: any agent hands off a new dedicated PR/SHA with its own task complete/reviewable and no overlap conflict; Coordinator may replace this placeholder with the concrete PR before review.
 
 ## REVIEW ORDER — COORDINATOR DIRECTIVE
-R11 is first priority now. After it, take the first newly eligible exact SHA among R4/R6/R7/R8/R12. Never review obsolete/non-mergeable old heads and never duplicate the same exact SHA.
+Dopo R11, prendere il primo nuovo exact SHA realmente eleggibile tra R4/R6/R7/R8/R12. Never review obsolete/non-mergeable old heads and never duplicate the same exact SHA.
 
 ## REVIEW LOOP
 For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact PR/SHA/diff/checks/reporting/governance → publish CLEAN or CHANGES REQUIRED → append review report + REVIEW NOTE → update queue → immediately reread. Never duplicate review of the same SHA.
 
 ## LAST EVIDENCE
-- 2026-08-22 05:56 UTC coordinator refresh: PR #23 exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520`, OPEN/DRAFT/mergeable=true.
+- 2026-08-22 06:56 UTC — R11 PR #23 exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`: CLEAN, P0/P1/P2=0/0/0, review `4999414769`, Board `5378774514`.
 - Exact-head workflows PR #23: Location State Machine #7 `32554330952` SUCCESS; Location Contract #13 `32554330936` SUCCESS.
-- R11 is eligible and PRIORITY NOW.
-- PR #17 `fc5932b...` mergeable=true but N3.2 handoff incomplete; #18/#19/#20 remain reconciliation-gated.
+- REVIEW NOTE appended to `coordination/reports/NEXO_1_REPORT.md`.
+- PR #17 `fc5932b...` mergeable=true ma N3.2 handoff incompleto; #18/#19/#20 restano reconciliation-gated.
