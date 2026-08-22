@@ -3,47 +3,41 @@
 > Cruscotto di sola consultazione. Il rapporto tecnico completo è in
 > `docs/codex-reports/LATEST.md`.
 
-## NEXO CODEX — PR #19 Navigation Domain Core
-- **Data:** 22 agosto 2026, 20:05 UTC.
-- **Task:** reconciliation/finalizzazione PR #19 sul current main dopo merge #18.
-- **Stato:** completato lato autore; PR #19 resta DRAFT e attende NEXO REVIEW sull'exact HEAD finale.
-- **Branch:** `nexo-codex/f0-navigation-domain-core`.
-- **Pull request:** #19.
-- **Main di riferimento:** `b1fa88453a81b15f1dc433fa6503c81292a4a48e`.
-- **Backup storico:** `backup/pr19-before-b1fa8845` → `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
+## NEXO 2 — PR #20 Surface Capabilities
+- **Data:** 22 agosto 2026, 20:15 UTC.
+- **Task:** reconciliation/finalizzazione PR #20 sul current main dopo merge #19.
+- **Stato:** completato lato autore; PR #20 resta DRAFT e attende NEXO REVIEW sull'exact HEAD finale.
+- **Branch:** `nexo2/f0-surface-capabilities`.
+- **Pull request:** #20.
+- **Main di riferimento:** `84c4799307adb6e63421bc0fa58ccb3dd0ad8a76`.
+- **Backup storico:** `backup/pr20-before-84c47993` → `6e13d42379a5cff26cb37a67944f89302b925ac4`.
 
 ## Cosa è stato fatto realmente
-- Preservato il Navigation Domain Core provider-neutral: DestinationRef, LocationSample, RouteRequest, RouteCandidate, RecalculationRequest, RoutingAdapter e NavigationSession.
-- Preservati lifecycle/state machine, alternative selection, recalculation e checker deterministico.
-- Reconciliation eseguita partendo dal main corrente, senza ripristinare copie stale dei file condivisi.
-- V06/V21/V26/V27 restano `[ ] / parziale` con evidenza aggiornata.
-- V28 Route Explanation resta `[ ] / concettuale`: questa PR non la implementa né la testa.
-- Nessun provider mappe/routing reale, GPS runtime, UI mappa, EAS/TestFlight o credenziale introdotti.
+- Preservato Surface Core per iOS/Android phone, CarPlay e Android Auto come modello provider-neutral, senza runtime automotive.
+- Availability runtime e product policy restano dimensioni ortogonali; policy `prohibited` non riscrive availability e rende soltanto `usable=false`.
+- Preservati vincoli moving/stopped, free-text, rich details, touch limits e ruolo passenger entro i limiti Surface.
+- V05/V44/V45/V46 restano `[ ] / parziale`; nessuna funzione automotive è dichiarata completa.
+- Aggiunta una CI Surface di sola validazione per eseguire davvero TypeScript strict/checker/conceptual sul branch riconciliato.
+- Nessun EAS/TestFlight, credenziale o nuovo runtime.
 
 ## Controlli reali
-Sul technical HEAD `40645cd3930e1278b21e8d5de44e59a230a626df`:
-- Navigation Domain `32595355232`: **SUCCESS**.
-- Voice Validation `32595355258`: **SUCCESS**.
-- Android Readiness `32595355237`: **SUCCESS**.
-
-Dopo la correzione conceptual, exact SHA `fa10def694ef9b642358cd6e4ab94a697e22d5b9`:
-- Navigation Domain `32595518558`: **SUCCESS**.
-- Voice Validation / conceptual validator `32595518559`: **SUCCESS**.
-- Android Readiness `32595518694`: **SUCCESS**.
-- Location Contract `32595518590`: **SUCCESS**.
-- Location State Machine `32595518652`: **SUCCESS**.
-- Location Quality Policy `32595518566`: **SUCCESS**.
+Sull'exact conceptual HEAD `4a12effd03ab4034c31a9f45e52ab8c1c8c7d699`:
+- Surface Capabilities `32595962428`: **SUCCESS**.
+- Voice Validation `32595962430`: **SUCCESS**.
+- Navigation Domain `32595962460`: **SUCCESS**.
+- Android Readiness `32595962426`: **SUCCESS**.
+- Location Quality Policy `32595962463`: **SUCCESS**.
+- Location State Machine `32595962436`: **SUCCESS**.
+- Location Contract `32595962371`: da ricontrollare prima del verdetto REVIEW, perché alla prima lettura finale era ancora in progress.
 
 ## Limiti dichiarati
-- Nessun routing reale end-to-end.
-- Nessun provider mappe/routing.
-- Nessun GPS/device reale.
-- Nessuna Route Explanation runtime.
-- Nessuna Alternative Live o ricalcolo continuo runtime.
-- Nessun TestFlight/EAS.
+- Nessun runtime CarPlay/Android Auto.
+- Nessuna UI automotive finale.
+- Nessun test in auto/simulatore automotive.
+- Nessun EAS/TestFlight.
 
 ## Prossimo passo
-NEXO REVIEW deve revisionare il final exact HEAD post-reporting. Se CLEAN, il Coordinatore può portare Ready e mergeare #19; solo dopo si passa alla reconciliation seriale di #20.
+Ricontrollo conclusione Location Contract, fresh metadata/diff/thread; NEXO REVIEW exact-SHA. Se CLEAN, Ready + merge #20. Poi report finale di consolidamento, senza partire automaticamente con nuove feature.
 
 ## Cosa deve fare Fabio adesso
 Nulla.
