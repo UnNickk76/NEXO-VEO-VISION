@@ -2,6 +2,52 @@
 
 Canale report dedicato di NEXO REVIEW.
 
+## 2026-08-22 18:50 UTC — R13R / PR #24 Location Quality Policy
+- **Task ID:** R13R.
+- **PR:** #24 `feat(location): add freshness quality policy`.
+- **Exact SHA revisionato:** `372cb3746506cff162a364f83a9796e5141daf8a`.
+- **Branch autore:** `nexo1/f1-location-quality-policy`.
+- **Current main:** `1d0a01c91bb328baf141560a534f4b62fe406b01`.
+- **Stato PR verificato:** OPEN / DRAFT / mergeable=true / non merged; 13 commit, 9 changed files.
+- **Compare main→HEAD:** `ahead`, ahead 13 / behind 0, merge-base=current main.
+- **Verdict:** CLEAN.
+- **P0/P1/P2:** 0 / 0 / 0.
+
+### Verifiche reali
+- Letti `AGENTS.md` su main, Issue #11, Control Plane README, queue REVIEW e storico REVIEW prima della review.
+- Handoff esplicito N1.5R verificato sulla Board #11 e PR #24 per exact SHA `372cb374...`.
+- Nessun review thread aperto; nessuna review precedente sul nuovo exact SHA.
+- Diff verificato: workflow quality policy, source/export, checker, C007, rapporto storico finale, LATEST, FABIO e storico precedente N1.5.
+- `frontend/src/location/quality-policy.ts`: policy provider-neutral con soglie default 30s/100m; rifiuta fix invalidi, futuri, stale o con accuracy insufficiente; fallback solo verso un precedente fix reale ancora utilizzabile; nessuna posizione sintetizzata.
+- `frontend/scripts/check-location-quality-policy.mjs`: copre good/boundary/stale/poor/future/invalid, policy invalida e fallback conservativo/null.
+- C007 resta `[ ] / parziale`; evidenza include PR #24, commit N1.5 pertinente, checker/workflow pertinente e limite esplicito nessun provider/GPS runtime.
+- Rapporto storico `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md` verificato: contiene i campi obbligatori AGENTS.md, distingue verificato/dedotto/non verificato, registra errori/limiti/rischi/dipendenze/prossimo passo e non inventa runtime reale.
+- `docs/codex-reports/LATEST.md` verificato: path header + copia integrale/verbatim dello stesso rapporto storico.
+- `Fabio/FABIO_CONTROLLO.md` verificato: sintetico, conservativo, con limiti e prossimo passo coerenti.
+
+### Exact-head VERIFY
+- Location Quality Policy run `32590273193`: completed / SUCCESS sull'exact HEAD; job `97072902172` SUCCESS.
+- Step job verificati SUCCESS: Checkout, Setup Node.js, Install dependencies (`npm ci`), Expo Doctor, Lint, Compile location quality policy con TypeScript strict, Location quality checker, Conceptual registry validator.
+- Location Contract run `32590273221`: SUCCESS.
+- Location State Machine run `32590273202`: SUCCESS.
+- NEXO 3 Voice Validation run `32590273251`: SUCCESS.
+
+### Governance / limiti
+- Nessun provider OS/GPS, permission runtime reale, mappa/routing reale, test device, EAS/TestFlight o credenziale è dichiarato o verificato da questo slice.
+- N1.6 resta fuori scope fino a serializzazione/merge Coordinator.
+- NEXO REVIEW non ha modificato codice, Draft/Ready, merge, build o credenziali.
+
+### Azioni GitHub
+- Review CLEAN pubblicata sulla PR #24, review ID `5000829137`, ancorata all'exact SHA `372cb374...`.
+- Esito essenziale pubblicato su Issue #11, commento `5382036392`.
+- REVIEW NOTE append-only aggiunta a `coordination/reports/NEXO_1_REPORT.md`.
+- Queue REVIEW aggiornata: R13R `[x]` per l'exact SHA revisionato.
+
+### Stato finale
+R13R completata CLEAN sullo SHA indicato. La PR resta DRAFT; serializzazione/Ready/merge spettano al Coordinatore. R8R/#18 resta bloccata fino al merge di #24 e successiva reconciliation/handoff current-main-based.
+
+---
+
 ## Regole
 - Appendere ogni report di review reale.
 - Non cancellare report precedenti.
@@ -96,7 +142,6 @@ Canale report dedicato di NEXO REVIEW.
 ---
 
 ## 2026-08-22 01:10 UTC — R2 / PR #20 Surface Capabilities
-- Task ID: R2.
 - PR: #20 `feat(surface): add provider-neutral surface capabilities`.
 - Exact SHA revisionato: `6e13d42379a5cff26cb37a67944f89302b925ac4`.
 - Branch autore: `nexo2/f0-surface-capabilities`.
