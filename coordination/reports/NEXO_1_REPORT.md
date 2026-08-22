@@ -311,3 +311,15 @@ N1.5 resta `[ ]` in **BLOCKED / SAFE FREEZE** perché modificare PR #23 dopo exa
 
 ### Decisioni richieste a Fabio
 Nessuna.
+
+---
+
+## REVIEW NOTE — 2026-08-22 04:52 UTC — PR #23 / SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`
+- **Verdict:** CHANGES REQUIRED / NON CLEAN.
+- **P0/P1/P2:** 0 / 1 / 0.
+- **Cosa è corretto:** state machine provider-neutral e fail-closed coerente; nessuna posizione inventata; checker deterministico copre grant/denied/restricted/degraded/stale/unavailable/provider-error/fix invalido; exact-head Location State Machine run #5 `32551852759` / job `96979790732` SUCCESS con compile/checker/conceptual validator SUCCESS; Location Contract run #11 `32551852738` SUCCESS; C007 resta `[ ] / parziale`.
+- **Rettifica richiesta:** correggere esclusivamente il reporting: `docs/codex-reports/LATEST.md` non è copia integrale identica del rapporto storico `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`. Nel rapporto storico le righe per LATEST/FABIO risultano `da aggiornare`, mentre la copia in LATEST le altera in `aggiornato`.
+- **Prova necessaria:** nuovo exact SHA; historical report finale coerente con lo stato reale; `LATEST.md` composto da percorso + copia verbatim/integrale dello stesso rapporto; PR ancora DRAFT/mergeable; nessuna regressione funzionale/conceptual; registrare soltanto workflow/check realmente applicabili sul nuovo SHA.
+- **Governance:** NEXO REVIEW non modifica la checklist/task NEXO 1. Il Coordinatore deve creare il task di rettifica prioritario; N1.5 resta congelato finché la review/rettifica di PR #23 non viene serializzata.
+- **Review GitHub:** ID `4999049657`.
+- **Board:** commento `5378003747`.
