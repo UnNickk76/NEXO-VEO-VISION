@@ -3,37 +3,36 @@
 > Cruscotto di sola consultazione. Il rapporto tecnico completo è in
 > `docs/codex-reports/LATEST.md`.
 
-## NEXO 1 — PR #24 Location Freshness / Quality Policy
-- **Data:** 22 agosto 2026, 18:15 UTC.
-- **Task:** N1.5R — finalizzazione PR #24 già riconciliata sul current main.
-- **Stato:** completato lato autore; PR #24 resta DRAFT e deve passare NEXO REVIEW sull'exact HEAD finale. NEXO 1 non dichiara CLEAN.
-- **Branch:** `nexo1/f1-location-quality-policy`.
-- **Pull request:** #24.
-- **Main di riferimento:** `1d0a01c91bb328baf141560a534f4b62fe406b01`.
+## NEXO CODEX — PR #18 Android Readiness
+- **Data:** 22 agosto 2026, 19:55 UTC.
+- **Task:** finalizzazione della PR #18 già riconciliata sul current main.
+- **Stato:** completato lato autore; PR #18 resta DRAFT e attende NEXO REVIEW sull'exact HEAD finale.
+- **Branch:** `nexo-codex/android-build-readiness`.
+- **Pull request:** #18.
+- **Main di riferimento:** `2155db10e40cebe71ba02e97e3afb35cf7288004`.
+- **HEAD tecnico verificato prima del reporting:** `93b43bda56ebd521ffec2a8abba653b8bb936f2b`.
 
 ## Cosa è stato fatto realmente
-- Preservata la policy provider-neutral di freshness/accuracy già implementata.
-- C007 resta `[ ] / parziale` e ora include evidenza PR #24, commit pertinente e checker/workflow quality policy.
-- Il fallback resta ammesso soltanto verso un precedente fix reale ancora utilizzabile; nessuna posizione viene inventata.
-- Nessun provider OS/GPS, mappa/routing reale, EAS/TestFlight o credenziale è stato introdotto.
+- Preservato il workflow Android Readiness esistente senza riscriverlo.
+- Reconciliation completata sul main corrente senza reintrodurre copie stale di file condivisi.
+- Nessuna modifica iOS/TestFlight o funzionale applicativa.
+- Nessuna EAS Build Android, APK/AAB o pubblicazione Google Play.
 
 ## Controlli reali
-Sul contenuto conceptual verificato `d65c0042746fdd1c4f961d0af7f29d24d73deb40`:
-- Location Quality Policy run `32590169920`: **SUCCESS**.
-- Location Contract run `32590169947`: **SUCCESS**.
-- Location State Machine run `32590169941`: **SUCCESS**.
-- NEXO 3 Voice Validation run `32590169910`: **SUCCESS**.
-- Nella Location Quality Policy: `npm ci`, Expo Doctor, lint, TypeScript strict, quality checker e conceptual validator sono tutti SUCCESS.
+Sul reconciled HEAD `93b43bda...`:
+- Android Readiness run `32592321823`: **SUCCESS**.
+- NEXO 3 Voice Validation run `32592321853`: **SUCCESS**.
+- Il workflow Android Readiness include `npm ci`, Expo Doctor, lint, verifica package Android, verifica Expo SDK 54 e `expo prebuild --platform android --no-install --clean`.
 
 ## Limiti dichiarati
-- Nessun test su device reale.
-- Nessuna permission OS reale.
-- Nessun GPS/provider location reale.
-- Nessuna mappa o routing reale.
+- Nessuna build APK/AAB reale.
+- Nessuna installazione su dispositivo Android reale.
+- Nessuna pubblicazione Google Play.
 - Nessun TestFlight/EAS eseguito.
+- Nessuna credenziale letta o modificata.
 
 ## Prossimo passo
-Verifica fresh exact HEAD/mergeability e handoff a NEXO REVIEW. N1.6 resta congelato fino a CLEAN + merge Coordinator della PR #24.
+NEXO REVIEW deve revisionare il final exact HEAD post-reporting. Se CLEAN, il Coordinatore può portare Ready e mergeare #18; solo dopo si passa alla reconciliation seriale di #19.
 
 ## Cosa deve fare Fabio adesso
 Nulla.

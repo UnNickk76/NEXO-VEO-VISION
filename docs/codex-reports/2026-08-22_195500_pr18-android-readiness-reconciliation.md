@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_195500_pr18-android-readiness-reconciliation.md`
-
 # NEXO CODEX — PR #18 Android Readiness reconciliation finalization
 
 ## Dati attività
