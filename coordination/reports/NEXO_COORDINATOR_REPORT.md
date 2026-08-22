@@ -7,58 +7,72 @@ MODE: append-only historical control report
 ---
 
 ## 2026-08-22 00:41 UTC — Coordinator real-state audit and verdict
-
 Historical audit preserved. Main at that cycle was `213fb129201230c3875e5fb8fc157260f995fe04`; PR #12/#20 awaited new review, PR #19 had P1 V28, PR #18 was CLEAN/HOLD, PR #17 was gated by shared files. Detailed evidence remains in Issue #11 and agent/review reports.
 
 ---
 
 ## 2026-08-22 — Autonomous follow-through after coordinator verdict
-
 Operational rule preserved: when the Coordinator states a concrete safe action, execute it in the same cycle rather than waiting for another Fabio command, unless destructive/external authorization is genuinely required.
 
 ---
 
 ## 2026-08-22 — Audit mergeability delle 5 PR aperte e piano di serializzazione
-
 Historical audit preserved: PR #12 was prioritized and subsequently merged after CLEAN; the old pre-merge mergeability snapshot is historical only and must not be reused as current state.
 
 ---
 
 ## 2026-08-22 03:05 UTC — Scheduled control-plane refresh
+- Main verified then: `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
+- PR #22 Location Contract identified as reviewable exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; exact-head run #6 SUCCESS.
+- PR #17 mergeability transiently recovered after reconciliation but N3.2 remained incomplete.
+- PR #18/#19/#20 remained reconciliation-gated.
+- Control Plane updated to prioritize PR #22 review and remove stale PR #17 mergeability blocker.
 
-### READ / governance
-- Read `AGENTS.md` on current main and Issue #11 governance.
-- Read Control Plane README, all five task files and all five agent/review report files.
-- Current main verified: `47b9d0a5c20490f0b73e95e52fadca151e89e136`, merge commit of CLEAN PR #12.
+---
 
-### Fresh real state
-- PR #22 Location Contract: OPEN/DRAFT, exact HEAD `475c39539809361e7ede47f381e07f3be70454e3`, `mergeable=true`, zero submitted reviews. Exact-HEAD Location Contract run #6 `32546418961` is completed/success. This is a real reviewable handoff and was missing from the REVIEW queue.
-- PR #17 Voice: OPEN/DRAFT, exact HEAD `63accc216634a11c6235b1b7d88875d558d70cfc`, fresh metadata now `mergeable=true`, base/current main `47b9d0a5...`, 4 changed files. No workflow runs on exact reconciliation HEAD. N3.2 remains incomplete because conceptual/reporting/final check/handoff gates are still open; the obsolete mergeability concern must no longer block progress.
-- PR #18 Android Readiness: OPEN/DRAFT, HEAD `1e50e747...`, still `mergeable=false` after main advance; historical CLEAN cannot authorize merge until reconciliation/new SHA.
-- PR #19 Navigation: OPEN/DRAFT, HEAD `7210baef...`, `mergeable=false`; REVIEW NOTE CHANGES REQUIRED P1 V28 is already correctly represented by priority task NC.1. No duplicate correction task needed.
-- PR #20 Surface: OPEN/DRAFT, HEAD `6e13d423...`, `mergeable=false`; historical CLEAN preserved, N2.3 remains legitimately blocked on safe reconciliation capability.
+## 2026-08-22 04:05 UTC — PR #22 CLEAN serialization/merge + current-main queue refresh
 
-### Control Plane corrections executed
-- Updated `coordination/agents/NEXO_REVIEW.md`: added R9 for PR #22 exact SHA `475c395...` with START CONDITION SATISFIED NOW and first priority; preserved R4/R6/R7/R8 gates. Commit `27afe6c9b45005df1d703cee0039013df82da737`.
-- Updated `coordination/agents/NEXO_3.md`: replaced stale `mergeable=false` blocker with fresh `mergeable=true` evidence; N3.2 remains `[ ]` because final conceptual/reporting/check/handoff work is still missing. Commit `f2f53c8b703a42c8a41d606094d0ebd15a401030`.
-- NEXO 1 task state remains correct: N1.3 is completed/reviewable, N1.4 safe-freeze remains blocked pending review verdict on PR #22.
-- NEXO 2 task state remains correct: N2.3 is not falsely checked; safe reconciliation remains unresolved.
-- NEXO CODEX task state remains correct: NC.1 already contains exact review source, V28 minimal correction, current-main reconciliation and proof requirements.
+### Governance / evidence re-read
+- `AGENTS.md` on main and Issue #11 read before actions.
+- Control Plane README, all five agent task files and all five agent/review reports read.
+- PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`: NEXO REVIEW CLEAN, review ID `4998866766`, P0/P1/P2=0/0/0; no review threads; exact-head Location Contract run #6 `32546418961` SUCCESS.
 
-### No false completion / no busywork
-- No checkbox was promoted without evidence.
-- No completed checkbox required reopening in this cycle.
-- No duplicate CHANGES REQUIRED task created: PR #19's REVIEW NOTE is already represented exactly by NC.1.
-- No agent was assigned overlapping implementation ownership.
+### Serialization action
+- Direct merge attempt while DRAFT was rejected by GitHub (`405 Pull Request is still a draft`).
+- Governance permits Ready only after CLEAN. Coordinator therefore marked PR #22 Ready and immediately merged the same expected exact HEAD `475c39539809361e7ede47f381e07f3be70454e3`.
+- Merge successful: `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- Current main independently re-fetched and verified at that exact merge commit.
+
+### Consequences for open work
+Fresh PR metadata after main advance:
+- PR #17 Voice: old HEAD `63accc216634a11c6235b1b7d88875d558d70cfc`, now `mergeable=false`; N3.2 must reconcile again with new main before final conceptual/reporting/check/handoff.
+- PR #18 Android Readiness: HEAD `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`, `mergeable=false`; historical CLEAN remains evidence only until safe reconciliation/new SHA.
+- PR #19 Navigation: HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`, `mergeable=false`; CHANGES REQUIRED P1 V28 still active; NC.1 must now reconcile with `8d8dee4a...` and preserve C007/location.
+- PR #20 Surface: HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4`, `mergeable=false`; historical CLEAN remains evidence only; N2.3 reconciliation base updated to `8d8dee4a...`.
+
+### Control Plane writes executed
+- NEXO 1: N1.3 evidence updated with CLEAN+merge; N1.4 unblocked and made ACTIONABLE NOW on a new dedicated branch from current main; queue extended through N1.8.
+- NEXO 3: stale `mergeable=true` evidence invalidated by new main; N3.2 remains `[ ]`, first action changed to current-main reconciliation; queue extended through N3.7.
+- NEXO 2: N2.3 reconciliation target updated to current main and queue extended through N2.7; remains legitimately BLOCKED on safe Git reconciliation capability.
+- NEXO CODEX: NC.1 target updated to current main; V28 correction unchanged and still priority.
+- NEXO REVIEW: R9 recorded merged; R4/R6/R7/R8 updated to require new current-main exact SHA; currently legitimate STANDBY until a new handoff arrives.
+
+### Checkbox/evidence audit
+- No `[x]` reopened: N1.1/N1.2/N1.3, N2.1/N2.2, N3.1 and completed REVIEW items have sufficient historical exact-SHA evidence.
+- No new `[x]` added without proof.
+- N3.2 remains `[ ]`; old reconciliation is insufficient after main advanced.
+- N2.3 and NC.1 remain `[ ]`.
+- No duplicate CHANGES REQUIRED task created; PR #19 P1 already represented by NC.1.
 
 ### Safety
+- No implementation code written by Coordinator.
 - No TestFlight/EAS rerun.
 - No Apple/EAS credentials touched.
-- No Ready transition or merge performed.
-- No code written by Coordinator.
+- No Android paid build or store submission.
 
 ### Next autonomous flow
-1. NEXO REVIEW processes PR #22 exact SHA `475c395...` now.
-2. NEXO 3 continues N3.2 immediately; mergeability is no longer a blocker, but final checks/handoff are mandatory.
-3. NEXO CODEX continues NC.1; NEXO 2 remains reconciliation-blocked until a safe Git operation/base is available.
-4. PR #18 remains serialization/reconciliation hold.
+1. NEXO 1 can start N1.4 now from a fresh branch based on `8d8dee4a...`.
+2. NEXO 3 must reconcile PR #17 again to `8d8dee4a...`, then finish N3.2 and hand off exact SHA.
+3. NEXO CODEX continues NC.1 against `8d8dee4a...` including V28 minimal correction.
+4. NEXO 2 remains reconciliation-blocked until safe Git capability is available; do not force-reset shared files.
+5. NEXO REVIEW waits for the first genuinely new reviewable exact SHA and reviews immediately, without duplicating old SHA.
