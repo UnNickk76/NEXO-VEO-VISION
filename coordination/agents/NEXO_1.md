@@ -6,10 +6,10 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - PR #12 Saved Places: MERGED after CLEAN; merge commit `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
-- PR #22 Location Contract: CLEAN and MERGED; merge commit/current foundation main `8d8dee4a31416acb38c2e654082ca15efafd6fec` at N1.4 start.
-- PR #23 `feat(location): add permission degraded state machine`: OPEN / DRAFT / mergeable at handoff; exact final HEAD `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
-- N1.4 functional/conceptual SHA `f9c53e40732dce009379a67fd899cfd7679865a7` verified by Location State Machine run #2 `32551730907` / job `96979479985` SUCCESS and Location Contract run #8 `32551730913` SUCCESS.
-- Reporting-only commits after verified SHA updated historical report, `LATEST.md` and `Fabio/FABIO_CONTROLLO.md`; no functional/conceptual/workflow path changed after the fresh runs.
+- PR #22 Location Contract: CLEAN and MERGED; current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- PR #23 `feat(location): add permission degraded state machine`: OPEN / DRAFT / mergeable=true, exact HEAD `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
+- NEXO REVIEW R10 on that exact SHA: CHANGES REQUIRED, review ID `4999049657`, P0/P1/P2=0/1/0. Functional core/checker accepted; P1 is reporting-only: `LATEST.md` is not a verbatim integral copy of historical report `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`.
+- Exact-head CI already observed SUCCESS on reviewed SHA: Location State Machine run #5 `32551852759` / job `96979790732`; Location Contract run #11 `32551852738`.
 - C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
 - Do not touch voice/surface/navigation/automotive/EAS/TestFlight areas owned elsewhere.
 
@@ -22,17 +22,22 @@ COORDINATOR: NEXO Coordinator
   - COMPLETED EVIDENCE: CLEAN review ID `4998454274`; merged as main `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
 
 - [x] **N1.3 — F1 LOCATION CONTRACT**
-  - COMPLETED EVIDENCE: PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; CLEAN review ID `4998866766`; exact-head run #6 `32546418961` SUCCESS; merged by Coordinator as main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+  - COMPLETED EVIDENCE: PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; CLEAN review ID `4998866766`; exact-head run #6 `32546418961` SUCCESS; merged as main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
 
-- [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE**
-  - START CONDITION: satisfied and consumed.
-  - Goal: denied/restricted/unavailable/stale/degraded semantics with deterministic tests; preserve fail-closed/no-invented-position rule.
-  - COMPLETED EVIDENCE: PR #23 DRAFT; functional/conceptual SHA `f9c53e40732dce009379a67fd899cfd7679865a7`; Location State Machine run #2 `32551730907`, job `96979479985` SUCCESS; Location Contract run #8 `32551730913` SUCCESS; final post-reporting HEAD `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; report `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`; REVIEW handoff PR comment `5377875924`; Board completion `5377876386`.
+- [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF**
+  - COMPLETED EVIDENCE: PR #23 exact reviewed SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; functional state machine/checker accepted by REVIEW; exact-head Location State Machine run #5 `32551852759` SUCCESS and Location Contract run #11 `32551852738` SUCCESS.
+  - NOTE: implementation slice is complete, but PR is not CLEAN due to reporting-only P1; correction is isolated as N1.4R below.
+
+- [ ] **N1.4R — PRIORITY: PR #23 REPORTING RECTIFICATION / RE-HANDOFF**
+  - START CONDITION: SATISFIED NOW — REVIEW NOTE / GitHub review `4999049657` is CHANGES REQUIRED on exact SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
+  - PROBLEM: historical report and `docs/codex-reports/LATEST.md` are not verbatim identical after the required leading report-path line; historical report still says `LATEST.md` / `Fabio/FABIO_CONTROLLO.md` `da aggiornare`, while the copied body in LATEST says `aggiornato`.
+  - REQUIRED FIX: choose/finalize the historical report so it truthfully reflects the reached state, then make `LATEST.md` = report path + exact integral verbatim copy of that historical report. Align only true final references; do not change functional/conceptual code.
+  - PROOF REQUIRED: NEW exact PR #23 SHA; direct historical-vs-LATEST-body identity proof; PR remains DRAFT and mergeable; compare proves no functional/conceptual regression; record any final workflow/check actually associated with new SHA without inventing results; append personal report and explicit NEXO REVIEW handoff.
+  - DEFINITION OF DONE: new exact SHA handed to R11; task stays `[ ]` until correction + proof + handoff are real. Do not merge autonomously.
 
 - [ ] **N1.5 — LOCATION FRESHNESS / QUALITY POLICY**
-  - START CONDITION: N1.4 completed/reviewable and no exact-SHA review conflict.
+  - START CONDITION: N1.4R receives CLEAN and PR #23 is merged/closed, or Coordinator explicitly authorizes a separate safe slice after CLEAN.
   - Goal: stale fix, invalid coordinates, accuracy/freshness thresholds and conservative fallback; checker required.
-  - STATUS: BLOCKED / SAFE FREEZE — PR #23 has been handed to NEXO REVIEW on exact SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`. Appending N1.5 to the same branch/PR would invalidate that handoff. Resume only after review/serialization or explicit Coordinator strategy for a separate safe slice.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
   - START CONDITION: N1.5 completed.
@@ -50,8 +55,6 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 04:30 UTC — N1.4 completed/reviewable on PR #23.
-- Final PR #23 HEAD post-reporting: `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`, OPEN/DRAFT/mergeable at handoff.
-- Fresh concluding verification after conceptual update: Location State Machine run #2 `32551730907`, job `96979479985` SUCCESS; Location Contract run #8 `32551730913` SUCCESS.
-- NEXO REVIEW handoff recorded on PR #23 comment `5377875924` and Board comment `5377876386`.
-- N1.5 remains legitimately BLOCKED / SAFE FREEZE while exact-SHA review is pending.
+- 2026-08-22 04:55 UTC — REVIEW R10 on PR #23 SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`: CHANGES REQUIRED, P1 reporting-only, review `4999049657`.
+- PR #23 metadata freshly verified: OPEN / DRAFT / mergeable=true against main `8d8dee4a...`.
+- N1.4R is ACTIONABLE NOW and takes priority over N1.5. N1.5 remains gated until CLEAN/serialization strategy.
