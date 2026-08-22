@@ -5,10 +5,12 @@ OWNER: NEXO 1
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
-- Current main: `b011808ec1a46827d27ccb258ef68ea01dee8b41` (PR #23 merged CLEAN).
+- Current main: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+- The only new main delta after PR #23 is the Coordinator commit that disables automatic TestFlight-on-push; TestFlight production is manual / Coordinator-controlled.
 - PR #12 Saved Places: MERGED as `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
 - PR #22 Location Contract: MERGED as `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- PR #23 Location Permission/Degraded State Machine: MERGED as current main `b011808ec1a46827d27ccb258ef68ea01dee8b41` after CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review `4999414769`.
+- PR #23 Location Permission/Degraded State Machine: MERGED as `b011808ec1a46827d27ccb258ef68ea01dee8b41` after CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review `4999414769`.
+- PR #24 Location Freshness / Quality Policy: OPEN / DRAFT. Existing functional work must be preserved; do not redo it.
 - C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
 - Do not touch voice/surface/navigation/automotive/EAS/TestFlight areas owned elsewhere.
 
@@ -29,17 +31,17 @@ COORDINATOR: NEXO Coordinator
 - [x] **N1.4R — PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE**
   - COMPLETED EVIDENCE: CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review `4999414769`, P0/P1/P2=0/0/0; Location State Machine run `32554330952` SUCCESS; Location Contract run `32554330936` SUCCESS; squash-merged as `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
 
-- [ ] **N1.5 — LOCATION FRESHNESS / QUALITY POLICY**
-  - START CONDITION: SATISFIED — work is active from current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
-  - Goal: stale fix, invalid coordinates, accuracy/freshness thresholds and conservative fallback; deterministic checker required.
-  - Preserve current C007 state and do not claim OS/GPS runtime.
-  - CURRENT EXACT HEAD: PR #24 `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`, OPEN/DRAFT/mergeable=true.
-  - EXACT-HEAD VERIFY 08:51 UTC: Location Quality Policy run `32561901480` SUCCESS; Location Contract `32561901557` SUCCESS; Location State Machine `32561901526` SUCCESS. These runs are exact-head evidence and supersede the earlier pre-reporting-only workflow evidence for the current content.
-  - REPORTING PROGRESS: historical report commit `091399b2...`; LATEST `f86f208c...`; Fabio control/current HEAD `8abc5d2d...`.
-  - REMAINING GATE / BLOCKER: C007 still needs conservative PR #24 quality-policy evidence while remaining `[ ] / parziale`, followed by the final exact-SHA handoff required by governance. Do not mark complete merely because current workflows pass; the task/report explicitly says the conceptual evidence edit is still missing. Keep `[ ]`.
+- [ ] **N1.5R — PR #24 MINIMAL RECONCILIATION TO CURRENT MAIN + FINAL N1.5 HANDOFF**
+  - START CONDITION: SATISFIED / PRIORITY 1.
+  - CURRENT MAIN TO INCORPORATE: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+  - PRESERVE: all existing N1.5 functional work, workflow/checker, quality/freshness semantics and prior successful evidence. Do NOT rewrite/recreate the functional slice.
+  - RECONCILIATION SCOPE: incorporate current main safely, including the manual-only TestFlight workflow state; no unrelated functional change.
+  - THEN COMPLETE ORIGINAL N1.5 GATES: add conservative PR #24 quality-policy evidence to C007 while keeping `[ ] / parziale`; align historical report/LATEST/FABIO_CONTROLLO to the reconciled exact HEAD; rerun every check invalidated by reconciliation/conceptual/reporting changes, including conceptual validator when applicable; record exact final SHA and explicit NEXO REVIEW handoff.
+  - DEFINITION OF DONE: PR #24 based on current main, no regression to merged Location state, exact-head applicable checks recorded, C007 conservative evidence complete, PR DRAFT, explicit review handoff. Only then may N1.5 be considered completed.
+  - FREEZE RULE: do not start N1.6 before Coordinator merges/closes PR #24 after CLEAN.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
-  - START CONDITION: N1.5 completed/reviewable.
+  - START CONDITION: PR #24 CLEAN and serialized/merged by Coordinator.
   - Goal: future iOS/Android source adapter interface + fake adapter tests; conceptual/reporting reconciliation; handoff to NEXO REVIEW.
 
 - [ ] **N1.7 — LOCATION FOUNDATION INTEGRATION GAP AUDIT**
@@ -58,5 +60,6 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 08:51 UTC coordinator refresh: PR #24 exact HEAD `8abc5d2d...`, mergeable=true; three exact-head workflows SUCCESS (`32561901480`, `32561901557`, `32561901526`).
-- N1.5 remains `[ ]` because explicit C007 PR #24 evidence + final handoff are still missing; N1.6 is not eligible.
+- 2026-08-22 coordinator consolidation refresh: main advanced to `ba39d977...` solely for manual-only TestFlight trigger policy after PR #23.
+- PR #24 functional work is to be preserved; N1.5R is the only actionable NEXO 1 task.
+- Main is under consolidation freeze: no new functional slice before PR #24 CLEAN + Coordinator serialization.
