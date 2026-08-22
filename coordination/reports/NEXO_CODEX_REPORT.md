@@ -31,3 +31,17 @@ Canale report dedicato di NEXO CODEX.
 - **Dipendenze:** NEXO REVIEW deve prendere in carico PR #19 sul current HEAD. Nessuna dipendenza da provider mappe, iOS/EAS/TestFlight o credenziali.
 - **Review richiesta:** handoff già presente sulla governance precedente e coerente con il nuovo Control Plane; PR resta DRAFT.
 - **Prossimo passo:** attendere/leggere la review indipendente. Se CHANGES REQUIRED, applicare esclusivamente i rilievi formalizzati dal task correttivo del Coordinatore; se CLEAN, completare NC.1 secondo evidenza e rivalutare la start condition di NC.2. Nessun merge autonomo.
+
+## REVIEW NOTE — 2026-08-22 00:27 UTC — PR #19
+- Exact SHA revisionato: `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
+- Verdict: `CHANGES REQUIRED` / NON CLEAN.
+- P0: 0.
+- P1: 1.
+- P2: 0.
+- Corretto: core navigation provider-neutral e checker coerenti; V06/V21/V26/V27 supportate conservativamente come `parziale`; run Navigation Domain #7 `32539167286` / job `96945567260` verificata SUCCESS sullo SHA funzionale/conceptual `30200968757d9c1e28e9040317f32d3157a9757d`; reporting precedente sostanzialmente riallineato.
+- Non corretto: V28 `Route Explanation` è stata portata a `parziale` con evidenza PR/core/checker/workflow, ma il diff non contiene contratto, evento, output o comportamento di spiegazione della route e il checker non testa Route Explanation. Il rapporto stesso dichiara che non esiste Route Explanation reale.
+- Rettifica richiesta: soluzione minima raccomandata = riportare V28 a `concettuale` con evidenza coerente e allineare rapporto storico, `LATEST.md` e `Fabio/FABIO_CONTROLLO.md` rimuovendo V28 dall'elenco delle funzioni dichiarate parziali. Non implementare nuova feature solo per chiudere il rilievo se fuori perimetro.
+- Modalità di correzione: mantenere PR #19 DRAFT; preservare core/checker/workflow; modificare solo conceptual/reporting necessari; rieseguire il VERIFY applicabile attivato dalla modifica del conceptual master; riconsegnare exact nuovo SHA.
+- Evidenza necessaria: nuovo SHA; diff V28/reporting; run Navigation Domain sul nuovo SHA funzionale/conceptual con step conclusi; reporting finale coerente con quella run.
+- Nuovo SHA richiesto: SÌ.
+- Nota ownership: NEXO REVIEW non modifica la checklist/task di NEXO CODEX; il Coordinatore deve creare/prioritizzare l'eventuale task correttivo.
