@@ -6,24 +6,27 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - PR #19 `feat(navigation): add provider-neutral domain core`: OPEN / DRAFT / mergeable.
-- Current HEAD verified by NEXO CODEX: `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
-- The two prior NEXO REVIEW P1s have been addressed in the PR: conceptual reconciliation and final reporting/VERIFY were updated.
-- GitHub Actions `Navigation Domain` run #8 `32539350374` on the exact current HEAD is completed SUCCESS.
-- No new independent NEXO REVIEW verdict is present yet on the current HEAD.
+- Exact SHA reviewed by NEXO REVIEW: `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
+- Latest independent verdict on that exact SHA: **CHANGES REQUIRED / NON CLEAN** — P0=0, P1=1, P2=0; review ID `4998361255`.
+- Residual P1 is governance/evidence only: V28 `Route Explanation` is marked `parziale` without a corresponding implemented/tested slice.
+- Previous P1s for V06/V21/V26/V27 and final reporting/VERIFY were judged substantially corrected by NEXO REVIEW.
+- Navigation Domain run #7 `32539167286`, job `96945567260` = SUCCESS; NEXO CODEX also recorded run #8 `32539350374` on the then-current HEAD as SUCCESS.
 - Do not touch location/surface/voice/automotive native/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
 
-- [ ] **NC.1 — PR #19 REVIEW HANDOFF / REWORK UNTIL CLEAN**
-  - START CONDITION: immediate.
-  - Goal: ensure the new exact SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe` is formally handed to NEXO REVIEW; if new findings arrive, resolve only those findings, rerun affected checks, produce new exact SHA and repeat until CLEAN. Do not merge autonomously.
-  - **BLOCKED:** current implementation/handoff is at the maximum state reachable by NEXO CODEX; independent CLEAN/CHANGES REQUIRED verdict on the exact current SHA has not yet been published.
-  - **DEPENDENCY:** NEXO REVIEW.
-  - **EVIDENCE:** PR #19 OPEN/DRAFT/mergeable; exact HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`; Navigation Domain run #8 `32539350374` = SUCCESS; prior review applies only to old SHA `aee16726372f58208630f387481c517396695426`.
-  - **RESUME CONDITION:** NEXO REVIEW publishes a verdict on exact current SHA, and if CHANGES REQUIRED the Coordinator inserts the corresponding corrective task/rework instruction per Control Plane.
+- [ ] **NC.1 — PR #19 V28 REVIEW CORRECTION / RE-HANDOFF**
+  - START CONDITION: immediate — latest exact-SHA review is CHANGES REQUIRED.
+  - REVIEW SOURCE: PR #19 exact SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe`, review ID `4998361255`.
+  - P0=0, P1=1, P2=0.
+  - REQUIRED MINIMAL FIX: return V28 `Route Explanation` to `concettuale` with evidence consistent with no implemented Route Explanation slice. Do **not** invent or opportunistically implement Route Explanation unless a later task explicitly requests it.
+  - REQUIRED REPORT ALIGNMENT: historical report, `docs/codex-reports/LATEST.md` and `Fabio/FABIO_CONTROLLO.md` must stop presenting V28 as `parziale` for this domain-core slice while preserving correct V06/V21/V26/V27 evidence.
+  - REQUIRED VERIFY: if `NEXO_CONCEPTUAL_MASTER.md` changes and the Navigation Domain workflow applies, obtain and record the new applicable workflow/check result on the new exact SHA; do not reuse an obsolete result as final proof.
+  - DEFINITION OF DONE: new exact SHA; diff shows V28 corrected without regressions to V06/V21/V26/V27; reporting coherent; applicable VERIFY recorded; PR remains DRAFT; handoff to NEXO REVIEW; chat report + append to `coordination/reports/NEXO_CODEX_REPORT.md`.
+  - Do not merge autonomously.
 
 - [ ] **NC.2 — ROUTE MODEL / PROVIDER CONTRACT HARDENING**
-  - START CONDITION: PR #19 CLEAN and merged/closed or Coordinator explicitly authorizes safe continuation.
+  - START CONDITION: NC.1 receives CLEAN and PR #19 is merged/closed, or Coordinator explicitly authorizes safe continuation after CLEAN.
   - Goal: route IDs, legs/steps/maneuvers, distance/duration, provenance/status and provider-neutral adapter semantics; no provider concrete and no invented route.
 
 - [ ] **NC.3 — NAVIGATION SESSION STATE MACHINE HARDENING**
@@ -43,11 +46,10 @@ COORDINATOR: NEXO Coordinator
   - Goal: invariants, test matrix, conservative conceptual reconciliation V06/V21/V26/V27/V28, gap report toward real routing/map providers and automotive, NEXO REVIEW handoff.
 
 ## UPDATE RULE
-After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
+After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, write chat + GitHub report, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 00:18 UTC — NC.1 remains `[ ]` / BLOCKED awaiting independent review.
-- PR #19 exact HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`, OPEN/DRAFT/mergeable.
-- Navigation Domain run #8 `32539350374` on exact HEAD: completed SUCCESS.
-- Dedicated report entry: `coordination/reports/NEXO_CODEX_REPORT.md`, Control Plane commit `61602b9286588e37dac818d7b62e93d5511814cb`.
-- NC.2 is NOT eligible: PR #19 is not CLEAN and not merged/closed; no explicit Coordinator authorization found.
+- 2026-08-22 00:41 UTC — Coordinator verified the new independent review on PR #19 exact SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
+- Verdict: CHANGES REQUIRED / NON CLEAN — P0=0, P1=1, P2=0; review ID `4998361255`.
+- NC.1 is now ACTIVE and no longer blocked waiting for review.
+- NC.2 remains NOT eligible until NC.1 is CLEAN and merge/closure or explicit safe-continuation authorization occurs.
