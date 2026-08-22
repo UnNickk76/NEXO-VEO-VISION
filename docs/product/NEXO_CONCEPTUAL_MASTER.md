@@ -90,6 +90,7 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `C004` | Suggerimenti Casa/Lavoro/preferiti basati sul contesto, con consenso e motivazione | F3 | concettuale | Vision §35A; PR #10 |
 | [ ] | `C005` | Conferma obbligatoria prima di avviare una destinazione suggerita | F1 | parziale | Vision §35A; PR #10; PR #12 guardia core, integrazione suggerimenti/UI assente |
 | [ ] | `C006` | Privacy, cancellazione ed elaborazione locale delle abitudini quando possibile | F0/F3 | concettuale | Vision §35A; PR #10 |
+| [ ] | `C007` | Contratto posizione foreground provider-neutral con coordinate, accuratezza, timestamp e stati permission/status/error | F1 | parziale | PR #22; core `3771d8569b198498d7e32c5c8e3068ac0ccefed5`; checker `frontend/scripts/check-location-contract.mjs`; nessun provider/GPS runtime |
 
 ## Registro permanente della Vision originaria
 

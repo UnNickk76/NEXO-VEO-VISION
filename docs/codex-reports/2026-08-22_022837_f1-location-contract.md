@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_022837_f1-location-contract.md`
-
 # NEXO 1 — N1.3 F1 Location Contract
 
 ## Dati attività

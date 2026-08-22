@@ -30,7 +30,7 @@ expected = {
     "V": expected_ids("V", 51, 2),
     "E": expected_ids("E", 47, 2),
     "U": expected_ids("U", 31, 2),
-    "C": expected_ids("C", 6, 3),
+    "C": expected_ids("C", 7, 3),
 }
 
 rows = {}
