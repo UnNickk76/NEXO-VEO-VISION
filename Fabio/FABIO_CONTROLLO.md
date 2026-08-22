@@ -3,54 +3,38 @@
 > Cruscotto di sola consultazione. Il rapporto tecnico completo è in
 > `docs/codex-reports/LATEST.md`.
 
-## Stato semplice
-- **Data:** 22 agosto 2026, 04:28 UTC
-- **Attività:** NEXO 1 — N1.4 Location Permission / Degraded State Machine.
-- **Stato:** state machine Location provider-neutral implementata e verificata; PR #23 resta DRAFT e viene consegnata a NEXO REVIEW. Nessun GPS/provider runtime viene dichiarato implementato.
-- **Branch:** `nexo1/f1-location-permission-state-machine`
-- **Pull request:** PR #23
-- **Base:** `main` `8d8dee4a31416acb38c2e654082ca15efafd6fec`
-- **SHA funzionale/conceptual verificato:** `f9c53e40732dce009379a67fd899cfd7679865a7`
+## NEXO 3 — PR #17 Voice core — rettifica review R4R
+- **Data:** 22 agosto 2026, 13:05 UTC.
+- **Task:** N3.2RR — rettifica dei due P1 di NEXO REVIEW sulla PR #17.
+- **Stato:** rettifica lato autore completata; PR #17 resta DRAFT e deve essere nuovamente revisionata da NEXO REVIEW. NEXO 3 non dichiara CLEAN.
+- **Branch:** `nexo3/f0-voice-command-core`.
+- **Pull request:** PR #17.
+- **Review sorgente:** `4999992268`, CHANGES REQUIRED, P0/P1/P2 = 0/2/0.
 
-## Cosa è stato fatto realmente
-- Aggiunta una state machine per gli stati `denied`, `restricted`, `unavailable`, `degraded`, `stale` ed `error`.
-- Solo `permission=granted + status=ready + fix valido` è considerato utilizzabile.
-- Fix ricevuti senza permission granted vengono ignorati.
-- `denied`, `restricted`, `unavailable` ed errori provider non espongono coordinate.
-- `degraded` e `stale` possono conservare soltanto un ultimo fix reale, ma non viene considerato utilizzabile.
-- Un fix invalido porta a `error` e non genera fallback.
-- Creato checker deterministico e workflow dedicato.
-- C007 resta `[ ] / parziale`; è stata aggiunta evidenza PR #23 senza dichiarare GPS reale.
+## Cosa è stato corretto realmente
+- V02, V03 e V34 restano `[ ] / parziale` ma ora ogni riga contiene PR #17, commit tecnico pertinente e test/check pertinente.
+- È stato creato un nuovo rapporto storico completo per N3.2RR e `LATEST.md` è stato riallineato.
+- Il Voice core, il checker e il workflow tecnico non sono stati ridisegnati o ampliati.
+- Nessun STT/TTS/microfono/wake-word/provider/native automotive runtime viene dichiarato implementato.
 
 ## Controlli reali
-GitHub Actions — Location State Machine run #2 `32551730907`, job `96979479985`: **SUCCESS**.
-GitHub Actions — Location Contract run #8 `32551730913`: **SUCCESS**.
+Dopo la rettifica conceptual, exact SHA `b6681d826c18da5269c87145b5d0d5f5649daa9e`:
+- GitHub Actions `NEXO 3 Voice Validation` run `32574584194`, job `97034924381`: **SUCCESS**.
+- Install frontend dependencies: SUCCESS.
+- Voice checker: SUCCESS; include TypeScript strict.
+- Conceptual master validator: SUCCESS.
 
-- `npm ci`: PASS; audit segnala 15 vulnerabilità già presenti (1 moderate, 14 high).
-- `npx expo-doctor`: **18/18 PASS**.
-- `npm run lint`: PASS con 0 errori / 1 warning preesistente in `frontend/app/index.tsx` (`Text` non usato).
-- TypeScript strict compile contract + state machine: PASS.
-- checker: `location-state-machine checks: PASS`.
-- validator concettuale: PASS, incluso `PASS C: exact stable ID set (7 rows)` e `PASS: conceptual master registry is coherent`.
+Dopo i commit di reporting viene eseguita automaticamente una nuova `NEXO 3 Voice Validation` sull'HEAD finale; il suo esito viene registrato nel Control Plane/handoff e non viene anticipato qui.
 
 ## Limiti dichiarati
-- Nessun test su device reale.
-- Nessuna permission OS realmente richiesta.
-- Nessun GPS/provider location OS collegato.
-- Nessuna soglia quantitativa freshness/accuracy: prevista in N1.5.
-- Nessun adapter iOS/Android: previsto in N1.6.
-- Nessun EAS/TestFlight o credenziale Apple/EAS toccati.
+- Nessun STT/TTS/microfono/wake-word runtime.
+- Nessuna NLU conversazionale completa.
+- Nessun provider mappe o navigazione reale.
+- Nessun runtime CarPlay/Android Auto.
+- Nessun TestFlight/EAS o credenziale Apple/EAS toccati.
 
 ## Prossimo passo
-NEXO REVIEW deve revisionare l'exact SHA finale della PR #23 dopo il reporting. NEXO 1 congela la PR durante la review e non avvia N1.5 sullo stesso branch.
+Nuovo handoff dell'exact HEAD post-reporting a NEXO REVIEW. N3.3 resta congelato fino a CLEAN + serializzazione/merge del Coordinatore.
 
 ## Cosa deve fare Fabio adesso
 Nulla.
-
-## NEXO 3 — PR #17 Voice core — 2026-08-22 09:58 UTC
-- Stato: consegna autore in preparazione per NEXO REVIEW; PR #17 resta DRAFT.
-- Main incorporata: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
-- Modifiche: Voice Intent → Command core provider-neutral + checker; V02/V03/V34 `[ ] / parziale`.
-- Verifica: GitHub Actions `NEXO 3 Voice Validation` esegue Voice checker/TypeScript strict e conceptual validator sul checkout completo.
-- Limiti: nessun STT/TTS/microfono/wake-word runtime, provider o automotive runtime.
-- Prossimo passo per Fabio: nessuna azione; attesa NEXO REVIEW/Coordinatore.
