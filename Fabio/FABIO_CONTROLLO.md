@@ -4,36 +4,51 @@
 > `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
+- **Data:** 22 agosto 2026, 00:31 UTC
+- **Attività:** NEXO 1 — N1.1 chiusura gate validatore concettuale PR #12 Saved Places core.
+- **Stato:** gate del validatore concettuale **CHIUSO CON PASS REALE** sullo SHA esatto PR #12 `155ba7e8005d6848a506478d7f3139b3b69776d8`; PR #12 resta DRAFT e deve essere rivalutata da NEXO REVIEW.
+- **Branch:** `nexo1/f1-saved-places-core`
+- **Pull request:** PR #12
+- **Base:** `main` `213fb129201230c3875e5fb8fc157260f995fe04`
 
-- **Data:** 21 agosto 2026, 19:45 UTC
-- **Attività:** test diagnostico EAS con Xcode 16.4.
-- **Stato:** PR #16 DRAFT; modifica repository minima applicata e verificata staticamente; in attesa di review NEXO REVIEW. Nessun merge e nessuna nuova pipeline TestFlight avviati.
-- **Branch:** `nexo-codex/diagnostic-xcode-16-4-testflight`
-- **Pull request:** PR #16
-- **Base:** `main` `d3170fd874461c3734954f8f2d208350599673ca`.
-
-## Cosa è stato modificato realmente
-
-- `frontend/eas.json`: aggiunto esclusivamente `build.production.ios.image = "macos-sequoia-15.6-xcode-16.4"`.
-- `autoIncrement` preservato.
-- `submit.production.ios.ascAppId = "6803879211"` preservato.
-- `submit.production.ios.appleTeamId = "853F5S8843"` preservato.
-- Nessuna modifica ad `app.json`, workflow TestFlight, dipendenze, codice o credenziali.
+## Cosa è stato fatto realmente
+- Non è stato rifatto né modificato il core Saved Places già corretto.
+- Per chiudere il solo gate mancante è stato creato un branch diagnostico separato `nexo1/validate-pr12-conceptual` con PR diagnostica #21, non destinata al merge.
+- Il workflow diagnostico ha fatto checkout esplicito dello SHA PR #12 `155ba7e8005d6848a506478d7f3139b3b69776d8`, ha verificato l'identità di HEAD e ha eseguito il validatore canonico.
+- L'evidenza è stata persistita sul branch diagnostico in `validation/nexo1-pr12-conceptual-result.txt`.
+- Nessuna modifica a iOS/EAS/TestFlight, credenziali, map provider, voice core, surface core, navigation core o Android readiness.
 
 ## Controlli
+Comando realmente eseguito su GitHub Actions contro lo SHA esatto PR #12:
+```sh
+python3 scripts/check_conceptual_master.py .
+```
+Esito: **PASS, exit code 0**.
 
-- Percorso EAS `build.production.ios.image`: supportato dalla documentazione Expo corrente.
-- Immagine `macos-sequoia-15.6-xcode-16.4`: supportata e raccomandata per SDK 54 se non si vuole usare Xcode 26.
-- JSON e valori invarianti verificati staticamente: PASS.
-- Nessuna nuova EAS Build/TestFlight eseguita in questa attività.
+Output essenziale verificato:
+- `PASS V: exact stable ID set (51 rows)`
+- `PASS E: exact stable ID set (47 rows)`
+- `PASS U: exact stable ID set (31 rows)`
+- `PASS C: exact stable ID set (6 rows)`
+- tutte le assertion canoniche PASS;
+- `PASS: conceptual master registry is coherent`.
 
-## Problemi e review
+Evidenza SHA:
+- `validated_sha=155ba7e8005d6848a506478d7f3139b3b69776d8`
+- `expected_sha=155ba7e8005d6848a506478d7f3139b3b69776d8`
 
-- Il cambio immagine è solo diagnostico: non dimostra ancora che il problema di importazione del Distribution Certificate dipenda da Xcode 26.
-- Dopo review CLEAN e merge autorizzato, la pipeline dovrà mostrare realmente Xcode 16.4 e verificare Prepare credentials.
-- Se ricompare lo stesso identico errore del certificato, nessun altro workaround repository: stato BLOCKED e pista Xcode 26 esclusa come spiegazione.
-- PR #12 resta concorrente soltanto sui file di reporting e dovrà essere riallineata/serializzata prima di un proprio merge.
+I precedenti tentativi non osservabili/non riproducibili non sono stati usati come PASS.
+
+## Stato funzionale Saved Places già recuperato
+- Serializzazione multi-instance rinforzata per namespace canonico `nexo.saved-places.v1`.
+- Checker regressivo con due service, due repository e due adapter storage distinti sullo stesso backend simulato.
+- Read-failure safety e stale navigation confirmation preservati.
+- C001/C002/C005 restano `[ ]` / `parziale`; C003 resta `[ ]` / `concettuale`.
+
+## Problemi / residui
+- NEXO 1 **non dichiara CLEAN**: la review indipendente spetta a NEXO REVIEW.
+- PR #12 resta DRAFT; merge non autorizzato.
+- Il test concettuale è chiuso; il prossimo gate è esclusivamente la review del nuovo SHA finale dopo il reporting.
 
 ## Cosa deve fare Fabio adesso
-
-Nulla durante la review. NEXO CODEX passa PR #16 a NEXO REVIEW sullo SHA finale esatto. Merge vietato fino a verdetto CLEAN.
+Nulla. NEXO 1 completa reporting/Control Plane e riconsegna automaticamente PR #12 a NEXO REVIEW.

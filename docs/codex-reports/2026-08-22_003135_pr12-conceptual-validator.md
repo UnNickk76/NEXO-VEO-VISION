@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_003135_pr12-conceptual-validator.md`
-
 # NEXO 1 — PR #12 conceptual validation gate
 
 ## Dati attività
