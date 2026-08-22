@@ -98,3 +98,25 @@ Independent READ-ONLY audit from NEXO CONTROLLO reviewed and cross-checked again
 
 ### Coordinator verdict
 The independent audit is directionally correct, but current live GitHub already advanced beyond parts of it. The immediate risk is not lack of work; it is stale parallel PRs drifting behind main. Consolidation is now the top coordination priority while still allowing agents to finish only the currently assigned gates.
+
+---
+
+## 2026-08-22 09:29 UTC — TestFlight auto-build trigger disabled
+
+### Cause verified
+`.github/workflows/testflight.yml` was still configured with both `workflow_dispatch` and an automatic `push` trigger on `main` for any change under `frontend/**` or the workflow file itself. With the multi-agent merge cadence, every functional merge touching `frontend/**` could therefore launch `eas build --platform ios --profile production --non-interactive --wait --auto-submit` automatically.
+
+### Coordinator action executed
+- Updated `.github/workflows/testflight.yml` directly on `main`.
+- Removed the entire automatic `push` trigger.
+- Preserved `workflow_dispatch` as the only trigger.
+- Preserved all build/submit steps unchanged.
+- Commit created on main: `ba39d977072231d69ef848b1cc9ae2637b556c72` (`ci(testflight): disable automatic builds on main pushes`).
+
+### New policy
+TestFlight production build/submission is now MANUAL / Coordinator-controlled only. Normal CI/checker workflows may continue to run automatically on PRs and merges, but they must not implicitly invoke EAS iOS production build/submission.
+
+### Safety
+- No EAS build was launched by this coordinator action.
+- No credentials, certificates, provisioning profiles or Expo secrets changed.
+- No application code changed.
