@@ -6,10 +6,11 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - Current main: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
-- The latest main delta is the Coordinator TestFlight policy commit; automatic push→TestFlight is disabled and production TestFlight is manual/Coordinator-controlled.
-- PR #17 Voice Intent → Command Core previously reconciled successfully to main `b011808...` at HEAD `468e4118adfa71d7500842304715fd5c55e27312`, with exact-head Voice checker PASS and only conceptual validator/reporting/handoff remaining.
-- That evidence remains useful historical proof of the Voice slice but does NOT eliminate the need to reconcile the branch to current main `ba39d977...` before final review/merge.
-- Preserve the Voice core exactly; do not reopen scope or add STT/runtime/provider functionality.
+- TestFlight production is manual / Coordinator-controlled.
+- PR #17 Voice Intent → Command Core is OPEN / DRAFT / mergeable=true on exact HEAD `05f8211ec55fa41d869e1000e64ccd4ba2b8694b`.
+- Fresh compare current main → PR #17: `ahead`, ahead_by=18, behind_by=0, merge-base=current main. Reconciliation to current main is therefore COMPLETE and must NOT be repeated.
+- Exact-head workflows on `05f8211...` are `action_required`, including `NEXO 3 Voice Validation` run `32566568206`; no jobs were created. This is not a PASS and blocks review handoff.
+- Preserve Voice core exactly; do not reopen scope or add STT/runtime/provider functionality.
 - Do not touch location/surface/navigation/automotive native/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
@@ -17,13 +18,14 @@ COORDINATOR: NEXO Coordinator
 - [x] **N3.1 — PR #17 CURRENT-HEAD AUDIT / SAFE FREEZE**
   - COMPLETED EVIDENCE: provider-neutral/fail-closed Voice scope audited and preserved.
 
-- [ ] **N3.2R — PR #17 MINIMAL RECONCILIATION TO CURRENT MAIN + FINAL EVIDENCE / REVIEW HANDOFF**
+- [ ] **N3.2R — PR #17 FINAL EXACT-HEAD VALIDATION / HANDOFF**
   - START CONDITION: SATISFIED / PRIORITY 2.
-  - CURRENT MAIN TO INCORPORATE: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
-  - PRESERVE: Voice core files, existing deterministic semantics and prior successful Voice checker behavior. Do NOT redo the implementation.
-  - RECONCILIATION SCOPE: incorporate current main safely, including the manual-only TestFlight workflow state; preserve all merged Location/Saved Places state; no unrelated file changes.
-  - REQUIRED VERIFY AFTER RECONCILIATION: rerun Voice checker/strict compile on exact reconciled content; execute `python3 scripts/check_conceptual_master.py .` on complete exact-head materialization; align conceptual/reporting/dashboard conservatively; record new exact SHA and explicit handoff to NEXO REVIEW.
-  - DEFINITION OF DONE: PR #17 DRAFT, current-main reconciled, mergeable, exact-head checks recorded, V02/V03/V34 remain conservative `[ ] / parziale`, reporting coherent, explicit review handoff.
+  - RECONCILIATION: ALREADY COMPLETE. Do not merge/rebase/reconcile again while main remains `ba39d977...`.
+  - EXACT HEAD: `05f8211ec55fa41d869e1000e64ccd4ba2b8694b`.
+  - CURRENT BLOCKER: `NEXO 3 Voice Validation` run `32566568206` concluded `action_required` with zero jobs; Location Contract/State workflows on the same SHA also show `action_required`. Do not interpret as functional failure or PASS until cause is verified.
+  - REQUIRED ACTION: diagnose why the exact-head workflow is `action_required`/jobless (workflow permission/policy/configuration or other GitHub gate). Apply only the minimal safe correction if it belongs to PR #17; otherwise report exact external blocker to Coordinator.
+  - REQUIRED VERIFY: obtain a real exact-head Voice checker/strict compile + `python3 scripts/check_conceptual_master.py .` result on the final content; ensure V02/V03/V34 remain `[ ] / parziale`; align reporting to the actual final SHA/results; explicit handoff to NEXO REVIEW.
+  - DEFINITION OF DONE: PR #17 remains DRAFT, mergeable/current-main based, exact-head applicable checks have real outcomes (no invented PASS), reporting coherent, explicit review handoff.
   - FREEZE RULE: N3.3 must not start before PR #17 is CLEAN and serialized/merged by Coordinator.
 
 - [ ] **N3.3 — VOICE INTENT NORMALIZATION**
@@ -50,6 +52,6 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, write chat + GitHub report, then immediately reread and start the next eligible task. A blocked task remains `[ ]` with blocker recorded.
 
 ## LAST EVIDENCE
-- Previous safe reconciliation to `b011808...` and Voice checker PASS remain valid historical evidence of implementation quality.
-- Current main is now `ba39d977...`; therefore N3.2R is the only actionable NEXO 3 task.
-- Main is under consolidation freeze: no new Voice slices before PR #17 CLEAN + Coordinator serialization.
+- 2026-08-22 coordinator watch: PR #17 exact HEAD `05f8211...`, mergeable=true; compare against `ba39d977...` is ahead/behind=0.
+- Exact-head Voice Validation run `32566568206` = `action_required`, jobs=0; validation gate remains open.
+- Main consolidation freeze remains active: no new Voice slices before PR #17 CLEAN + Coordinator serialization.
