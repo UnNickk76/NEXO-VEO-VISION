@@ -2,66 +2,21 @@
 
 Canale report dedicato di NEXO 1.
 
-## 2026-08-22 07:24 UTC — N1.5 LOCATION FRESHNESS / QUALITY POLICY
+## 2026-08-22 09:13 UTC — N1.5 SAFE ROLLBACK / BLOCKER
 - **Task ID:** N1.5.
-- **Stato:** parziale / BLOCKED su VERIFY conclusivo e reporting repository.
-- **Base:** main `b011808ec1a46827d27ccb258ef68ea01dee8b41` verificata.
-- **Branch/PR:** `nexo1/f1-location-quality-policy` / PR #24 OPEN, DRAFT.
-- **HEAD corrente:** `f89de36ae055de60ae0079b426d2496736dd1e6e`.
-- **File creati/modificati:** `frontend/src/location/quality-policy.ts`; `frontend/src/location/index.ts`; `frontend/scripts/check-location-quality-policy.mjs`; `.github/workflows/location-quality-policy.yml`.
-- **Implementazione reale:** policy provider-neutral con soglie default `maxAgeMs=30000`, `maxHorizontalAccuracyM=100`; rifiuto fix invalidi, timestamp futuri, stale e poor-accuracy; boundary inclusivi; fallback solo verso precedente fix reale che risulta ancora utilizzabile, altrimenti `null`.
-- **Check reali:** metadata PR verificato; branch creato esattamente da current main; workflow exact-head interrogati subito dopo apertura PR: nessuna run ancora disponibile. Nessun PASS CI dichiarato.
-- **Problema emerso:** tentativo di aggiornamento conceptual con blob SHA non corrente ha ricevuto HTTP 409 e NON ha modificato il file. Nessuna sovrascrittura/corruzione avvenuta.
-- **Limiti:** conceptual C007, rapporto storico AGENTS.md, LATEST e Fabio/FABIO_CONTROLLO non ancora aggiornati; TypeScript/checker/Expo Doctor/lint/conceptual validator non ancora attestati da CI sul current HEAD.
-- **Problemi residui:** attendere/materializzare VERIFY exact-head; completare conceptual/reporting senza toccare aree altrui; poi handoff a NEXO REVIEW.
-- **Prossimo passo:** continuare N1.5, non iniziare N1.6. N1.5 resta `[ ]` finché DoD non è realmente soddisfatta.
+- **Stato:** bloccato; task resta `[ ]`.
+- **PR/branch:** PR #24 / `nexo1/f1-location-quality-policy`.
+- **HEAD preservato/ripristinato:** `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`.
+- **Azione realmente eseguita:** dopo READ completo della governance e del Control Plane, è stato tentato l'aggiornamento conservativo di C007. Il tool di replacement ha materializzato un documento incompleto; il commit errato `43160c9ce87ae28c73bdb4773bcbbed2a802b1b0` è stato immediatamente rimosso dalla branch PR tramite reset forzato al precedente HEAD noto e verificato `8abc5d2d...`.
+- **VERIFY reale del rollback:** re-fetch di `docs/product/NEXO_CONCEPTUAL_MASTER.md` sul branch PR mostra nuovamente l'intestazione canonica completa iniziale e blob SHA `9ee6c525e3b4098860c67b217ae53c08b02c4592`, identico allo stato pre-tentativo. Nessuna corruzione resta nella PR.
+- **Evidenza CI preservata:** sul HEAD ripristinato erano già SUCCESS Location Quality Policy `32561901480`, Location Contract `32561901557`, Location State Machine `32561901526`.
+- **Limite/blocco:** il connettore disponibile sostituisce l'intero file e il payload del documento canonico viene troncato nella lettura completa; non è sicuro riprovare una replacement del conceptual senza un meccanismo patch/checkout che preservi integralmente il file.
+- **Problemi residui:** C007 deve ancora ricevere evidenza PR #24 mantenendo `[ ] / parziale`; poi servono VERIFY post-edit, exact SHA/mergeability e handoff a NEXO REVIEW.
+- **Prossimo passo:** STANDBY/BLOCKED su N1.5 finché è disponibile un metodo sicuro per modificare una singola riga del conceptual senza sostituzione rischiosa. N1.6 non eleggibile.
 - **Decisioni Fabio:** nessuna.
 
 ---
 
-## 2026-08-22 06:56 UTC — REVIEW NOTE R11 / PR #23
-- **Exact PR/SHA:** PR #23 `feat(location): add permission degraded state machine` / `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
-- **Verdict:** CLEAN.
-- **P0/P1/P2:** 0 / 0 / 0.
-- **Cosa è corretto:** il P1 reporting di R10 è chiuso; compare dallo SHA R10 `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09` al nuovo HEAD mostra 2 commit e solo i due file reporting (`docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`, `docs/codex-reports/LATEST.md`). Il body di LATEST dopo il path header è copia integrale/verbatim del rapporto storico. Nessun functional/conceptual/checker/workflow è cambiato. PR OPEN/DRAFT/mergeable=true. Exact-head Location State Machine #7 `32554330952` / job `96986037949` SUCCESS e Location Contract #13 `32554330936` / job `96986037851` SUCCESS; checker e conceptual validator inclusi negli step SUCCESS. Nessun review thread aperto.
-- **Rettifiche richieste:** nessuna.
-- **Prova necessaria:** nessuna rettifica residua per R11. Serializzazione/Ready/merge restano competenza del Coordinatore; il CLEAN vale esclusivamente per l'exact SHA sopra.
-- **Vincolo:** NEXO REVIEW non modifica la checklist/task NEXO 1.
-
----
-
-## 2026-08-22 05:35 UTC — N1.4R PR #23 REPORTING RECTIFICATION / RE-HANDOFF
-- **Task ID:** N1.4R.
-- **Stato:** BLOCKED dopo rettifica: P1 reporting corretto, ma fresh PR metadata `mergeable=false`, quindi DoD non soddisfatta.
-- **PR/branch:** #23 / `nexo1/f1-location-permission-state-machine`.
-- **Old reviewed SHA:** `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
-- **New exact HEAD:** `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
-- **Review sorgente:** R10 `4999049657`, CHANGES REQUIRED, P0/P1/P2 0/1/0.
-- **File modificati N1.4R:** `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`; `docs/codex-reports/LATEST.md`.
-- **Commit:** `2f23b53e6688c351b7296ec0da2e0b7ab140415d`; `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
-- **VERIFY:** historical e LATEST re-fetched sul nuovo HEAD; LATEST = path header + copia integrale verbatim historical. Compare old reviewed SHA → new HEAD: ahead 2, behind 0, soltanto i due file reporting; nessun functional/conceptual delta.
-- **Test/check reali:** nessun nuovo PASS inventato sul reporting-only HEAD. Evidenza funzionale invariata: Location State Machine run #5 `32551852759` SUCCESS; Location Contract run #11 `32551852738` SUCCESS.
-- **PR state:** OPEN / DRAFT / `mergeable=false` al fresh fetch.
-- **Handoff:** PR comment `5378187983`; Board blocker `5378188302`.
-- **Limiti:** nessun rebase/merge improvvisato; nessun EAS/TestFlight/credenziale; N1.5 resta gated.
-- **Problema residuo:** non-mergeability richiede R11/Coordinatore o task esplicito di reconciliation.
-- **Prossimo passo:** STANDBY/BLOCKED; attendere R11/istruzione di reconciliation. N1.4R resta `[ ]`.
-
----
-
-## Storico precedente
-Lo storico N1.1–N1.4 e REVIEW NOTE R10 resta disponibile nella cronologia Git del branch `coordination/agent-control`; questo file mantiene il nuovo stato operativo in testa senza alterare le evidenze di PR già registrate nei report repository e sulla Board #11.
-
----
-
-## 2026-08-22 08:16 UTC — N1.5 CONTINUATION / REPORTING PROGRESS
-- **Task ID:** N1.5.
-- **Stato:** parziale / BLOCKED sul solo gate conceptual C007 + VERIFY post-edit.
-- **PR/SHA pre-reporting:** PR #24 / `f89de36ae055de60ae0079b426d2496736dd1e6e`, OPEN/DRAFT/mergeable=true.
-- **Commit creati in questa ripresa:** `091399b2a3f45a665b8d1c656ca25b1dccc0ae7c` report storico; `f86f208c3fbc716de1c0ce623cce704aa9948f6f` LATEST; `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17` Fabio/FABIO_CONTROLLO.
-- **File:** `docs/codex-reports/2026-08-22_081600_n1-5-quality-policy-continuation.md`, `docs/codex-reports/LATEST.md`, `Fabio/FABIO_CONTROLLO.md`.
-- **Test/check reali disponibili:** Quality Policy `32559482473` SUCCESS; Contract `32559482539` SUCCESS; State Machine `32559482424` SUCCESS sullo SHA funzionale pre-reporting.
-- **Limiti:** nessun nuovo PASS attribuito ai commit reporting; C007 non ancora aggiornato. Il blob conceptual corrente è stato riletto (`9ee6c525...`) ma non sostituito integralmente per evitare rischio di troncamento/sovrascrittura nel runtime corrente; il precedente tentativo aveva già ricevuto HTTP 409.
-- **Problemi residui:** aggiornare C007 conservativamente con PR #24/checker/policy mantenendo `[ ] / parziale`; rieseguire validator/check influenzati; fresh exact SHA/mergeability; handoff NEXO REVIEW.
-- **Prossimo passo:** continuare N1.5 soltanto. N1.6 non eleggibile.
-- **Decisioni Fabio:** nessuna.
+## Storico operativo precedente
+- N1.5 implementazione e reporting progress già registrati; PR #24 HEAD `8abc5d2d...`, tre workflow exact-head SUCCESS alle 08:51 UTC.
+- REVIEW NOTE R11 PR #23 CLEAN e attività N1.1–N1.4R restano nella cronologia Git e nei report repository/Board.
