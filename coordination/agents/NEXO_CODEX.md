@@ -5,35 +5,35 @@ OWNER: NEXO CODEX
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
-- Current main: `b011808ec1a46827d27ccb258ef68ea01dee8b41` after CLEAN PR #23 merge.
-- PR #19 `feat(navigation): add provider-neutral domain core`: OPEN / DRAFT, exact HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`, `mergeable=false`.
-- Latest exact-SHA review remains CHANGES REQUIRED / NON CLEAN — P0=0, P1=1, P2=0; review ID `4998361255`. Residual P1: V28 `Route Explanation` marked `parziale` without implemented/tested slice.
-- Fresh compare current main → PR #19: diverged, ahead 10 / behind 27, merge-base `213fb129201230c3875e5fb8fc157260f995fe04`.
-- PR #18 Android Readiness: OPEN / DRAFT, exact HEAD `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`, `mergeable=false`; fresh compare diverged ahead 2 / behind 27, same merge-base. Historical CLEAN is valid only for the old exact SHA before later main advances.
-- Both #19 and #18 share reporting files with current main and must be serialized, not force-merged.
+- Current main: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+- Latest main delta disables automatic TestFlight-on-push; production TestFlight is manual/Coordinator-controlled.
+- PR #18 Android Readiness: OPEN / DRAFT, historical exact HEAD `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`, previously CLEAN with Android Readiness run #2 `32526155508` SUCCESS, but now stale/diverged against current main. Functional work must be preserved, not rewritten.
+- PR #19 Navigation Domain Core: OPEN / DRAFT, historical exact HEAD `7210baef8693f1a8e77da8750ff2e4e597534cbe`, CHANGES REQUIRED with one residual P1 on V28. It is also stale/diverged against current main. Functional domain core must be preserved, not rewritten.
 - Do not touch location/surface/voice/automotive native/EAS/TestFlight credentials.
 
 ## QUEUE — ONE TASK AT A TIME
 
-- [ ] **NC.1 — CURRENT-MAIN RECONCILIATION + PR #19 V28 REVIEW CORRECTION / RE-HANDOFF**
-  - START CONDITION: immediate — exact-SHA review is CHANGES REQUIRED and PR is non-mergeable after main advances.
-  - REVIEW SOURCE: PR #19 exact SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe`, review ID `4998361255`; P0=0, P1=1, P2=0.
-  - FIRST REQUIRED ACTION: reconcile/rebase against current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`, preserving Saved Places + Location Contract + Location Permission/Degraded State Machine/C007 conceptual/reporting and Navigation ownership.
-  - REQUIRED MINIMAL FIX: return V28 `Route Explanation` to `concettuale` with evidence consistent with no implemented Route Explanation slice. Do not opportunistically implement Route Explanation.
-  - REQUIRED REPORT ALIGNMENT: historical report, `docs/codex-reports/LATEST.md` and `Fabio/FABIO_CONTROLLO.md` must stop presenting V28 as `parziale`, while preserving correct V06/V21/V26/V27 evidence and current-main reporting state.
-  - REQUIRED VERIFY: obtain/record applicable final workflow/check result on the new exact SHA/content; do not reuse obsolete result as final proof after reconciliation/conceptual change.
-  - DEFINITION OF DONE: new exact SHA; PR mergeable; safe reconciliation + V28 correction without regression; reporting coherent; applicable VERIFY recorded; PR DRAFT; handoff to NEXO REVIEW; append personal report.
+- [ ] **NC.1A — RECONCILE PR #18 ANDROID READINESS TO CURRENT MAIN / RE-HANDOFF**
+  - START CONDITION: SATISFIED / PRIORITY 3 after PR #24 and PR #17 consolidation sequence has been initiated by their owners.
+  - CURRENT MAIN TO INCORPORATE: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+  - PRESERVE: Android Readiness workflow and all newer main state; do NOT rewrite the already verified Android readiness slice.
+  - REQUIRED ACTION: safe reconciliation only, preserving current main including manual-only TestFlight policy. Resolve shared reporting files in favor of current main plus this PR's own accurate report delta.
+  - REQUIRED VERIFY: rerun Android Readiness on the new exact HEAD; record Expo Doctor, lint, Android config/package, SDK assertion, and Android prebuild results; align report/LATEST/FABIO_CONTROLLO without overwriting newer main history; explicit exact-SHA handoff to NEXO REVIEW.
+  - DEFINITION OF DONE: new exact SHA, mergeable PR, current-main preservation verified, Android Readiness exact-head SUCCESS, reporting coherent, DRAFT, explicit REVIEW handoff.
   - Do not merge autonomously.
 
-- [ ] **NC.1B — CONSOLIDATE PR #18 ANDROID READINESS AFTER #19 SERIALIZATION**
-  - START CONDITION: NC.1 receives CLEAN and PR #19 is merged/closed, OR Coordinator explicitly changes serialization order after verifying no shared-file conflict.
-  - Goal: reconcile PR #18 against then-current main while preserving only Android Readiness workflow/reporting delta and all newer main state.
-  - Historical evidence: old exact SHA `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1` CLEAN; Android Readiness run #2 `32526155508` SUCCESS.
-  - REQUIRED PROOF: new exact SHA; PR mergeable; no overwrite of current-main state; Android Readiness check rerun/recorded; new NEXO REVIEW handoff.
+- [ ] **NC.1 — PR #19 CURRENT-MAIN RECONCILIATION + V28 REVIEW CORRECTION / RE-HANDOFF**
+  - START CONDITION: NC.1A completed/reviewable and Coordinator has not changed serialization order.
+  - REVIEW SOURCE: historical exact SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe`, review ID `4998361255`; P0=0, P1=1, P2=0.
+  - CURRENT MAIN TO INCORPORATE: use the then-current main after preceding consolidation, never the obsolete historical base.
+  - PRESERVE: Navigation Domain core, Saved Places, all Location slices, Android Readiness if already merged, and manual-only TestFlight policy.
+  - REQUIRED MINIMAL FIX: return V28 `Route Explanation` to `concettuale` with evidence consistent with no implemented/tested Route Explanation slice. Do not opportunistically implement Route Explanation.
+  - REQUIRED VERIFY: rerun Navigation Domain checker plus applicable Expo Doctor/lint/conceptual validator on the reconciled exact content; reporting must reflect the actual new SHA and current main.
+  - DEFINITION OF DONE: new exact SHA; PR mergeable; safe reconciliation + V28 correction; applicable VERIFY recorded; PR DRAFT; handoff to NEXO REVIEW; append personal report.
   - Do not merge autonomously.
 
 - [ ] **NC.2 — ROUTE MODEL / PROVIDER CONTRACT HARDENING**
-  - START CONDITION: NC.1 and NC.1B consolidated/serialized, or Coordinator explicitly authorizes safe continuation after CLEAN states are secured.
+  - START CONDITION: PR #18 and PR #19 CLEAN and serialized/merged by Coordinator.
   - Goal: route IDs, legs/steps/maneuvers, distance/duration, provenance/status and provider-neutral adapter semantics; no provider concrete and no invented route.
 
 - [ ] **NC.3 — NAVIGATION SESSION STATE MACHINE HARDENING**
@@ -56,7 +56,6 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, write chat + GitHub report, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 07:53 UTC coordinator refresh: main `b011808...`.
-- PR #19 CHANGES REQUIRED remains valid on old exact SHA `7210baef...`; current compare diverged ahead 10 / behind 27.
-- PR #18 historical CLEAN remains old-SHA evidence only; current compare diverged ahead 2 / behind 27.
-- NC.1 is ACTIONABLE NOW; NC.1B remains serialized after #19.
+- 2026-08-22 coordinator consolidation refresh: main is `ba39d977...` and no new functional slice is authorized.
+- PR #18 is now the first CODEX reconciliation target; PR #19 follows after #18 serialization unless Coordinator changes order based on fresh conflicts.
+- Both historical implementations are to be preserved; only reconciliation, exact-head VERIFY, reporting and review gates are authorized.
