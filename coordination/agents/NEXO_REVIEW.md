@@ -8,8 +8,8 @@ COORDINATOR: NEXO Coordinator
 - Review operates independently and never modifies implementation code or merges.
 - Current `main`: `8d8dee4a31416acb38c2e654082ca15efafd6fec`, merge of CLEAN PR #22 Location Contract.
 - PR #22 was reviewed CLEAN on exact SHA `475c39539809361e7ede47f381e07f3be70454e3`, review ID `4998866766`; exact-head run #6 `32546418961` SUCCESS; Coordinator transitioned Ready and merged it.
-- Main advance invalidates prior mergeability assumptions for open #17/#18/#19/#20. Fresh metadata: all four currently report `mergeable=false` on their old heads.
-- Therefore no current review item is eligible until a new current-main reconciliation + exact-SHA handoff is produced. Old verdicts remain historical exact-SHA evidence only.
+- PR #23 N1.4 was reviewed on exact SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`: CHANGES REQUIRED, P0/P1/P2=0/1/0, review ID `4999049657`. Functional state machine/checker and exact-head CI are sound; P1 is reporting-only because LATEST is not a verbatim copy of the historical report.
+- Main advance still invalidates prior mergeability assumptions for open #17/#18/#19/#20 until new current-main reconciliation + exact-SHA handoff.
 
 ## REVIEW QUEUE — ONE AT A TIME
 
@@ -37,16 +37,25 @@ COORDINATOR: NEXO Coordinator
 - [ ] **R8 — PR #18 RE-REVIEW AFTER SERIALIZATION RECONCILIATION**
   - START CONDITION: Coordinator/author produces a new mergeable exact SHA preserving Android-readiness functional diff and current-main Saved Places + Location reporting.
 
-- [ ] **R10 — NEXT NEW FOUNDATION PR**
+- [x] **R10 — PR #23 Location Permission / Degraded State Machine**
+  - Reviewed exact SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`: CHANGES REQUIRED, P0/P1/P2=0/1/0; review ID `4999049657`.
+  - Functional state machine/checker accepted; exact-head Location State Machine run #5 `32551852759` / job `96979790732` SUCCESS and Location Contract run #11 `32551852738` SUCCESS.
+  - P1: `LATEST.md` differs from historical report instead of containing a verbatim integral copy.
+
+- [ ] **R11 — PR #23 REPORTING RE-REVIEW**
+  - START CONDITION: Coordinator creates/assigns the reporting rectification and NEXO 1 hands off a NEW exact SHA for PR #23 with historical report/LATEST verbatim aligned, PR DRAFT/mergeable and applicable final checks/evidence recorded.
+
+- [ ] **R12 — NEXT NEW FOUNDATION PR**
   - START CONDITION: any agent hands off a new dedicated PR/SHA with its own task complete/reviewable and no overlap conflict; Coordinator may replace this placeholder with the concrete PR before review.
 
 ## REVIEW ORDER — COORDINATOR DIRECTIVE
-Take the first newly eligible exact SHA among R4/R6/R7/R8/R10. Never review an obsolete/non-mergeable old head merely because it was previously queued. Never duplicate review of the same exact SHA.
+Take the first newly eligible exact SHA among R4/R6/R7/R8/R11/R12. Never review an obsolete/non-mergeable old head merely because it was previously queued. Never duplicate review of the same exact SHA.
 
 ## REVIEW LOOP
 For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact PR/SHA/diff/checks/reporting/governance → publish CLEAN or CHANGES REQUIRED → append review report + REVIEW NOTE → update queue → immediately reread. Never duplicate review of the same SHA.
 
 ## LAST EVIDENCE
-- 2026-08-22 04:05 UTC — CLEAN PR #22 merged; current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- Fresh open PR metadata after main advance: #17/#18/#19/#20 all `mergeable=false` on current old heads.
-- REVIEW currently STANDBY legitimately until first new exact-SHA handoff; do not create busywork.
+- 2026-08-22 04:52 UTC — R10 PR #23 exact SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`: CHANGES REQUIRED, P1 reporting-only; review `4999049657`; Board `5378003747`.
+- Exact-head CI PR #23: Location State Machine run #5 `32551852759` SUCCESS; Location Contract run #11 `32551852738` SUCCESS.
+- REVIEW NOTE appended to `coordination/reports/NEXO_1_REPORT.md`; full R10 report appended to `NEXO_REVIEW_REPORT.md`.
+- Await new PR #23 exact SHA after Coordinator-assigned reporting rectification; do not modify author checklist directly.
