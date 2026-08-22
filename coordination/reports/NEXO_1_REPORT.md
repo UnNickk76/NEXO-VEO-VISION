@@ -159,3 +159,73 @@ Attendere l'esito indipendente NEXO REVIEW sullo SHA `75b661afffc45887cad1e64c78
 - **Problemi residui:** N1.3 resta bloccato finché PR #12 non è merged/closed oppure il Coordinatore non rilascia esplicitamente i shared reporting/conceptual files.
 - **Board:** chiusura N1.2 registrata su Issue #11, commento `5377047071`.
 - **Prossimo passo:** STANDBY/BLOCKED sul gate di N1.3; non inventare lavoro.
+
+---
+
+## 2026-08-22 02:30 UTC — N1.3 F1 LOCATION CONTRACT
+- **Task ID:** N1.3
+- **Stato:** COMPLETED / REVIEWABLE; NEXO 1 non dichiara CLEAN.
+- **PR:** #22 `feat(location): add provider-neutral foreground location contract`.
+- **Branch:** `nexo1/f1-location-contract`.
+- **Base:** `main` `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
+- **Exact SHA finale:** `475c39539809361e7ede47f381e07f3be70454e3`.
+- **Ultimo SHA funzionale/conceptual verificato:** `0d148712426e381b83a3cb0fe2f8895dcca57096`.
+- **PR state:** OPEN / DRAFT / mergeable / non merged.
+
+### READ / conflitti
+Riletti AGENTS.md, Issue #11, README Control Plane, task/report NEXO 1, main post-merge PR #12, conceptual master, validator canonico, tsconfig/package e PR aperte #17/#18/#19/#20. Nessuna PR aperta possiede `frontend/src/location/**`; overlap residuo solo su conceptual/reporting, da serializzare prima del merge.
+
+### WRITE
+Creati/modificati nella PR #22:
+- `.github/workflows/location-contract.yml`;
+- `frontend/src/location/contract.ts`;
+- `frontend/src/location/index.ts`;
+- `frontend/scripts/check-location-contract.mjs`;
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md` con nuovo C007 `[ ] / parziale`;
+- `scripts/check_conceptual_master.py` con stable C set esteso da 6 a 7;
+- `docs/codex-reports/2026-08-22_022837_f1-location-contract.md`;
+- `docs/codex-reports/LATEST.md`;
+- `Fabio/FABIO_CONTROLLO.md`.
+Nessun file eliminato.
+
+### Commit funzionali/conceptual
+- `3771d8569b198498d7e32c5c8e3068ac0ccefed5` — contract;
+- `4f272cd6325cda533cfde7ea17f61cd299cd0e87` — export;
+- `7f315756a6be1eaf2c598903c6411aa48e0cf242` — checker;
+- `ae85c941094e787c8132756cf06f7b42f3eb0b1d` — workflow;
+- `cbed2ac128dc0da5d3d1d5304c7d74b041956dcd` — C007;
+- `0d148712426e381b83a3cb0fe2f8895dcca57096` — validator C007.
+
+### VERIFY reale
+GitHub Actions Location Contract run #3 `32546311607`, job `96965279495` = SUCCESS:
+- `npm ci` PASS; 15 vulnerabilità dipendenze esistenti (1 moderate, 14 high), nessuna dependency modificata da N1.3;
+- `npx expo-doctor` = 18/18 PASS;
+- lint = 0 errori / 1 warning preesistente (`Text` non usato in `frontend/app/index.tsx`);
+- TypeScript strict compile del contract = PASS;
+- checker = `location-contract checks: PASS`;
+- conceptual validator = PASS, incluso `PASS C: exact stable ID set (7 rows)` e `PASS: conceptual master registry is coherent`.
+
+Compare `0d148712...` → final HEAD `475c395...`: 3 commit, esclusivamente i tre file di reporting obbligatori; nessun input di contract/checker/workflow/conceptual validator cambiato dopo la run SUCCESS.
+
+### Semantica implementata
+Contratto provider-neutral con latitude/longitude, horizontal accuracy, timestamp, permission/status/error. `ready` è valido solo con permission granted, fix valido e nessun errore. Stati non-ready non sintetizzano coordinate; nessun provider location/GPS reale introdotto.
+
+### Limiti / problemi residui
+- nessun test device;
+- nessun provider GPS/location OS;
+- nessuna permission OS runtime;
+- nessuna mappa/routing/UI;
+- npm audit segnala 15 vulnerabilità preesistenti;
+- Node 20 action runtime deprecation warning in CI;
+- conceptual/reporting condivisi con altri lavori richiedono serializzazione prima del merge.
+
+### Sicurezza
+Non toccati voice/surface/navigation esistenti, app.json/eas.json, EAS/TestFlight, credenziali Apple/EAS.
+
+### Reporting / handoff
+- Rapporto repo: `docs/codex-reports/2026-08-22_022837_f1-location-contract.md`.
+- Board PLAN: `5377348213`; refinement validator: `5377366858`; handoff REVIEW: `5377380623`.
+- NEXO REVIEW richiesto su exact SHA `475c39539809361e7ede47f381e07f3be70454e3`.
+
+### Prossimo passo
+Rileggere immediatamente la queue. N1.4 è eleggibile solo se N1.3 risulta ancora completed/reviewable e non è emerso un nuovo conflitto/REVIEW NOTE che richieda rettifica prioritaria.
