@@ -6,10 +6,8 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - PR #12 Saved Places: MERGED after CLEAN; merge commit `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
-- PR #22 Location Contract: CLEAN and MERGED; current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
-- PR #23 `feat(location): add permission degraded state machine`: OPEN / DRAFT / **mergeable=true**, exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` after N1.4R reporting-only correction.
-- R10 on old SHA `dfeefff17...`: CHANGES REQUIRED, P1 reporting-only. N1.4R corrected historical/LATEST mismatch; compare old reviewed SHA → new HEAD changes only the two report files.
-- Fresh exact-head workflows on `73a017...`: Location State Machine run #7 `32554330952` SUCCESS; Location Contract run #13 `32554330936` SUCCESS.
+- PR #22 Location Contract: CLEAN and MERGED as `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- PR #23 Location Permission/Degraded State Machine: CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review `4999414769`, exact-head workflows SUCCESS; Coordinator marked Ready and squash-merged it as current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
 - C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
 - Do not touch voice/surface/navigation/automotive/EAS/TestFlight areas owned elsewhere.
 
@@ -22,40 +20,39 @@ COORDINATOR: NEXO Coordinator
   - COMPLETED EVIDENCE: CLEAN review ID `4998454274`; merged as main `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
 
 - [x] **N1.3 — F1 LOCATION CONTRACT**
-  - COMPLETED EVIDENCE: PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; CLEAN review ID `4998866766`; exact-head run #6 `32546418961` SUCCESS; merged as main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+  - COMPLETED EVIDENCE: PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; CLEAN review ID `4998866766`; run `32546418961` SUCCESS; merged as `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
 
 - [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF**
-  - COMPLETED EVIDENCE: PR #23 old reviewed SHA `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`; functional state machine/checker accepted by REVIEW; Location State Machine run #5 `32551852759` SUCCESS and Location Contract run #11 `32551852738` SUCCESS.
-  - NOTE: implementation slice complete; reporting-only correction isolated as N1.4R.
+  - COMPLETED EVIDENCE: functional slice accepted by REVIEW; reporting correction isolated as N1.4R.
 
-- [ ] **N1.4R — PRIORITY: PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE**
-  - START CONDITION: SATISFIED — correction exists on exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520`; fresh GitHub metadata is mergeable=true and exact-head workflows are SUCCESS.
-  - CORRECTION EVIDENCE: historical report finalized; `LATEST.md` = path header + verbatim integral historical body; compare `dfeefff...` → `73a017...` changes only historical report + LATEST; PR re-handoff comment `5378187983`.
-  - FRESH VERIFY: Location State Machine run #7 `32554330952` SUCCESS; Location Contract run #13 `32554330936` SUCCESS on exact HEAD `73a017...`.
-  - REQUIRED NEXT: NEXO REVIEW R11 must review this exact SHA now. Do not change implementation/reporting while review is pending. Mark `[x]` only after CLEAN; merge remains Coordinator responsibility.
-  - Do not merge autonomously.
+- [x] **N1.4R — PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE**
+  - COMPLETED EVIDENCE: CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review `4999414769`, P0/P1/P2=0/0/0; Location State Machine run `32554330952` SUCCESS; Location Contract run `32554330936` SUCCESS; squash-merged by Coordinator as `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
 
 - [ ] **N1.5 — LOCATION FRESHNESS / QUALITY POLICY**
-  - START CONDITION: N1.4R receives CLEAN and PR #23 is merged/closed, or Coordinator explicitly authorizes a separate safe slice after CLEAN.
-  - Goal: stale fix, invalid coordinates, accuracy/freshness thresholds and conservative fallback; checker required.
+  - START CONDITION: SATISFIED — N1.4R CLEAN and PR #23 merged. Start from a fresh dedicated branch based on current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
+  - Goal: stale fix, invalid coordinates, accuracy/freshness thresholds and conservative fallback; deterministic checker required.
+  - Preserve current C007 state and do not claim OS/GPS runtime.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
-  - START CONDITION: N1.5 completed.
+  - START CONDITION: N1.5 completed/reviewable.
   - Goal: future iOS/Android source adapter interface + fake adapter tests; conceptual/reporting reconciliation; handoff to NEXO REVIEW.
 
 - [ ] **N1.7 — LOCATION FOUNDATION INTEGRATION GAP AUDIT**
   - START CONDITION: N1.6 completed/reviewable.
-  - Goal: audit remaining gaps toward real OS location integration without adding provider/runtime credentials; produce concrete next-slice recommendations and only implement if safely owned.
+  - Goal: audit remaining gaps toward real OS location integration without adding provider/runtime credentials; concrete next-slice recommendations only where safely owned.
 
 - [ ] **N1.8 — LOCATION FOUNDATION REVIEW CLOSURE**
   - START CONDITION: N1.7 completed and prior slices CLEAN/serialized as required.
-  - Goal: consolidate evidence/invariants, remove stale reporting assumptions, final NEXO REVIEW handoff for the location foundation; no provider invention.
+  - Goal: consolidate evidence/invariants, remove stale reporting assumptions, final NEXO REVIEW handoff; no provider invention.
+
+- [ ] **N1.9 — NEXT LOCATION RUNTIME SLICE PREPARATION**
+  - START CONDITION: N1.8 CLEAN/reviewable and Coordinator confirms no ownership conflict.
+  - Goal: define the smallest provider-neutral bridge toward real foreground OS location runtime, with explicit device/provider gaps and no credentials.
 
 ## UPDATE RULE
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 05:56 UTC coordinator refresh — PR #23 exact HEAD `73a01727345e0c8b5d7937c654b5eef76ee0b520` is OPEN / DRAFT / mergeable=true.
-- Exact-head workflows: Location State Machine #7 `32554330952` SUCCESS; Location Contract #13 `32554330936` SUCCESS.
-- N1.4R remains `[ ]` only because independent R11 CLEAN is still required; prior mergeability blocker is obsolete.
-- N1.5 remains gated until CLEAN + serialization/explicit authorization.
+- 2026-08-22 07:03 UTC — PR #23 exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520` CLEAN and mergeable; Coordinator marked Ready and squash-merged.
+- Current main independently verified: `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
+- N1.4R is now `[x]` with direct CLEAN+workflow+merge evidence. N1.5 is ACTIONABLE NOW from fresh current main.
