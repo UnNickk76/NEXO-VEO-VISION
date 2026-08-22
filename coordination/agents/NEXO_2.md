@@ -5,30 +5,29 @@ OWNER: NEXO 2
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
-- PR #20 `feat(surface): add provider-neutral surface capabilities`: OPEN / DRAFT / mergeable al handoff N2.1.
-- Exact HEAD consegnato da N2.1: `6e13d42379a5cff26cb37a67944f89302b925ac4`.
-- Functional policy/availability fix, checker ortogonale e conceptual evidence sono presenti.
-- P1 reporting della review su `dbb78f17...` corretto con rapporto storico completo e `LATEST.md` copia integrale.
+- PR #20 `feat(surface): add provider-neutral surface capabilities`: OPEN / DRAFT.
+- Exact SHA independently reviewed CLEAN: `6e13d42379a5cff26cb37a67944f89302b925ac4`; review ID `4998458851`, P0/P1/P2=0/0/0.
+- PR #12 was subsequently merged to main as `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
+- Fresh GitHub metadata now reports PR #20 `mergeable=false` against updated main, so the prior CLEAN remains evidence for the old exact SHA but does not authorize merge without reconciliation and a new exact-SHA review.
 - Do not touch location/voice/navigation/automotive native/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
 
 - [x] **N2.1 — CLOSE PR #20 REPORTING / VERIFY P1**
-  - START CONDITION: immediate.
-  - Goal: make report historical, LATEST and FABIO_CONTROLLO fully consistent with exact final SHA and final checks; preserve functional fix; produce new SHA and handoff to NEXO REVIEW.
-  - EVIDENCE: PR #20 exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`; historical report complete; `LATEST.md` full mirror; `FABIO_CONTROLLO.md` aligned; personal report entry commit `0e1df74d0cde1bb4d0276682c667b1e405dd8da7`; PR OPEN/DRAFT/mergeable at final handoff.
+  - COMPLETED EVIDENCE: exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`; reporting corrected; independent CLEAN review ID `4998458851` subsequently received.
 
-- [ ] **N2.2 — PR #20 REVIEW REWORK / CLEAN HANDOFF**
-  - START CONDITION: N2.1 submitted and NEXO REVIEW has reviewed the new SHA.
-  - Goal: resolve only any remaining findings, rerun affected checks, reconsegnare exact SHA until CLEAN. No autonomous merge.
-  - STATUS: WAITING — NEXO REVIEW has not yet reviewed SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`.
+- [x] **N2.2 — PR #20 REVIEW REWORK / CLEAN HANDOFF**
+  - START CONDITION: N2.1 submitted and NEXO REVIEW reviewed the new SHA.
+  - COMPLETED EVIDENCE: NEXO REVIEW CLEAN on exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`, P0/P1/P2=0/0/0, review ID `4998458851`; no review correction required on that SHA.
 
-- [ ] **N2.3 — SURFACE CAPABILITY MATRIX HARDENING**
-  - START CONDITION: PR #20 CLEAN and merged/closed or Coordinator confirms safe continuation.
-  - Goal: canonical matrix for iOS phone, Android phone, CarPlay, Android Auto; fail-closed defaults; deterministic tests.
+- [ ] **N2.3 — POST-PR12 RECONCILIATION + SURFACE CAPABILITY MATRIX HARDENING**
+  - START CONDITION: SATISFIED — PR #20 was CLEAN, but current main advanced via PR #12 and PR #20 is now `mergeable=false`.
+  - FIRST REQUIRED ACTION: reconcile/rebase PR #20 against current main `47b9d0a5c20490f0b73e95e52fadca151e89e136`, preserving merged Saved Places conceptual/reporting state and Surface ownership; do not overwrite other agents' work.
+  - Goal after safe reconciliation: canonical matrix for iOS phone, Android phone, CarPlay, Android Auto; fail-closed defaults; deterministic tests.
+  - PROOF REQUIRED: new exact SHA, mergeable PR, diff/conflict resolution audited, applicable tests/checks rerun, reporting/conceptual aligned, new handoff to NEXO REVIEW before merge.
 
 - [ ] **N2.4 — SURFACE SESSION / LIFECYCLE MODEL**
-  - START CONDITION: N2.3 completed.
+  - START CONDITION: N2.3 completed/reviewable and no conflict.
   - Goal: attach/detach/foreground/background/disconnected state model provider-neutral; no native automotive framework.
 
 - [ ] **N2.5 — SAFETY / INTERACTION POLICY CONTRACT**
@@ -43,5 +42,7 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- N2.1 handoff: PR #20 HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4`, OPEN/DRAFT/mergeable at handoff; 18 commits, 9 files; no autonomous merge.
-- N2.2 blocked by its explicit START CONDITION pending NEXO REVIEW of that SHA.
+- PR #20 exact SHA `6e13d423...` received CLEAN review ID `4998458851`.
+- 2026-08-22 02:05 UTC — PR #12 merged; current main advanced to `47b9d0a5...`.
+- Fresh PR #20 state after that merge: OPEN/DRAFT, `mergeable=false`.
+- N2.3 is ACTIONABLE NOW as reconciliation + next Surface slice; a new exact-SHA review is mandatory before any merge.
