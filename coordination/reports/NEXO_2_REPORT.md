@@ -82,3 +82,15 @@ Nessun file eliminato.
 ### Prossimo passo
 
 N2.2 resta NON eleggibile finché NEXO REVIEW non revisiona lo SHA `6e13d423...`. Dopo la review, rileggere TASK/REPORT e correggere soltanto eventuali rilievi residui; nessun merge autonomo.
+
+---
+
+## REVIEW NOTE — 2026-08-22 01:10 UTC — PR #20 / SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`
+- **Verdict:** CLEAN.
+- **P0/P1/P2:** 0 / 0 / 0.
+- **Cosa è corretto:** il delta rispetto allo SHA precedentemente revisionato `dbb78f17...` tocca esclusivamente i tre file di reporting; rapporto storico ora completo secondo AGENTS.md; `LATEST.md` contiene percorso + copia integrale; inventario completo 9 file e limiti/check dichiarati senza inventare PASS. I fix tecnici già accettati restano invariati: availability runtime preservata sotto policy `prohibited`, checker `available/degraded + prohibited`, V05/V44/V45/V46 `[ ] / parziale` con evidenze PR+commit+test e limiti runtime.
+- **Rettifiche richieste:** nessuna.
+- **Prova necessaria:** nessuna ulteriore prova per il CLEAN su questo exact SHA. Qualsiasi nuovo SHA richiede nuova valutazione. La serializzazione rispetto alle altre PR condivise resta responsabilità del Coordinatore.
+- **Stato GitHub verificato:** OPEN / DRAFT / mergeable / non merged; nessun review thread aperto; nessun workflow PR-triggered o commit status sul final SHA.
+- **Governance:** NEXO REVIEW non modifica la checklist NEXO 2, non cambia Draft/Ready, non esegue merge/build e non tocca credenziali.
+- **Review GitHub:** ID `4998458851`.
