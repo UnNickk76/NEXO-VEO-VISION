@@ -5,46 +5,32 @@ OWNER: NEXO 1
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
-- Current main: `1d0a01c91bb328baf141560a534f4b62fe406b01` after CLEAN PR #17 Voice merge.
-- TestFlight production is manual / Coordinator-controlled.
-- PR #24 Location Freshness / Quality Policy: OPEN / DRAFT / mergeable=true, final exact HEAD `372cb3746506cff162a364f83a9796e5141daf8a`.
-- Fresh compare current main → PR #24: `ahead`, ahead 13 / behind 0, merge-base=current main.
-- C007 remains `[ ] / parziale` and now includes PR #24 + pertinent N1.5 commit + quality-policy checker/workflow evidence; no OS/GPS provider runtime exists.
-- Exact-head final CI on `372cb374...` is SUCCESS: Location Quality Policy `32590273193` (job `97072902172`, including npm ci / Expo Doctor / lint / TypeScript strict / checker / conceptual validator), Location Contract `32590273221`, Location State Machine `32590273202`, Voice Validation `32590273251`.
-- N1.5R author-side finalization and exact-SHA handoff are complete. PR #24 is frozen awaiting independent NEXO REVIEW and Coordinator serialization.
+- Current main: `2155db10e40cebe71ba02e97e3afb35cf7288004` after CLEAN PR #24 Location Freshness / Quality Policy merge.
+- PR #24 exact reviewed SHA `372cb3746506cff162a364f83a9796e5141daf8a` is MERGED; NEXO REVIEW R13R CLEAN P0/P1/P2=0/0/0; exact-head Location Quality/Contract/State Machine/Voice validations were SUCCESS before merge.
+- C007 remains `[ ] / parziale`; quality/freshness foundation is in main, but no OS/GPS provider runtime exists.
+- TestFlight production remains manual / Coordinator-controlled.
+- FULL BACKLOG CONSOLIDATION FREEZE remains active. NEXO 1 must not begin N1.6 until Coordinator explicitly releases the freeze after #18/#19/#20 are closed/merged.
 
 ## QUEUE — ONE TASK AT A TIME
 
-- [x] **N1.1 — CLOSE PR #12 VALIDATION GATE**
-- [x] **N1.2 — PR #12 REVIEW REWORK / CLEAN HANDOFF**
-- [x] **N1.3 — F1 LOCATION CONTRACT**
-- [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF**
-- [x] **N1.4R — PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE**
+- [x] N1.1 — CLOSE PR #12 VALIDATION GATE
+- [x] N1.2 — PR #12 REVIEW REWORK / CLEAN HANDOFF
+- [x] N1.3 — F1 LOCATION CONTRACT
+- [x] N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF
+- [x] N1.4R — PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE
+- [x] N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF
+- [x] N1.5M — PR #24 CLEAN SERIALIZATION
+  - CLEAN exact SHA `372cb3746506cff162a364f83a9796e5141daf8a`.
+  - Coordinator Ready + squash merge completed as main `2155db10e40cebe71ba02e97e3afb35cf7288004`.
 
-- [x] **N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF**
-  - COMPLETED: safe reconciliation by Coordinator preserved; C007 updated conservatively; final historical report/LATEST/FABIO aligned; exact-head applicable checks SUCCESS; PR remains DRAFT/current-main-compatible/mergeable; explicit NEXO REVIEW handoff published for SHA `372cb3746506cff162a364f83a9796e5141daf8a`.
-  - HANDOFF: PR #24 comment `5381894338`; Board #11 comment `5381894921`.
-  - FREEZE RULE: do not modify PR #24 or start N1.6 before CLEAN + Coordinator serialization.
-
-- [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
-  - START CONDITION: PR #24 CLEAN and serialized/merged by Coordinator.
-  - CURRENT STATUS: BLOCKED / NOT ELIGIBLE. Await independent NEXO REVIEW on `372cb374...` and Coordinator merge.
-
-- [ ] **N1.7 — LOCATION FOUNDATION INTEGRATION GAP AUDIT**
-  - START CONDITION: N1.6 completed/reviewable.
-
-- [ ] **N1.8 — LOCATION FOUNDATION REVIEW CLOSURE**
-  - START CONDITION: N1.7 completed and prior slices CLEAN/serialized as required.
-
-- [ ] **N1.9 — NEXT LOCATION RUNTIME SLICE PREPARATION**
-  - START CONDITION: N1.8 CLEAN/reviewable and Coordinator confirms no ownership conflict.
+- [ ] N1.6 — LOCATION ADAPTER CONTRACT + HARDENING
+  - START CONDITION: BLOCKED BY FULL BACKLOG CONSOLIDATION FREEZE despite #24 merge.
+  - Resume only after Coordinator explicitly releases NEXO 1 following closure/merge of #18/#19/#20 and consolidation report.
 
 ## UPDATE RULE
-After every task: update this file on `coordination/agent-control`, mark `[x]` only if the task is truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
+Do not invent or start new work while frozen. Reread current main/Board/this file when Coordinator releases the next macro phase.
 
 ## LAST EVIDENCE
-- N1.5R final PR HEAD: `372cb3746506cff162a364f83a9796e5141daf8a`; main remains `1d0a01c91bb328baf141560a534f4b62fe406b01`; compare ahead 13 / behind 0 / merge-base=current main; PR OPEN/DRAFT/mergeable=true.
-- Repository report: `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md`; `LATEST.md` and `Fabio/FABIO_CONTROLLO.md` aligned on the same branch.
-- Exact-head final runs: Location Quality Policy `32590273193` SUCCESS (job `97072902172` all steps SUCCESS); Location Contract `32590273221` SUCCESS; Location State Machine `32590273202` SUCCESS; Voice Validation `32590273251` SUCCESS.
-- Explicit NEXO REVIEW handoff: PR #24 `5381894338`; Board #11 `5381894921`.
-- N1.6 remains `[ ]` because its start condition is not satisfied until PR #24 receives CLEAN and is serialized/merged by Coordinator.
+- PR #24 merged successfully.
+- Current main `2155db10e40cebe71ba02e97e3afb35cf7288004`.
+- NEXO 1 is now available but intentionally STANDBY until backlog consolidation exits.
