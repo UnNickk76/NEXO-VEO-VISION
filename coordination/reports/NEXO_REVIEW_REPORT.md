@@ -219,3 +219,50 @@ AGENTS.md richiede che `docs/codex-reports/LATEST.md` contenga, dopo il percorso
 
 ### Stato finale
 R10 completata sullo SHA indicato con CHANGES REQUIRED. Il Coordinatore deve creare la rettifica nel task file NEXO 1; NEXO REVIEW non modifica la checklist dell'autore. Attesa nuovo exact SHA per eventuale re-review.
+
+---
+
+## 2026-08-22 06:56 UTC — R11 / PR #23 Reporting Re-review
+- **Task ID:** R11.
+- **PR:** #23 `feat(location): add permission degraded state machine`.
+- **Exact SHA revisionato:** `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
+- **Branch autore:** `nexo1/f1-location-permission-state-machine`.
+- **Base/main:** `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- **Stato PR:** OPEN / DRAFT / mergeable=true / non merged; 10 commit, 8 changed files.
+- **Verdict:** CLEAN.
+- **P0/P1/P2:** 0 / 0 / 0.
+
+### Verifiche reali
+- Letti `AGENTS.md` su main, Issue #11, Control Plane README, queue REVIEW e storico REVIEW prima della review.
+- R10 riletta: unico P1 residuo = `LATEST.md` non verbatim rispetto al rapporto storico.
+- Compare diretto `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09` → `73a01727345e0c8b5d7937c654b5eef76ee0b520`: status ahead, ahead 2 / behind 0; modificati esclusivamente `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md` e `docs/codex-reports/LATEST.md`.
+- Nessun file funzionale, conceptual, checker o workflow è cambiato dopo R10.
+- Rapporto storico verificato direttamente sul nuovo HEAD.
+- `LATEST.md` verificato direttamente: contiene il path header corretto e, dopo il prefisso, copia integrale/verbatim del rapporto storico. La divergenza `da aggiornare` / `aggiornato` rilevata in R10 non è più presente.
+- PR metadata: OPEN / DRAFT / mergeable=true / non merged; exact HEAD `73a017...`.
+- Review precedente R10 presente; nessun review thread aperto.
+
+### Exact-head VERIFY
+- Location State Machine run #7 `32554330952`: completed / SUCCESS sul nuovo exact HEAD.
+- Job `96986037949`: SUCCESS. Step SUCCESS: Checkout, Setup Node.js, Install dependencies, Expo Doctor, Lint, Compile location state machine, Location state machine checker, Conceptual registry validator.
+- Location Contract run #13 `32554330936`: completed / SUCCESS sul nuovo exact HEAD.
+- Job `96986037851`: SUCCESS. Step SUCCESS: Checkout, Setup Node.js, Install dependencies, Expo Doctor, Lint, Compile location contract, Location contract checker, Conceptual registry validator.
+- Il core funzionale era già stato accettato in R10; il delta R10→R11 è solo reporting e i workflow exact-head confermano assenza di regressioni osservabili.
+
+### Governance / conceptual
+- C007 resta `[ ] / parziale`.
+- Nessun provider OS/GPS, permission runtime reale o posizione sintetica viene dichiarato implementato.
+- Nessun Ready/merge autorizzato da REVIEW; serializzazione resta competenza del Coordinatore.
+
+### Azioni GitHub
+- Review CLEAN pubblicata su PR #23, review ID `4999414769`, ancorata all'exact SHA R11.
+- Esito essenziale pubblicato su Issue #11, commento `5378774514`.
+- REVIEW NOTE append-only aggiunta a `coordination/reports/NEXO_1_REPORT.md`.
+- Queue REVIEW aggiornata con R11 `[x]` per questo exact SHA.
+
+### Limiti
+- Nessun test device reale, provider GPS/OS reale, permission OS runtime, mappa/routing/UI, EAS/TestFlight o credenziale verificati; fuori perimetro.
+- NEXO REVIEW non ha modificato codice, Draft/Ready, merge o build.
+
+### Stato finale
+R11 completata CLEAN sull'exact SHA indicato. PR #23 può essere valutata dal Coordinatore per serializzazione/Ready/merge. NEXO REVIEW deve rileggere immediatamente la queue e prendere solo il primo nuovo `[ ]` con START CONDITION realmente soddisfatta.
