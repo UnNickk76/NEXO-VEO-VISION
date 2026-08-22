@@ -6,57 +6,48 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - Review operates independently and never modifies implementation code or merges.
-- Review one PR/SHA at a time, then update this file and immediately continue to the next eligible review.
-- PR #12 exact SHA `75b661afffc45887cad1e64c7845d56b6c658288` independently reviewed CLEAN; Coordinator must serialize/merge before shared-file release is assumed.
-- PR #20 exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4` independently reviewed CLEAN; Coordinator must serialize against updated main/shared reporting before merge.
+- PR #12 exact SHA `75b661afffc45887cad1e64c7845d56b6c658288` was CLEAN and has now been merged by Coordinator; main advanced to merge commit `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
+- That main advance makes old open PRs #17/#18/#19/#20 currently `mergeable=false`; old CLEAN verdicts remain historical exact-SHA evidence but do not authorize merge after reconciliation changes.
+- REVIEW must wait for new exact-SHA handoffs after agents reconcile against current main; never duplicate old SHA reviews.
 
 ## REVIEW QUEUE — ONE AT A TIME
 
 - [x] **R1 — PR #19 Navigation Domain Core**
-  - Reviewed exact SHA: `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
-  - Result: CHANGES REQUIRED / NON CLEAN — P0=0, P1=1, P2=0.
-  - P1: V28 `Route Explanation` marked `parziale` without corresponding implementation/test evidence; new SHA required after conceptual/reporting correction and applicable VERIFY.
-  - Review ID: `4998361255`.
-  - Do not duplicate review on this SHA; await new exact SHA handoff after NEXO CODEX corrective task NC.1.
+  - Reviewed exact SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe`: CHANGES REQUIRED, P1 V28; review ID `4998361255`.
+  - Await new exact SHA after NC.1 reconciliation + correction.
 
-- [x] **R3 — PR #12 Saved Places Core — NEW SHA REVIEW — PRIORITY 1**
-  - Reviewed exact SHA: `75b661afffc45887cad1e64c7845d56b6c658288`.
-  - Result: CLEAN — P0=0, P1=0, P2=0.
-  - Review ID: `4998454274`.
-  - Multi-instance repository-scoped serialization and canonical conceptual-validator gate verified; reporting coherent.
-  - Coordinator must decide serialization/merge; CLEAN alone does not release shared files until governance condition is satisfied.
+- [x] **R3 — PR #12 Saved Places Core**
+  - Reviewed exact SHA `75b661afffc45887cad1e64c7845d56b6c658288`: CLEAN, review ID `4998454274`.
+  - Coordinator merged it; no further review unless new work creates a new PR/SHA.
 
-- [x] **R2 — PR #20 Surface Capabilities — NEW SHA REVIEW — PRIORITY 2**
-  - Reviewed exact SHA: `6e13d42379a5cff26cb37a67944f89302b925ac4`.
-  - Result: CLEAN — P0=0, P1=0, P2=0.
-  - Review ID: `4998458851`.
-  - Reporting P1 closed; functional policy/availability fix and conceptual evidence preserved; final PR OPEN/DRAFT/mergeable with no open review threads.
-  - Coordinator must decide serialization/merge against current main and shared reporting/conceptual overlap.
+- [x] **R2 — PR #20 Surface Capabilities — PRE-MAIN-ADVANCE SHA**
+  - Reviewed exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`: CLEAN, review ID `4998458851`.
+  - After PR #12 merge, PR #20 is `mergeable=false`; await new exact SHA from N2.3 reconciliation. Do not treat old CLEAN as merge authorization for changed SHA.
 
 - [ ] **R4 — PR #17 Voice / Command Core**
-  - START CONDITION: NEXO 3 completes shared-file gate and explicitly hands off exact SHA.
-  - Current control-plane observed HEAD: `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317`; not yet ready until Coordinator serializes/closes PR #12 or explicitly releases shared files and NEXO 3 completes its handoff.
+  - START CONDITION: NEXO 3 completes N3.2 reconciliation/completion and explicitly hands off a new exact SHA that is mergeable against current main.
+  - Old observed SHA `4d02a7fd...` is currently non-mergeable after main advanced; do not review it as final handoff.
 
-- [x] **R5 — PR #18 Android Readiness**
-  - Result: CLEAN on SHA `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`.
-  - No duplicate review unless HEAD changes.
+- [x] **R5 — PR #18 Android Readiness — PRE-MAIN-ADVANCE SHA**
+  - CLEAN was issued on SHA `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`.
+  - After PR #12 merge, PR #18 is `mergeable=false`. Await Coordinator/author reconciliation and a new exact SHA before any re-review/merge decision.
+
+- [ ] **R6 — PR #19 RE-REVIEW AFTER NC.1**
+  - START CONDITION: NEXO CODEX hands off new exact SHA after current-main reconciliation, V28 correction, reporting alignment and applicable final VERIFY.
+
+- [ ] **R7 — PR #20 RE-REVIEW AFTER N2.3 RECONCILIATION**
+  - START CONDITION: NEXO 2 hands off new exact SHA after current-main reconciliation and applicable Surface checks/reporting.
+
+- [ ] **R8 — PR #18 RE-REVIEW AFTER SERIALIZATION RECONCILIATION**
+  - START CONDITION: Coordinator/author produces a new mergeable exact SHA preserving Android-readiness functional diff and current-main reporting; no review until then.
 
 ## REVIEW ORDER — COORDINATOR DIRECTIVE
-Process eligible reviews strictly one at a time unless a newer Coordinator directive changes it:
-1. R3 / PR #12 — completed CLEAN.
-2. R2 / PR #20 — completed CLEAN.
-3. Immediately reread this file.
-4. If NEXO CODEX has handed off a new PR #19 SHA after NC.1 and Coordinator/queue records it, review that new SHA next.
-5. If PR #12 CLEAN/closure releases NEXO 3 and PR #17 becomes reviewable, take R4 only after exact-SHA handoff.
-
-After each review: update this file, write the three required reports/notes, reread immediately and continue with the next eligible review. Do not stop merely because one review report was emitted.
+Review only new eligible exact SHAs, one at a time. Prefer the first valid handoff among R4/R6/R7/R8; do not hold one ready handoff merely because another agent has not finished. After each verdict reread this file and continue if another new exact SHA is eligible.
 
 ## REVIEW LOOP
-For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact PR/SHA/diff/checks/reporting/governance → publish CLEAN or CHANGES REQUIRED on PR + Board → append personal review report + REVIEW NOTE to author report → update this file (`[x]` only for exact reviewed SHA/result) → immediately reread and continue. Never duplicate review of the same SHA.
+For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact PR/SHA/diff/checks/reporting/governance → publish CLEAN or CHANGES REQUIRED → append review report + REVIEW NOTE → update queue → immediately reread. Never duplicate review of the same SHA.
 
 ## LAST EVIDENCE
-- PR #12 SHA `75b661afffc45887cad1e64c7845d56b6c658288`: CLEAN, review ID `4998454274`; Issue #11 comment `5376965972`.
-- PR #20 SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`: CLEAN, review ID `4998458851`; Issue #11 comment `5376975680`.
-- PR #19 SHA `7210baef...`: CHANGES REQUIRED; await new exact SHA handoff after NC.1.
-- PR #18 SHA `1e50e747...`: CLEAN.
-- R4 remains blocked pending Coordinator serialization/release of PR #12 shared files plus explicit NEXO 3 exact-SHA handoff.
+- 2026-08-22 02:05 UTC — Coordinator merged PR #12 after CLEAN; main `47b9d0a5...`.
+- Fresh GitHub metadata: PR #17/#18/#19/#20 all OPEN/DRAFT and `mergeable=false` after main advance.
+- No new exact-SHA handoff is currently eligible for REVIEW; wait for reconciliation commits, not for user intervention.
