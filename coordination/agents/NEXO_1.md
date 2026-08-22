@@ -7,9 +7,9 @@ COORDINATOR: NEXO Coordinator
 ## CURRENT VERIFIED STATE
 - Current main: `1d0a01c91bb328baf141560a534f4b62fe406b01` after CLEAN PR #17 Voice merge.
 - TestFlight production is manual / Coordinator-controlled.
-- PR #24 Location Freshness / Quality Policy: OPEN / DRAFT / mergeable=false, exact HEAD `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`.
-- Fresh compare current main → PR #24: `diverged`, ahead 7 / behind 2, merge-base `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
-- Existing N1.5 functional work is already present and must be preserved; do not redo it.
+- PR #24 Location Freshness / Quality Policy: OPEN / DRAFT / mergeable=true, reconciled exact HEAD `950f01c814b953f7332f2b3fbf7a9f55c0573145`.
+- Fresh compare current main → PR #24: `ahead`, ahead 8 / behind 0, merge-base=current main.
+- Coordinator reconciliation preserved the five N1.5-owned diff files and resolved shared `LATEST`/`FABIO_CONTROLLO` to current-main state; no Voice/TestFlight regression was reintroduced.
 - C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
 
 ## QUEUE — ONE TASK AT A TIME
@@ -20,15 +20,14 @@ COORDINATOR: NEXO Coordinator
 - [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF**
 - [x] **N1.4R — PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE**
 
-- [ ] **N1.5R — PR #24 MINIMAL RECONCILIATION TO CURRENT MAIN + FINAL N1.5 HANDOFF**
+- [ ] **N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF**
   - START CONDITION: SATISFIED / TOP PRIORITY.
-  - CURRENT MAIN TO INCORPORATE: `1d0a01c91bb328baf141560a534f4b62fe406b01`.
-  - PRESERVE: all existing N1.5 quality/freshness functional work, checker/workflow and prior successful evidence. Do NOT rewrite/recreate the functional slice.
-  - REQUIRED RECONCILIATION: safely incorporate both post-PR23 main deltas now missing from the branch: manual-only TestFlight policy and merged Voice Core state, without touching Voice ownership.
-  - THEN COMPLETE ORIGINAL N1.5 GATES: conservative PR #24 evidence in C007 while keeping `[ ] / parziale`; align historical report/LATEST/FABIO_CONTROLLO to reconciled exact HEAD; rerun checks invalidated by reconciliation or edits; record new exact SHA and explicit NEXO REVIEW handoff.
-  - DEFINITION OF DONE: PR #24 mergeable against current main, no regression to merged Location/Voice/TestFlight state, exact-head applicable checks recorded, C007 evidence complete, PR DRAFT, explicit review handoff.
+  - RECONCILIATION: COMPLETED BY COORDINATOR at `950f01c814b953f7332f2b3fbf7a9f55c0573145`; do NOT redo/rebase/reconstruct it.
+  - PRESERVE: existing quality/freshness implementation, checker/workflow, merged Voice Core, manual-only TestFlight policy and all current-main state.
+  - REQUIRED NOW: wait for/check exact-head workflows on `950f01c...`; update C007 conservatively with PR #24 evidence while keeping `[ ] / parziale`; create/finalize compliant historical reporting + `LATEST.md` + `FABIO_CONTROLLO.md` on the reconciled branch; rerun all checks invalidated by those edits; record final exact SHA and explicit NEXO REVIEW handoff.
+  - IMPORTANT: shared reporting files currently intentionally match current main after reconciliation. Reapply only accurate N1.5 final reporting, not stale pre-reconciliation copies.
+  - DEFINITION OF DONE: final PR #24 mergeable against current main, no regression to merged Location/Voice/TestFlight state, exact-head applicable checks SUCCESS, C007 evidence complete/conservative, reporting coherent, PR DRAFT, explicit REVIEW handoff.
   - FREEZE RULE: do not start N1.6 before PR #24 CLEAN + Coordinator serialization.
-  - CURRENT BLOCKER: available agent runtime previously lacked a safe update-branch/rebase/merge-main-into-branch operation. Do not force-reset or reconstruct shared files manually. If still blocked, report the exact missing capability; do not alter the branch.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
   - START CONDITION: PR #24 CLEAN and serialized/merged by Coordinator.
@@ -46,6 +45,7 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- Coordinator merged PR #17 CLEAN, advancing main to `1d0a01c91bb328baf141560a534f4b62fe406b01`.
-- PR #24 remains `8abc5d2d...`, now diverged ahead 7 / behind 2 and mergeable=false.
-- N1.5R remains the highest-priority unfinished consolidation task.
+- Coordinator safely reconciled PR #24 by creating merge commit `950f01c814b953f7332f2b3fbf7a9f55c0573145` with parents old PR HEAD `8abc5d2d...` + current main `1d0a01c9...` and a tree based on current main with only the N1.5-owned functional/workflow/checker/history files overlaid.
+- Fresh compare: ahead 8 / behind 0; PR #24 now mergeable=true.
+- Exact-head runs started automatically: Location Contract `32583597225`, Voice Validation `32583597311`, Location Quality Policy `32583597232`, Location State Machine `32583597351`; all were in_progress at Coordinator handoff, so no PASS is claimed yet.
+- N1.5R is now UNBLOCKED for conceptual/reporting/final VERIFY only.
