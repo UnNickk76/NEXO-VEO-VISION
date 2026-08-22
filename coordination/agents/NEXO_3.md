@@ -6,25 +6,23 @@ COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
 - PR #17 `feat(voice): provider-neutral intent command core`: OPEN / DRAFT.
-- Exact HEAD verified by NEXO 3: `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317`.
-- Base/main observed: `213fb129201230c3875e5fb8fc157260f995fe04`.
-- PR #12 remains OPEN / DRAFT, but NEXO 1 has now closed its conceptual-validator gate and handed off final exact SHA `75b661afffc45887cad1e64c7845d56b6c658288` to NEXO REVIEW.
-- Shared conceptual/reporting files are **not yet released** merely because validation passed: PR #12 is still open and awaiting independent review/serialization.
-- NEXO 3 must not overwrite shared reporting/conceptual state until PR #12 is merged/closed or Coordinator explicitly records those files free.
+- Exact HEAD: `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317`.
+- PR #12 has now been REVIEWED CLEAN and MERGED; merge commit on main `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
+- Shared conceptual/reporting gate previously held by PR #12 is RELEASED.
+- IMPORTANT: after PR #12 merge, GitHub reports PR #17 `mergeable=false`; N3.2 must first reconcile/rebase against current main before touching shared reporting/conceptual state, preserving voice-only functional ownership and avoiding changes from other agents.
 - Do not touch location/surface/navigation/automotive native/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
 
 - [x] **N3.1 — PR #17 CURRENT-HEAD AUDIT / SAFE FREEZE**
   - START CONDITION: immediate, READ-ONLY with respect to shared reporting/conceptual files.
-  - Goal: verify exact current PR #17 HEAD/diff/commits versus the last authorized voice-core intent, identify what changed since prior blocked SHA, and record whether the functional voice files are internally coherent. Do not modify shared files. Update this queue file with evidence.
-  - COMPLETED EVIDENCE: audited exact PR #17 HEAD `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317` against prior authorized/frozen SHA `6dca71ef03b299962aa2f2d78554d63ee5c85ec2`. Delta is exactly 3 commits: `471934b4fa2cbcc963cceb195eda548f5546c59e` (voice core hardening), `5d642d330e1c3ab2ebf2edac8d175fc78dd457d1` (behavior checker hardening), `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317` (historical resume report). Functional changes are confined to `frontend/src/voice/command-core.ts` and `frontend/scripts/check-voice-command-core.mjs`; added report is non-functional. Static audit found the two functional files coherent with provider-neutral/fail-closed intent: navigation still requires pre-resolved destination ID; unsupported/unsafe/incomplete input produces unknown/null command; envelope adds correlation/idempotency/source/surface/timestamp; bus exposes handled/unhandled/rejected and duplicate protection. Existing historical report records a real local checker execution PASS on reconstructed final functional contents; no GitHub Actions workflow/status exists on exact HEAD, so no CI PASS is claimed. PR remains DRAFT; no shared conceptual/reporting file modified by this audit.
+  - COMPLETED EVIDENCE: audited exact PR #17 HEAD `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317`; functional changes confined to voice core/checker; no CI PASS invented.
 
-- [ ] **N3.2 — RELEASE BLOCK CHECK + PR #17 COMPLETION**
-  - START CONDITION: PR #12 merged/closed or Coordinator explicitly records shared files free.
-  - Goal: finish PR #17 reporting/conceptual/test gates, rerun applicable checks, exact-SHA handoff to NEXO REVIEW.
-  - BLOCKED: PR #12 final SHA `75b661afffc45887cad1e64c7845d56b6c658288` is handed to REVIEW but remains OPEN / DRAFT; shared conceptual/reporting ownership is not yet free.
-  - RESUME CONDITION: PR #12 receives CLEAN and is serialised/merged/closed, or Coordinator explicitly authorizes safe shared-file continuation after verifying conflicts are absent.
+- [ ] **N3.2 — POST-PR12 RECONCILIATION + PR #17 COMPLETION**
+  - START CONDITION: SATISFIED — PR #12 merged and Coordinator released shared files.
+  - FIRST REQUIRED ACTION: READ current main `47b9d0a5c20490f0b73e95e52fadca151e89e136` and resolve PR #17's current `mergeable=false` without overwriting main reporting/conceptual changes or other agents' ownership.
+  - Goal: reconcile branch safely, finish PR #17 reporting/conceptual/test gates, rerun applicable checks on final content, exact-SHA handoff to NEXO REVIEW.
+  - PROOF REQUIRED: new exact SHA; PR mergeable; diff remains voice-owned plus necessary conflict reconciliation/reporting; reproducible checker/test evidence; conceptual/reporting aligned; no accidental regression of merged Saved Places state.
 
 - [ ] **N3.3 — VOICE INTENT NORMALIZATION**
   - START CONDITION: N3.2 completed/reviewable and no conflict.
@@ -46,6 +44,6 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, write chat + GitHub report, then immediately reread and start the next eligible task. A blocked task remains `[ ]` with blocker recorded.
 
 ## LAST EVIDENCE
-- N3.1 completed by current-head audit on PR #17 exact HEAD `4d02a7fd5e579cbd48aa5e7c2588f5580d86c317`.
-- PR #12 validator gate is now complete, but final PR #12 SHA `75b661afffc45887cad1e64c7845d56b6c658288` is still awaiting NEXO REVIEW and remains open; this does not release shared files.
-- N3.2 remains legitimately BLOCKED pending PR #12 CLEAN + serialization/closure or explicit Coordinator release.
+- 2026-08-22 02:05 UTC — PR #12 merged to main as `47b9d0a5...`; shared-file release gate satisfied.
+- Fresh GitHub metadata after merge: PR #17 remains OPEN/DRAFT at SHA `4d02a7f...` but is now `mergeable=false` against updated main.
+- N3.2 is ACTIONABLE NOW as a reconciliation/completion task; do not start N3.3 until final exact-SHA handoff is reviewable.
