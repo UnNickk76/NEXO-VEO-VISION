@@ -1,34 +1,40 @@
 # Fabio Controllo
 
-> Cruscotto di sola consultazione. Il rapporto tecnico completo è in `docs/codex-reports/LATEST.md`.
+> Cruscotto di sola consultazione. Il rapporto tecnico completo è in
+> `docs/codex-reports/LATEST.md`.
 
-## Stato semplice
-- **Data:** 22 agosto 2026, 08:16 UTC.
-- **Attività:** NEXO 1 — N1.5 Location Freshness / Quality Policy.
-- **Stato:** parziale; PR #24 resta DRAFT. Il core quality/freshness è implementato e i workflow sullo SHA funzionale pre-reporting sono SUCCESS, ma manca ancora il gate concettuale C007 + VERIFY post-edit + handoff review finale.
-- **Branch:** `nexo1/f1-location-quality-policy`.
-- **PR:** #24.
-- **Base:** main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
+## NEXO 3 — PR #17 Voice core — rettifica review R4R
+- **Data:** 22 agosto 2026, 13:05 UTC.
+- **Task:** N3.2RR — rettifica dei due P1 di NEXO REVIEW sulla PR #17.
+- **Stato:** rettifica lato autore completata; PR #17 resta DRAFT e deve essere nuovamente revisionata da NEXO REVIEW. NEXO 3 non dichiara CLEAN.
+- **Branch:** `nexo3/f0-voice-command-core`.
+- **Pull request:** PR #17.
+- **Review sorgente:** `4999992268`, CHANGES REQUIRED, P0/P1/P2 = 0/2/0.
 
-## Fatto realmente
-- Policy provider-neutral freshness/accuracy con soglie deterministiche.
-- Fix invalidi/futuri/stale/poor-accuracy non sono utilizzabili.
-- Fallback soltanto verso un precedente fix reale ancora valido; nessuna posizione inventata.
-- Reporting N1.5 aggiornato in questa ripresa.
+## Cosa è stato corretto realmente
+- V02, V03 e V34 restano `[ ] / parziale` ma ora ogni riga contiene PR #17, commit tecnico pertinente e test/check pertinente.
+- È stato creato un nuovo rapporto storico completo per N3.2RR e `LATEST.md` è stato riallineato.
+- Il Voice core, il checker e il workflow tecnico non sono stati ridisegnati o ampliati.
+- Nessun STT/TTS/microfono/wake-word/provider/native automotive runtime viene dichiarato implementato.
 
-## Controlli reali disponibili
-Sul precedente HEAD funzionale `f89de36...`:
-- Location Quality Policy `32559482473`: SUCCESS.
-- Location Contract `32559482539`: SUCCESS.
-- Location State Machine `32559482424`: SUCCESS.
+## Controlli reali
+Dopo la rettifica conceptual, exact SHA `b6681d826c18da5269c87145b5d0d5f5649daa9e`:
+- GitHub Actions `NEXO 3 Voice Validation` run `32574584194`, job `97034924381`: **SUCCESS**.
+- Install frontend dependencies: SUCCESS.
+- Voice checker: SUCCESS; include TypeScript strict.
+- Conceptual master validator: SUCCESS.
 
-Non viene dichiarato un nuovo PASS sul reporting corrente e il conceptual validator deve essere rieseguito dopo l'aggiornamento C007.
+Dopo i commit di reporting viene eseguita automaticamente una nuova `NEXO 3 Voice Validation` sull'HEAD finale; il suo esito viene registrato nel Control Plane/handoff e non viene anticipato qui.
 
-## Problemi aperti
-- Aggiornare C007 conservativamente con evidenza PR #24, lasciandolo `[ ] / parziale`.
-- Rieseguire i check influenzati e registrare exact SHA finale.
-- Consegnare quindi a NEXO REVIEW.
-- N1.6 non deve partire prima.
+## Limiti dichiarati
+- Nessun STT/TTS/microfono/wake-word runtime.
+- Nessuna NLU conversazionale completa.
+- Nessun provider mappe o navigazione reale.
+- Nessun runtime CarPlay/Android Auto.
+- Nessun TestFlight/EAS o credenziale Apple/EAS toccati.
+
+## Prossimo passo
+Nuovo handoff dell'exact HEAD post-reporting a NEXO REVIEW. N3.3 resta congelato fino a CLEAN + serializzazione/merge del Coordinatore.
 
 ## Cosa deve fare Fabio adesso
 Nulla.
