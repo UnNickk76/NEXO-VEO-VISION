@@ -5,49 +5,49 @@ OWNER: NEXO 1
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
-- PR #12 `feat(f1): saved places local-first core`: MERGED by Coordinator after NEXO REVIEW CLEAN.
-- Reviewed exact HEAD: `75b661afffc45887cad1e64c7845d56b6c658288`.
-- Merge commit on `main`: `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
-- NEXO REVIEW verdict: CLEAN, review ID `4998454274`, P0/P1/P2 = 0/0/0.
-- N1.3 produced PR #22 `feat(location): add provider-neutral foreground location contract`, OPEN / DRAFT / mergeable, exact HEAD `475c39539809361e7ede47f381e07f3be70454e3`.
-- Location Contract run #3 `32546311607`, job `96965279495` = SUCCESS on last functional/conceptual SHA `0d148712426e381b83a3cb0fe2f8895dcca57096`; final three commits are reporting-only.
-- N1.3 handoff to NEXO REVIEW registered on Issue #11 comment `5377380623`.
-- PR #22 is now under SAFE FREEZE: do not change its HEAD before REVIEW verdict, unless Coordinator explicitly authorizes a non-invalidating continuation strategy.
+- PR #12 Saved Places: MERGED after CLEAN; merge commit `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
+- PR #22 `feat(location): add provider-neutral foreground location contract`: CLEAN on exact SHA `475c39539809361e7ede47f381e07f3be70454e3`, review ID `4998866766`, P0/P1/P2=0/0/0; exact-head Location Contract run #6 `32546418961` SUCCESS.
+- Coordinator transitioned PR #22 Ready only after CLEAN and merged it. Current `main`: `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- Location contract/C007 is now canonical on main. Safe-freeze for PR #22 is released.
+- Before any N1.4 WRITE, re-read current main and all open PR overlaps; preserve location contract and current-main reporting/conceptual state.
 - Do not touch voice/surface/navigation/automotive/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
 
 - [x] **N1.1 — CLOSE PR #12 VALIDATION GATE**
-  - START CONDITION: immediate.
-  - COMPLETED EVIDENCE: validator exact SHA `155ba7e8005d6848a506478d7f3139b3b69776d8`, exit `0`; final PR #12 HEAD `75b661afffc45887cad1e64c7845d56b6c658288`; diagnostic PR #21 closed without merge.
+  - COMPLETED EVIDENCE: validator exact SHA `155ba7e8005d6848a506478d7f3139b3b69776d8`, exit 0; PR #12 final reviewed SHA `75b661afffc45887cad1e64c7845d56b6c658288`.
 
 - [x] **N1.2 — PR #12 REVIEW REWORK / CLEAN HANDOFF**
-  - START CONDITION: N1.1 completed and NEXO REVIEW has reviewed the new SHA.
-  - COMPLETED EVIDENCE: NEXO REVIEW CLEAN on exact SHA `75b661afffc45887cad1e64c7845d56b6c658288`, review ID `4998454274`, P0/P1/P2 = 0/0/0; Coordinator merged PR #12 to main as `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
+  - COMPLETED EVIDENCE: CLEAN review ID `4998454274`; merged as main `47b9d0a5c20490f0b73e95e52fadca151e89e136`.
 
 - [x] **N1.3 — F1 LOCATION CONTRACT**
-  - START CONDITION: SATISFIED — PR #12 is merged and shared-file gate released. Before WRITE, re-read current main and open PR overlaps because #17/#18/#19/#20 may now require rebase/reconciliation.
-  - Goal: provider-neutral foreground location contract: coordinates, accuracy, timestamp, permission/status/error semantics; no map provider, no invented position.
-  - COMPLETED EVIDENCE: PR #22 exact HEAD `475c39539809361e7ede47f381e07f3be70454e3`, OPEN/DRAFT/mergeable; Location Contract run #3 `32546311607`, job `96965279495` SUCCESS on functional/conceptual SHA `0d148712426e381b83a3cb0fe2f8895dcca57096`; Expo Doctor 18/18, lint 0 errors/1 preexisting warning, TypeScript compile PASS, checker PASS, conceptual validator PASS with C001–C007 stable set. Compare to final HEAD changes only three reporting files. C007 remains `[ ] / parziale`; no provider/GPS runtime. Handoff Board comment `5377380623`; report `docs/codex-reports/2026-08-22_022837_f1-location-contract.md`.
+  - COMPLETED EVIDENCE: PR #22 exact SHA `475c39539809361e7ede47f381e07f3be70454e3`; CLEAN review ID `4998866766`; exact-head run #6 `32546418961` SUCCESS; merged by Coordinator as main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
 
 - [ ] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE**
-  - START CONDITION: N1.3 completed/reviewable and no conflict.
-  - Goal: denied/restricted/unavailable/stale/degraded semantics with deterministic tests.
-  - BLOCKED / SAFE FREEZE: N1.3 was handed to NEXO REVIEW on exact SHA `475c39539809361e7ede47f381e07f3be70454e3`. Changing the same PR/branch now would invalidate the exact-SHA review handoff, so the `no conflict` clause is not satisfied. Resume after REVIEW verdict on that SHA, or explicit Coordinator authorization for a separate/stacked continuation that does not invalidate review. Board evidence: `5377388006`.
+  - START CONDITION: SATISFIED — N1.3 is CLEAN and merged; safe-freeze released.
+  - FIRST REQUIRED ACTION: re-read `main` `8d8dee4a...`, PR #17/#18/#19/#20 and shared-file ownership before WRITE. Use a new dedicated branch/PR from current main; do not append N1.4 onto merged PR #22 branch.
+  - Goal: denied/restricted/unavailable/stale/degraded semantics with deterministic tests; preserve fail-closed/no-invented-position rule.
+  - PROOF REQUIRED: dedicated PR DRAFT, exact SHA, deterministic checker/workflow, conceptual/reporting aligned to current main, NEXO REVIEW handoff.
 
 - [ ] **N1.5 — LOCATION FRESHNESS / QUALITY POLICY**
-  - START CONDITION: N1.4 completed.
+  - START CONDITION: N1.4 completed/reviewable and no exact-SHA review conflict.
   - Goal: stale fix, invalid coordinates, accuracy/freshness thresholds and conservative fallback; checker required.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
   - START CONDITION: N1.5 completed.
   - Goal: future iOS/Android source adapter interface + fake adapter tests; conceptual/reporting reconciliation; handoff to NEXO REVIEW.
 
+- [ ] **N1.7 — LOCATION FOUNDATION INTEGRATION GAP AUDIT**
+  - START CONDITION: N1.6 completed/reviewable.
+  - Goal: audit remaining gaps toward real OS location integration without adding provider/runtime credentials; produce concrete next-slice recommendations and only implement if safely owned.
+
+- [ ] **N1.8 — LOCATION FOUNDATION REVIEW CLOSURE**
+  - START CONDITION: N1.7 completed and prior slices CLEAN/serialized as required.
+  - Goal: consolidate evidence/invariants, remove stale reporting assumptions, final NEXO REVIEW handoff for the location foundation; no provider invention.
+
 ## UPDATE RULE
-After every task: update this file on `coordination/agent-control`, replace `[ ]` with `[x]` only when truly completed, and append evidence below. Then immediately reread this file and start the next eligible task.
+After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 02:30 UTC — N1.3 completed/reviewable on PR #22 exact HEAD `475c39539809361e7ede47f381e07f3be70454e3`.
-- Functional/conceptual VERIFY: run #3 `32546311607`, job `96965279495`, SUCCESS; final delta after verified SHA is reporting-only.
-- PR #22 OPEN / DRAFT / mergeable; NEXO REVIEW handoff on Board comment `5377380623`.
-- Immediate reread evaluated N1.4: BLOCKED by exact-SHA review ownership/safe-freeze conflict; Board comment `5377388006`. No N1.4 code was written.
+- 2026-08-22 04:05 UTC — Coordinator merged CLEAN PR #22 after Ready transition required by GitHub. Merge commit/current main `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- N1.4 is ACTIONABLE NOW from a fresh dedicated branch based on current main; old safe-freeze blocker is obsolete and removed.
