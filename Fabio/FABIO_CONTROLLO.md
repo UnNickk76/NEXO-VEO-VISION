@@ -4,42 +4,34 @@
 > `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
-- **Data:** 22 agosto 2026, 02:28 UTC
-- **Attività:** NEXO 1 — N1.3 F1 Location Contract.
-- **Stato:** contratto posizione foreground provider-neutral implementato e verificato; PR #22 resta DRAFT e viene consegnata a NEXO REVIEW. Nessun GPS/provider runtime viene dichiarato implementato.
-- **Branch:** `nexo1/f1-location-contract`
-- **Pull request:** PR #22
-- **Base:** `main` `47b9d0a5c20490f0b73e95e52fadca151e89e136`
-- **SHA funzionale/conceptual verificato:** `0d148712426e381b83a3cb0fe2f8895dcca57096`
+- **Data:** 22 agosto 2026, 06:48 UTC
+- **Attività:** NEXO 3 — N3.2 completamento PR #17 Voice Intent → Command Core.
+- **Stato:** parziale; PR #17 resta DRAFT. Il core Voice è isolato e mergeable sul main verificato, ma i check finali devono essere rieseguiti prima dell'handoff a NEXO REVIEW.
+- **Branch:** `nexo3/f0-voice-command-core`
+- **Pull request:** PR #17
+- **Main verificata:** `8d8dee4a31416acb38c2e654082ca15efafd6fec`
+- **HEAD iniziale di questa ripresa:** `fc5932b685406dd566848afc0ab40f098cd00f2a`
 
 ## Cosa è stato fatto realmente
-- Creato un contratto location con coordinate, accuratezza orizzontale e timestamp.
-- Modellati permission/status/error senza dipendere da Expo Location, Mapbox o altri provider concreti.
-- `ready` richiede permission `granted`, fix valido e nessun errore.
-- Stati `idle`, `unavailable` ed `error` non producono coordinate inventate.
-- Creato checker deterministico e workflow dedicato.
-- Aggiunto C007 al registro concettuale come `[ ] / parziale`, senza spuntare la funzione.
-- Aggiornato il validator canonico dal set C001–C006 al set C001–C007.
+- Verificato che PR #17 è OPEN/DRAFT/mergeable e senza review thread aperti.
+- Confermato il perimetro funzionale Voice provider-neutral e fail-closed.
+- Aggiornato conservativamente il concettuale: V02, V03 e V34 restano `[ ]` ma passano a `parziale`; nessuna funzione Voice viene dichiarata completa.
+- Preservato C007/Location Contract già presente su main.
 
 ## Controlli reali
-GitHub Actions — Location Contract run #3 `32546311607`, job `96965279495`: **SUCCESS**.
-
-- `npm ci`: PASS; audit segnala 15 vulnerabilità già presenti nelle dipendenze (1 moderate, 14 high).
-- `npx expo-doctor`: **18/18 PASS**.
-- `npm run lint`: PASS con 0 errori / 1 warning preesistente in `frontend/app/index.tsx` (`Text` non usato).
-- TypeScript strict compile del contract: PASS.
-- checker location: `location-contract checks: PASS`.
-- validator concettuale: PASS, incluso `PASS C: exact stable ID set (7 rows)` e `PASS: conceptual master registry is coherent`.
+- `node -v`: PASS (`v22.16.0`).
+- `tsc -v`: PASS (`Version 5.8.3`).
+- Tentativo di checkout + voice checker: FALLITO prima del checker con exit 128 per DNS (`Could not resolve host: github.com`).
+- Voice checker finale: NON eseguito in questa ripresa, quindi nessun nuovo PASS dichiarato.
+- Validator concettuale finale: NON rieseguito, quindi nessun PASS dichiarato.
 
 ## Limiti dichiarati
-- Nessun test su device reale.
-- Nessun GPS/provider location OS collegato.
-- Nessuna permission OS realmente richiesta.
-- Nessuna mappa, routing, UI o navigazione reale implementata da N1.3.
-- Nessun EAS/TestFlight o credenziale Apple/EAS toccati.
+- Il blocco corrente è il runtime di checkout/rete necessario per ripetere i check finali.
+- Nessun microfono/STT/TTS, navigazione reale, provider mappe, CarPlay/Android Auto runtime, EAS/TestFlight o credenziale è stato toccato.
+- PR #17 resta DRAFT e non viene mergeata.
 
 ## Prossimo passo
-NEXO REVIEW deve revisionare l'exact SHA finale della PR #22 dopo il reporting. NEXO 1 aggiorna il proprio Control Plane e continua soltanto con il successivo task eleggibile, senza merge autonomo.
+NEXO 3 deve ritentare i check finali sul contenuto corrente; solo con evidenza reale può chiudere N3.2 e consegnare l'exact SHA a NEXO REVIEW.
 
 ## Cosa deve fare Fabio adesso
 Nulla.
