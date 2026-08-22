@@ -1,117 +1,119 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_022837_f1-location-contract.md`
+Rapporto storico: `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`
 
-# NEXO 1 — N1.3 F1 Location Contract
+# NEXO 1 — N1.4 Location Permission / Degraded State Machine
 
 ## Dati attività
-- **Data e ora UTC:** 2026-08-22 02:28:37 UTC.
-- **Task Control Plane:** `N1.3 — F1 LOCATION CONTRACT`.
-- **Obiettivo richiesto:** introdurre un contratto foreground location provider-neutral con coordinate, accuratezza, timestamp e semantiche permission/status/error, senza provider concreto e senza inventare una posizione.
-- **Stato finale:** completato / pronto per handoff a NEXO REVIEW.
-- **Branch:** `nexo1/f1-location-contract`.
-- **Base:** `main` `47b9d0a5c20490f0b73e95e52fadca151e89e136` (merge PR #12 CLEAN).
-- **Pull request:** PR #22 `feat(location): add provider-neutral foreground location contract`, DRAFT.
-- **SHA funzionale/conceptual verificato:** `0d148712426e381b83a3cb0fe2f8895dcca57096`.
-- **Workflow verificato:** Location Contract run #3 `32546311607`, job `96965279495`, SUCCESS.
+- **Data e ora UTC:** 2026-08-22 04:28 UTC.
+- **Task Control Plane:** `N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE`.
+- **Obiettivo richiesto:** introdurre semantiche deterministiche `denied`, `restricted`, `unavailable`, `stale`, `degraded` ed `error` sopra il contratto location provider-neutral già in main, preservando comportamento fail-closed e divieto di inventare una posizione.
+- **Stato finale:** completato / pronto per handoff a NEXO REVIEW; NEXO 1 non dichiara CLEAN.
+- **Branch:** `nexo1/f1-location-permission-state-machine`.
+- **Base:** `main` `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- **Pull request:** PR #23 `feat(location): add permission degraded state machine`, DRAFT.
+- **SHA funzionale/conceptual verificato:** `f9c53e40732dce009379a67fd899cfd7679865a7`.
+- **Workflow conclusivi:** Location State Machine run #2 `32551730907`, job `96979479985`, SUCCESS; Location Contract run #8 `32551730913`, SUCCESS.
 
 ## READ realmente eseguito
 Prima della scrittura sono stati riletti/verificati:
 - `AGENTS.md` su `main`;
-- Issue #11 e aggiornamenti di governance/concorrenza;
+- Issue #11 e aggiornamenti recenti di governance/conflitti;
 - `coordination/agents/README.md`;
 - `coordination/agents/NEXO_1.md`;
-- `coordination/reports/NEXO_1_REPORT.md`, inclusa REVIEW NOTE CLEAN della PR #12;
-- `main` post-merge PR #12, SHA `47b9d0a...`;
-- PR aperte #17, #18, #19 e #20;
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md`;
-- `scripts/check_conceptual_master.py`;
-- `frontend/tsconfig.json` e `frontend/package.json`;
-- workflow Navigation Domain come riferimento di verifica isolata.
+- `coordination/reports/NEXO_1_REPORT.md` e REVIEW NOTE disponibili;
+- `main` corrente `8d8dee4a31416acb38c2e654082ca15efafd6fec`;
+- PR aperte #17, #18, #19, #20;
+- `frontend/src/location/contract.ts` e `frontend/src/location/index.ts`;
+- `.github/workflows/location-contract.yml`;
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md`.
 
-È stato verificato che nessuna PR aperta possiede `frontend/src/location/**`. Le sovrapposizioni residue sono documentali: conceptual/reporting condivisi con altri lavori devono essere serializzati prima del merge.
+È stato verificato che nessuna PR aperta possiede `frontend/src/location/**`. PR #18/#19/#20 risultavano non mergeable nel controllo corrente, mentre PR #17 restava DRAFT; nessuna di esse autorizzava modifica delle aree Location. L'overlap residuo riguarda soltanto file condivisi conceptual/reporting e richiede serializzazione prima del merge, non impedisce una PR dedicata da current main.
 
 ## PLAN
-Piano registrato sulla Coordination Board #11 prima della prima modifica, commento `5377348213`.
+Piano registrato sulla Coordination Board #11 prima della prima modifica, commento `5377849285`.
 
-Durante il lavoro è emersa una dipendenza reale: il validator canonico accettava esattamente C001–C006. Poiché il nuovo contratto richiede un nuovo ID stabile C007, il piano è stato raffinato e registrato sulla Board, commento `5377366858`, includendo il solo aggiornamento `expected_ids("C", 7, 3)` nel validator.
+Piano applicato:
+1. nuovo branch da current main;
+2. state machine provider-neutral isolata;
+3. checker deterministico senza nuove dipendenze;
+4. workflow dedicato;
+5. aggiornamento conservativo di C007 mantenendo `[ ] / parziale`;
+6. verifica finale su SHA aggiornato dopo il conceptual;
+7. reporting e handoff REVIEW senza proseguire N1.5 sullo stesso exact SHA.
 
 ## Modifiche concrete
-### Contratto location
-Creato `frontend/src/location/contract.ts` con:
-- `LocationPermissionStatus`: `undetermined`, `granted`, `denied`, `restricted`;
-- `ForegroundLocationStatus`: `idle`, `ready`, `unavailable`, `error`;
-- error code espliciti per permission denied/restricted, location unavailable, provider error e invalid fix;
-- `LocationFix` con `latitude`, `longitude`, `horizontalAccuracyM`, `timestampMs`;
-- `ForegroundLocationState` con permission/status/fix/error;
-- `isValidLocationFix()` per range/finiteness/accuracy/timestamp;
-- `isCoherentForegroundLocationState()` con fail-closed semantics.
+### State machine Location
+Creato `frontend/src/location/state-machine.ts` con:
+- stati runtime `idle`, `ready`, `degraded`, `stale`, `unavailable`, `denied`, `restricted`, `error`;
+- eventi permission, fix, degraded, stale, unavailable, provider-error e reset;
+- `denied` e `restricted` eliminano qualsiasi fix e restano inutilizzabili;
+- fix ricevuti senza permission `granted` vengono ignorati;
+- fix invalido produce `error` e nessun fix utilizzabile;
+- `unavailable` e provider error eliminano il fix;
+- `degraded` e `stale` possono conservare esclusivamente l'ultimo fix reale ricevuto, ma `isUsableLocationRuntimeState()` restituisce sempre false per tali stati;
+- solo `granted + ready + fix valido` è considerato utilizzabile.
 
-Un `ready` è coerente soltanto con permission `granted`, fix reale valido e nessun errore. Stati non-ready non sintetizzano mai coordinate.
+Non viene mai sintetizzata una coordinata o una posizione di fallback.
 
-Creato `frontend/src/location/index.ts` per esportare il contratto.
+### Export
+Aggiornato `frontend/src/location/index.ts` per esportare anche la state machine.
 
-### Checker riproducibile
-Creato `frontend/scripts/check-location-contract.mjs` con casi deterministici:
-- fix valido;
-- latitudine > 90 rifiutata;
-- longitudine < -180 rifiutata;
-- accuratezza negativa rifiutata;
-- timestamp NaN rifiutato;
-- `ready + granted + valid fix` accettato;
-- `ready + denied` rifiutato;
-- `unavailable` senza fix con errore coerente accettato;
-- `error` senza fix e con errore accettato;
-- `idle` senza fix/errore accettato.
+### Checker deterministico
+Creato `frontend/scripts/check-location-state-machine.mjs` con casi reali e riproducibili:
+- initial idle non usable;
+- fix prima del grant ignorato;
+- denied senza fix;
+- restricted senza fix;
+- granted + fix valido => ready/usable;
+- degraded conserva ultimo fix reale ma non usable;
+- stale conserva ultimo fix reale ma non usable;
+- unavailable elimina fix;
+- provider-error elimina fix;
+- fix invalido => error/no fix/unusable.
 
 ### CI dedicata
-Creato `.github/workflows/location-contract.yml` con:
-1. checkout;
-2. Node 20;
-3. `npm ci`;
-4. Expo Doctor;
-5. lint;
-6. TypeScript compile isolata del contract;
-7. checker location;
-8. validator concettuale canonico.
+Creato `.github/workflows/location-state-machine.yml` con:
+- `npm ci`;
+- Expo Doctor;
+- lint;
+- compilazione TypeScript strict isolata di contract + state machine;
+- checker state machine;
+- validator concettuale canonico.
 
 ### Registro concettuale
-Aggiunto `C007` come `[ ] / parziale`: il solo contratto provider-neutral è presente e verificato; non esistono ancora provider/GPS runtime, integrazione UI o lettura posizione reale.
-
-Aggiornato `scripts/check_conceptual_master.py` esclusivamente da C count 6 a 7 per includere il nuovo stable ID C007.
+Aggiornato solo C007, mantenendolo `[ ] / parziale`, aggiungendo evidenza PR #23, commit funzionale, checker e workflow. Nessun nuovo ID e nessun `[x]` aggiunto.
 
 ## File creati/modificati
 File funzionali/verifica/conceptual:
-- `.github/workflows/location-contract.yml` — creato;
-- `frontend/src/location/contract.ts` — creato;
-- `frontend/src/location/index.ts` — creato;
-- `frontend/scripts/check-location-contract.mjs` — creato;
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — modificato, aggiunto C007;
-- `scripts/check_conceptual_master.py` — modificato, stable C set da 6 a 7.
+- `frontend/src/location/state-machine.ts` — creato;
+- `frontend/src/location/index.ts` — modificato;
+- `frontend/scripts/check-location-state-machine.mjs` — creato;
+- `.github/workflows/location-state-machine.yml` — creato;
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — modificato solo per C007.
 
 File reporting dell'attività:
-- `docs/codex-reports/2026-08-22_022837_f1-location-contract.md` — creato;
-- `docs/codex-reports/LATEST.md` — aggiornato con copia integrale di questo rapporto;
-- `Fabio/FABIO_CONTROLLO.md` — aggiornato.
+- `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md` — creato;
+- `docs/codex-reports/LATEST.md` — aggiornato con copia integrale del presente rapporto;
+- `Fabio/FABIO_CONTROLLO.md` — aggiornato con stato sintetico.
 
 Nessun file eliminato.
 
 ## Commit creati prima del reporting finale
-- `3771d8569b198498d7e32c5c8e3068ac0ccefed5` — contratto provider-neutral;
-- `4f272cd6325cda533cfde7ea17f61cd299cd0e87` — export location;
-- `7f315756a6be1eaf2c598903c6411aa48e0cf242` — checker deterministico;
-- `ae85c941094e787c8132756cf06f7b42f3eb0b1d` — workflow Location Contract;
-- `cbed2ac128dc0da5d3d1d5304c7d74b041956dcd` — registro C007;
-- `0d148712426e381b83a3cb0fe2f8895dcca57096` — validator stable-set C007.
+- `3389f5bcb93838924a33207afb79f73c6bac407f` — state machine;
+- `a7d6aacf979c81a40c7d08fde0f5a3d1f08a9975` — checker deterministico;
+- `5c2722c4cc86af84d5c0400e3aa9e2d3903ec8ba` — export location;
+- `ad4f4d7ba14ae3a3ec0c6b5ce339f3d82a93ba21` — workflow dedicato;
+- `f9c53e40732dce009379a67fd899cfd7679865a7` — evidenza C007 nel conceptual master.
 
-I commit di reporting successivi sono auto-referenziali rispetto al contenuto di questo stesso rapporto; l'exact SHA finale viene registrato nella PR, nella Board e nel Control Plane dopo l'ultimo commit invece di inventarlo anticipatamente.
+I commit di reporting successivi sono auto-referenziali rispetto allo SHA finale del branch; il nuovo exact HEAD viene quindi registrato nella PR, Board e Control Plane dopo l'ultimo commit di reporting invece di inventarlo anticipatamente.
 
 ## Comandi/check realmente eseguiti
-### GitHub Actions — run #3 / job `96965279495`
-Checkout della merge ref PR #22 con head funzionale/conceptual `0d148712...`.
+Dopo il commit conceptual `f9c53e40732dce009379a67fd899cfd7679865a7` sono stati rieseguiti fresh i workflow applicabili.
 
+### GitHub Actions — Location State Machine run #2 / job `96979479985`
 1. `npm ci`
    - esito: PASS;
    - 938 package installati;
-   - audit: 15 vulnerabilità dipendenze esistenti (1 moderate, 14 high).
+   - audit: 15 vulnerabilità già presenti (1 moderate, 14 high).
 
 2. `npx expo-doctor`
    - esito: PASS;
@@ -121,12 +123,12 @@ Checkout della merge ref PR #22 con head funzionale/conceptual `0d148712...`.
    - esito: PASS con warning;
    - 0 errori, 1 warning preesistente in `frontend/app/index.tsx`: `Text` definito ma non usato.
 
-4. `npx tsc src/location/contract.ts --target ES2020 --module commonjs --strict --skipLibCheck --outDir /tmp/nexo-location-contract`
+4. `npx tsc src/location/contract.ts src/location/state-machine.ts --target ES2020 --module commonjs --strict --skipLibCheck --outDir /tmp/nexo-location-state`
    - esito: PASS.
 
-5. `node scripts/check-location-contract.mjs /tmp/nexo-location-contract/contract.js`
+5. `node scripts/check-location-state-machine.mjs /tmp/nexo-location-state/state-machine.js`
    - esito: PASS;
-   - output: `location-contract checks: PASS`.
+   - output: `location-state-machine checks: PASS`.
 
 6. `python3 ../scripts/check_conceptual_master.py ..`
    - esito: PASS;
@@ -138,55 +140,56 @@ Checkout della merge ref PR #22 con head funzionale/conceptual `0d148712...`.
    - tutte le assertion canoniche PASS;
    - `PASS: conceptual master registry is coherent`.
 
-### Verifica locale supplementare
-Il tentativo reale di `git clone` del branch nel runtime locale è fallito con exit 128 per DNS: `Could not resolve host: github.com`; non è stato usato come evidenza di checkout.
+### GitHub Actions — Location Contract run #8
+- esito complessivo: SUCCESS sullo stesso exact SHA funzionale/conceptual `f9c53e40732dce009379a67fd899cfd7679865a7`.
+- Conferma che l'estensione N1.4 non rompe il contract Location N1.3 già canonico.
 
-È stata comunque eseguita una ricostruzione esatta dei due file contract/checker già scritti su GitHub e sono stati eseguiti:
-- TypeScript compile strict isolata;
-- checker Node;
-- risultato: `location-contract checks: PASS`.
+### Run precedenti
+Prima dell'aggiornamento conceptual erano già passati Location State Machine run #1 `32551620125` e Location Contract run #7 `32551620193`. Non vengono usati come verifica conclusiva perché il conceptual master è stato modificato successivamente; fanno fede run #2 e #8 fresh sul contenuto aggiornato.
 
-L'evidenza conclusiva primaria resta la GitHub Actions run #3 sul contenuto della PR.
+## VERIFY finale prima del reporting
+- PR #23: OPEN / DRAFT / mergeable.
+- Exact SHA funzionale/conceptual verificato: `f9c53e40732dce009379a67fd899cfd7679865a7`.
+- Location State Machine run #2: SUCCESS.
+- Location Contract run #8: SUCCESS.
+- C007 resta `[ ] / parziale`.
+- Nessun provider OS/GPS introdotto.
+- Nessuna posizione inventata o fallback sintetico introdotto.
+- Nessuna modifica alle aree voice/surface/navigation/automotive/EAS/TestFlight.
 
-## VERIFY finale
-- PR #22: OPEN / DRAFT / mergeable.
-- Head funzionale/conceptual verificato: `0d148712426e381b83a3cb0fe2f8895dcca57096`.
-- CI Location Contract run #3: SUCCESS.
-- Tutti gli step del job `96965279495`: SUCCESS.
-- C007 resta `[ ] / parziale`; nessuna funzione utente viene marcata `[x]`.
-- Nessun provider location concreto introdotto.
-- Nessuna posizione di fallback o inventata introdotta.
-
-Le sole modifiche successive al run #3 sono reporting obbligatorio; non modificano i path che influenzano il contract/checker/conceptual validator.
+I successivi commit di reporting non appartengono ai path funzionali/conceptual osservati dai due workflow e servono esclusivamente a registrare gli esiti reali. Se un file che influenza i workflow venisse modificato dopo questo punto, i check dovrebbero essere rieseguiti.
 
 ## Errori, warning e limiti
-- `npm ci` segnala 15 vulnerabilità nelle dipendenze già esistenti; nessuna dipendenza è stata modificata da N1.3.
-- Lint: 1 warning preesistente in `frontend/app/index.tsx`, 0 errori.
-- GitHub Actions segnala deprecazione Node.js 20 per action runtime; il job usa Node 20.20.2 per il progetto e conclude SUCCESS.
+- `npm ci` segnala 15 vulnerabilità già presenti; N1.4 non modifica `package.json` o lockfile.
+- Lint: 1 warning preesistente, 0 errori.
+- GitHub Actions segnala deprecazione del runtime Node.js 20 delle action; il setup progetto usa Node 20.20.2 e il job conclude SUCCESS.
+- Alcuni package npm riportano warning di deprecazione preesistenti.
 - Nessun test su device reale.
-- Nessun GPS/OS location provider collegato.
 - Nessuna permission OS realmente richiesta.
-- Nessuna mappa, routing, UI o navigazione reale implementata.
+- Nessun provider GPS/location reale collegato.
+- Nessuna soglia quantitativa di freshness/accuracy implementata: appartiene a N1.5.
+- Nessun adapter iOS/Android concreto o fake adapter: appartiene a N1.6.
 
 ## Aree non toccate
-- voice core / PR #17;
+- voice / PR #17;
 - Android readiness / PR #18;
-- navigation domain / PR #19;
-- surface core / PR #20;
+- navigation / PR #19;
+- surface / PR #20;
+- automotive native;
 - `frontend/app.json`, `frontend/eas.json`, TestFlight/EAS;
-- credenziali Apple/EAS, certificati, provisioning, API key, Push Key.
+- credenziali Apple/EAS, certificati, provisioning, API key e Push Key.
 
 ## Problemi residui / rischi tecnici
-- La semantica permission/degraded più completa è il task N1.4, non anticipata qui.
-- Freshness/quality policy è N1.5.
-- Adapter iOS/Android e fake adapters sono N1.6.
-- PR #19/#20 e altri lavori aperti condividono conceptual/reporting: prima del merge serve serializzazione sul main corrente per evitare perdita di evidenze.
+- La PR #23 deve ricevere review indipendente su exact SHA finale post-reporting prima di qualunque merge.
+- Shared conceptual/reporting con altri lavori richiede serializzazione da parte del Coordinatore prima del merge.
+- N1.5 non deve essere appeso alla PR #23 mentre la review è in corso, perché cambierebbe l'exact SHA consegnato.
 
 ## Prossimo passo consigliato
-1. consegnare PR #22 a NEXO REVIEW sul nuovo exact SHA finale dopo reporting;
-2. mantenere PR DRAFT;
-3. aggiornare Control Plane NEXO 1 con N1.3 `[x]` soltanto dopo conferma di report/handoff;
-4. rileggere immediatamente la queue e prendere N1.4 solo se ancora eleggibile e senza nuovi conflitti.
+1. completare `LATEST.md` e `FABIO_CONTROLLO.md` con questo rapporto;
+2. registrare l'exact HEAD finale post-reporting;
+3. handoff a NEXO REVIEW sulla PR #23 DRAFT;
+4. aggiornare task/report Control Plane NEXO 1;
+5. rileggere la queue: N1.5 deve restare `[ ] / SAFE FREEZE` finché la review su PR #23 è pendente, salvo diversa direttiva del Coordinatore.
 
 ## Decisioni richieste a Fabio
 Nessuna.
