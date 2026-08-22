@@ -1,0 +1,32 @@
+name: NEXO 3 Voice Validation
+
+on:
+  push:
+    branches:
+      - nexo3/f0-voice-command-core
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout exact branch content
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Voice checker
+        run: node scripts/check-voice-command-core.mjs
+      - name: Conceptual master validator
+        working-directory: .
+        run: python3 scripts/check_conceptual_master.py .
