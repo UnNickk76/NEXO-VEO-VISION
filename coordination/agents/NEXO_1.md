@@ -7,11 +7,11 @@ COORDINATOR: NEXO Coordinator
 ## CURRENT VERIFIED STATE
 - Current main: `1d0a01c91bb328baf141560a534f4b62fe406b01` after CLEAN PR #17 Voice merge.
 - TestFlight production is manual / Coordinator-controlled.
-- PR #24 Location Freshness / Quality Policy: OPEN / DRAFT / mergeable=true, reconciled exact HEAD `950f01c814b953f7332f2b3fbf7a9f55c0573145`.
-- Fresh compare current main → PR #24: `ahead`, ahead 8 / behind 0, merge-base=current main.
-- Coordinator reconciliation preserved the five N1.5-owned diff files and resolved shared `LATEST`/`FABIO_CONTROLLO` to current-main state; no Voice/TestFlight regression was reintroduced.
-- Exact-head reconciliation CI on `950f01c...` is now fully completed/SUCCESS: Location Contract `32583597225`, Voice Validation `32583597311`, Location Quality Policy `32583597232`, Location State Machine `32583597351`.
-- C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
+- PR #24 Location Freshness / Quality Policy: OPEN / DRAFT / mergeable=true, final exact HEAD `372cb3746506cff162a364f83a9796e5141daf8a`.
+- Fresh compare current main → PR #24: `ahead`, ahead 13 / behind 0, merge-base=current main.
+- C007 remains `[ ] / parziale` and now includes PR #24 + pertinent N1.5 commit + quality-policy checker/workflow evidence; no OS/GPS provider runtime exists.
+- Exact-head final CI on `372cb374...` is SUCCESS: Location Quality Policy `32590273193` (job `97072902172`, including npm ci / Expo Doctor / lint / TypeScript strict / checker / conceptual validator), Location Contract `32590273221`, Location State Machine `32590273202`, Voice Validation `32590273251`.
+- N1.5R author-side finalization and exact-SHA handoff are complete. PR #24 is frozen awaiting independent NEXO REVIEW and Coordinator serialization.
 
 ## QUEUE — ONE TASK AT A TIME
 
@@ -21,18 +21,14 @@ COORDINATOR: NEXO Coordinator
 - [x] **N1.4 — LOCATION PERMISSION / DEGRADED STATE MACHINE IMPLEMENTATION/HANDOFF**
 - [x] **N1.4R — PR #23 REPORTING RECTIFICATION / CLEAN RE-REVIEW GATE**
 
-- [ ] **N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF**
-  - START CONDITION: SATISFIED / TOP PRIORITY.
-  - RECONCILIATION: COMPLETED BY COORDINATOR at `950f01c814b953f7332f2b3fbf7a9f55c0573145`; do NOT redo/rebase/reconstruct it.
-  - PRESERVE: existing quality/freshness implementation, checker/workflow, merged Voice Core, manual-only TestFlight policy and all current-main state.
-  - VERIFIED BASELINE: all four exact-head reconciliation workflows on `950f01c...` are SUCCESS. These prove the reconciled baseline only; any subsequent conceptual/reporting edit that invalidates an applicable check requires a fresh final run.
-  - REQUIRED NOW: update C007 conservatively with PR #24 evidence while keeping `[ ] / parziale`; create/finalize compliant historical reporting + `LATEST.md` + `FABIO_CONTROLLO.md` on the reconciled branch; rerun all checks invalidated by those edits; record final exact SHA and explicit NEXO REVIEW handoff.
-  - IMPORTANT: shared reporting files currently intentionally match current main after reconciliation. Reapply only accurate N1.5 final reporting, not stale pre-reconciliation copies.
-  - DEFINITION OF DONE: final PR #24 mergeable against current main, no regression to merged Location/Voice/TestFlight state, exact-head applicable checks SUCCESS after final edits, C007 evidence complete/conservative, reporting coherent, PR DRAFT, explicit REVIEW handoff.
-  - FREEZE RULE: do not start N1.6 before PR #24 CLEAN + Coordinator serialization.
+- [x] **N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF**
+  - COMPLETED: safe reconciliation by Coordinator preserved; C007 updated conservatively; final historical report/LATEST/FABIO aligned; exact-head applicable checks SUCCESS; PR remains DRAFT/current-main-compatible/mergeable; explicit NEXO REVIEW handoff published for SHA `372cb3746506cff162a364f83a9796e5141daf8a`.
+  - HANDOFF: PR #24 comment `5381894338`; Board #11 comment `5381894921`.
+  - FREEZE RULE: do not modify PR #24 or start N1.6 before CLEAN + Coordinator serialization.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
   - START CONDITION: PR #24 CLEAN and serialized/merged by Coordinator.
+  - CURRENT STATUS: BLOCKED / NOT ELIGIBLE. Await independent NEXO REVIEW on `372cb374...` and Coordinator merge.
 
 - [ ] **N1.7 — LOCATION FOUNDATION INTEGRATION GAP AUDIT**
   - START CONDITION: N1.6 completed/reviewable.
@@ -47,7 +43,8 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if the task is truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- Coordinator safely reconciled PR #24 by creating merge commit `950f01c814b953f7332f2b3fbf7a9f55c0573145` with parents old PR HEAD `8abc5d2d...` + current main `1d0a01c9...` and a tree based on current main with only the N1.5-owned functional/workflow/checker/history files overlaid.
-- Fresh compare at reconciliation: ahead 8 / behind 0; PR #24 mergeable=true.
-- Exact-head reconciliation runs are now all completed/SUCCESS: Location Contract `32583597225`; Voice Validation `32583597311`; Location Quality Policy `32583597232`; Location State Machine `32583597351`.
-- N1.5R remains `[ ]` because C007 + final reporting + post-edit VERIFY + exact-SHA REVIEW handoff are still required. N1.6 remains blocked.
+- N1.5R final PR HEAD: `372cb3746506cff162a364f83a9796e5141daf8a`; main remains `1d0a01c91bb328baf141560a534f4b62fe406b01`; compare ahead 13 / behind 0 / merge-base=current main; PR OPEN/DRAFT/mergeable=true.
+- Repository report: `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md`; `LATEST.md` and `Fabio/FABIO_CONTROLLO.md` aligned on the same branch.
+- Exact-head final runs: Location Quality Policy `32590273193` SUCCESS (job `97072902172` all steps SUCCESS); Location Contract `32590273221` SUCCESS; Location State Machine `32590273202` SUCCESS; Voice Validation `32590273251` SUCCESS.
+- Explicit NEXO REVIEW handoff: PR #24 `5381894338`; Board #11 `5381894921`.
+- N1.6 remains `[ ]` because its start condition is not satisfied until PR #24 receives CLEAN and is serialized/merged by Coordinator.
