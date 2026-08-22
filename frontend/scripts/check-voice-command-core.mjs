@@ -48,33 +48,47 @@ try {
 
   const core = await import(`${pathToFileURL(path.join(tempDir, 'command-core.js')).href}?v=${Date.now()}`);
 
+  assert.equal(core.normalizeVoiceInput('  SÌ   '), 'sì');
+  assert.equal(core.normalizeVoiceInput('ＯＫ'), 'ok');
+  assert.equal(core.normalizeVoiceInput('Naviga   a   ID:HOME-01'), 'naviga a id:home-01');
+
   const positiveCases = [
     ['annulla', 'cancel'],
     ['STOP', 'cancel'],
     ['conferma', 'confirm'],
     ['SÌ', 'confirm'],
+    ['  sì!!!  ', 'confirm'],
+    ['ＯＫ？', 'confirm'],
     ['no', 'reject'],
-    ['non confermare', 'reject'],
+    ['non confermare.', 'reject'],
     ['naviga a id:home-01', 'start_navigation'],
+    ['  Naviga   a   ID:HOME-01  ', 'start_navigation'],
   ];
   for (const [input, expected] of positiveCases) {
-    assert.equal(core.parseVoiceIntent(input).kind, expected, `unexpected intent for: ${input}`);
+    const intent = core.parseVoiceIntent(input);
+    assert.equal(intent.kind, expected, `unexpected intent for: ${input}`);
+    assert.equal(intent.confidence, 1, `recognized intent confidence must be exact for: ${input}`);
   }
 
-  const unsafeOrAmbiguous = [
-    '',
-    '   ',
-    'sì no',
-    'conferma ma no',
-    'naviga a id:',
-    'naviga a Roma',
-    'naviga a id:home-01 adesso',
-    `naviga a id:${'x'.repeat(129)}`,
-    'ok\u0000',
+  const unknownCases = [
+    ['', 'empty'],
+    ['   ', 'empty'],
+    ['sì no', 'ambiguous'],
+    ['annulla conferma', 'ambiguous'],
+    ['va bene no', 'ambiguous'],
+    ['conferma ma no', 'ambiguous'],
+    ['naviga a id:', 'incomplete'],
+    ['naviga a Roma', 'unsupported'],
+    ['naviga a id:home-01 adesso', 'unsupported'],
+    [`naviga a id:${'x'.repeat(129)}`, 'unsafe-input'],
+    ['ok\u0000', 'unsafe-input'],
   ];
-  for (const input of unsafeOrAmbiguous) {
+  for (const [input, reason] of unknownCases) {
     const intent = core.parseVoiceIntent(input);
     assert.equal(intent.kind, 'unknown', `unsafe/ambiguous input produced action: ${JSON.stringify(input)}`);
+    assert.equal(intent.reason, reason, `unexpected unknown reason for: ${JSON.stringify(input)}`);
+    assert.equal(intent.confidence, 0, `unknown intent confidence must be zero: ${JSON.stringify(input)}`);
+    assert.equal(intent.raw, input, `unknown intent must preserve raw input: ${JSON.stringify(input)}`);
     assert.equal(core.intentToCommand(intent), null, `unknown intent produced command: ${JSON.stringify(input)}`);
   }
 
@@ -83,6 +97,11 @@ try {
     type: 'navigation.start',
     destinationId: 'home-01',
   });
+
+  const freeTextNavigation = core.parseVoiceIntent('portami a Roma');
+  assert.equal(freeTextNavigation.kind, 'unknown');
+  assert.equal(freeTextNavigation.reason, 'unsupported');
+  assert.equal(core.intentToCommand(freeTextNavigation), null, 'free text must never invent a destination');
 
   const metadata = {
     id: 'cmd-1',
