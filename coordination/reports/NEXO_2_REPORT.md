@@ -173,3 +173,52 @@ Una delle seguenti condizioni:
 ### Prossimo passo
 
 Rileggere N2.3 al prossimo ciclo. Se PR #20 risulta nuovamente riconciliata/mergeable contro main corrente, riprendere dal matrix hardening; altrimenti restare BLOCKED senza invadere aree altrui.
+
+---
+
+## 2026-08-22 04:08 UTC — N2.3 HEARTBEAT / RECONCILIATION RECHECK
+
+- **Task ID:** N2.3
+- **Stato finale:** BLOCKED; nessuna WRITE funzionale autorizzabile.
+- **PR:** #20
+- **Exact SHA PR:** `6e13d42379a5cff26cb37a67944f89302b925ac4`
+- **Branch:** `nexo2/f0-surface-capabilities`
+- **Current main verificata:** `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+
+### Verifiche reali di questo ciclo
+
+- Ordine obbligatorio riletto: `AGENTS.md` main; Issue #11 + commenti; Control Plane README; TASK NEXO 2; REPORT NEXO 2.
+- TASK conferma N2.3 come primo `[ ]`, START CONDITION soddisfatta in principio ma stato BLOCKED finché non esiste capacità di riconciliazione sicura.
+- PR #20 verificata: OPEN, DRAFT, non merged, HEAD `6e13d423...`, `mergeable=false`, 18 commit, 9 changed files.
+- Compare reale `main` → branch: `status=diverged`, `ahead_by=18`, `behind_by=26`, merge-base `213fb129201230c3875e5fb8fc157260f995fe04`, base corrente `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- Il diff remoto continua a includere i tre file condivisi `docs/product/NEXO_CONCEPTUAL_MASTER.md`, `docs/codex-reports/LATEST.md`, `Fabio/FABIO_CONTROLLO.md`, quindi una ricostruzione manuale del branch resta non sicura rispetto al lavoro già mergeato su main.
+
+### Tentativo reale di ripresa checkout/rebase
+
+```sh
+rm -rf /tmp/nexo2-heartbeat && git clone --depth 1 --branch nexo2/f0-surface-capabilities https://github.com/UnNickk76/NEXO-VEO-VISION.git /tmp/nexo2-heartbeat
+```
+
+- **Exit code:** 128
+- **Errore:** `Could not resolve host: github.com`.
+- **Esito:** il blocco di rete Git persiste; merge/rebase reale non eseguibile nel runtime.
+
+### File modificati
+
+- Branch funzionale PR #20: nessuno.
+- Control Plane: solo questo append report e aggiornamento evidenza N2.3 nel file task NEXO 2.
+
+### Test/check
+
+Nessun test Surface nuovo: non è stata completata la FIRST REQUIRED ACTION di riconciliazione. Nessun precedente PASS viene riutilizzato come prova di questo ciclo.
+
+### Limiti / problemi residui
+
+- Manca una capacità sicura di merge/rebase della PR #20 sulla main corrente.
+- PR #20 resta divergente e non mergeable.
+- Matrix hardening non deve iniziare sulla base obsoleta.
+- N2.4+ non sono eleggibili.
+
+### Prossimo passo
+
+Riprovare la riconciliazione soltanto quando una RESUME CONDITION del TASK diventa vera: rete Git funzionante, operazione connector merge/rebase sicura, oppure SHA/base riconciliata fornita dal Coordinatore. Fino ad allora N2.3 resta `[ ]` BLOCKED.
