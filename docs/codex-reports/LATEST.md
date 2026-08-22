@@ -1,169 +1,135 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_200500_pr19-navigation-reconciliation.md`
+Rapporto storico: `docs/codex-reports/2026-08-22_201500_pr20-surface-reconciliation.md`
 
-# NEXO CODEX — PR #19 Navigation Domain Core reconciliation finalization
+# NEXO 2 — PR #20 Surface Capabilities reconciliation finalization
 
 ## Dati attività
-- **Data e ora UTC:** 2026-08-22 20:05 UTC.
-- **Obiettivo richiesto:** riconciliare in sicurezza la PR #19 sul main corrente dopo il merge di #18, preservando il Navigation Domain Core esistente, correggendo soltanto finding ancora reali e completando VERIFY/reporting/handoff exact-SHA senza introdurre provider, runtime mappa/GPS, EAS o TestFlight.
-- **Stato finale:** completato lato autore per reconciliation, correzione conceptual e VERIFY; attende NEXO REVIEW exact-SHA.
-- **Branch:** `nexo-codex/f0-navigation-domain-core`.
-- **Pull request:** #19 — `feat(navigation): add provider-neutral domain core`, DRAFT.
-- **Current main:** `b1fa88453a81b15f1dc433fa6503c81292a4a48e`.
-- **HEAD storico preservato:** `7210baef8693f1a8e77da8750ff2e4e597534cbe` sul backup `backup/pr19-before-b1fa8845`.
-- **HEAD tecnico riconciliato pre-conceptual:** `40645cd3930e1278b21e8d5de44e59a230a626df`.
-- **HEAD conceptual verificato:** `fa10def694ef9b642358cd6e4ab94a697e22d5b9`.
+- **Data e ora UTC:** 2026-08-22 20:15 UTC.
+- **Obiettivo:** riconciliare in sicurezza PR #20 sul main corrente dopo #19, preservare Surface Capabilities, availability/policy ortogonali, fail-closed constraints e conceptual V05/V44/V45/V46, quindi produrre VERIFY/reporting/handoff exact-SHA.
+- **Stato finale:** completato lato autore; attende NEXO REVIEW exact-SHA.
+- **Branch:** `nexo2/f0-surface-capabilities`.
+- **PR:** #20, DRAFT.
+- **Current main:** `84c4799307adb6e63421bc0fa58ccb3dd0ad8a76`.
+- **HEAD storico preservato:** `6e13d42379a5cff26cb37a67944f89302b925ac4` su `backup/pr20-before-84c47993`.
+- **HEAD conceptual verificato:** `4a12effd03ab4034c31a9f45e52ab8c1c8c7d699`.
 
 ## READ realmente eseguito
-Prima della scrittura sono stati riletti/verificati:
-- `AGENTS.md` integralmente su main;
-- Issue #11 — NEXO COORDINATION BOARD e direttive recenti di strict serial merge queue;
-- current main dopo merge #18;
-- PR #19 storico, diff, exact HEAD, mergeability e file modificati;
-- backup storico della PR #19;
-- `frontend/src/navigation/domain.ts` storico;
-- `frontend/scripts/check-navigation-domain.mjs` storico;
-- `.github/workflows/navigation-domain.yml` storico;
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md` su current main e sul vecchio branch;
-- report storico `2026-08-22_000500_navigation-domain-core.md`;
-- stato della PR #20, mantenuta fuori perimetro fino al merge #19.
+Riletti AGENTS.md, Issue #11, current main, PR #20, review storiche, thread, file del diff, Surface core/checker, conceptual current-main e storico, report storico e stato della queue. La review storica CLEAN su `6e13d423...` è stata usata solo come evidenza storica, non come autorizzazione al merge sul nuovo main.
 
 ## PLAN applicato
-1. Salvare l'exact HEAD storico #19 su un backup prima di qualsiasi spostamento branch.
-2. Usare il current main come base canonica, senza trascinare copie stale di `LATEST.md`, `FABIO_CONTROLLO.md` o altri file globali.
-3. Ripristinare soltanto Navigation Domain Core, checker e workflow già esistenti.
-4. Verificare il core sul branch riconciliato.
-5. Aggiornare esclusivamente V06/V21/V26/V27 con evidenza reale e mantenere V28 `concettuale`, perché Route Explanation non è implementata/testata in questa PR.
-6. Rieseguire i workflow applicabili dopo la modifica conceptual.
-7. Preservare il rapporto storico originario e generare reporting finale corrente.
-8. Consegnare un final exact SHA a NEXO REVIEW; nessun merge autonomo da CODEX.
+1. Salvare exact HEAD storico prima della reconciliation.
+2. Fare di current main la base canonica.
+3. Ripristinare soltanto Surface core/checker già approvati, senza copie stale dei file condivisi.
+4. Aggiungere una CI Surface dedicata esclusivamente al VERIFY di reconciliation: npm ci, Expo Doctor, lint, TypeScript strict, checker e conceptual validator.
+5. Reintegrare solo V05/V44/V45/V46 nel conceptual corrente, mantenendo `[ ] / parziale` e tutti i nuovi contenuti di main.
+6. Preservare il rapporto storico originale e creare reporting finale corrente.
+7. Handoff a NEXO REVIEW; nessun nuovo Surface slice.
 
 ## WRITE realmente eseguito
-### Reconciliation sicura
-È stato creato il backup `backup/pr19-before-b1fa8845` sul vecchio HEAD `7210baef...`. Il branch PR #19 è stato riallineato al current main `b1fa8845...` e sono stati ripristinati esclusivamente:
-- `frontend/src/navigation/domain.ts`;
-- `frontend/scripts/check-navigation-domain.mjs`;
-- `.github/workflows/navigation-domain.yml`.
+Il branch è stato portato al current main dopo aver creato `backup/pr20-before-84c47993`. GitHub ha chiuso temporaneamente la PR quando branch e main coincidevano; la PR è stata riaperta dopo il ripristino del delta.
 
-Il reset temporaneo del branch al current main ha fatto chiudere automaticamente GitHub la PR perché non esisteva più un delta; dopo il ripristino dei file Navigation la PR #19 è stata riaperta. Nessun contenuto è andato perso grazie al backup exact-SHA.
+Ripristinati:
+- `frontend/src/core/surface/types.ts`;
+- `frontend/src/core/surface/profiles.ts`;
+- `frontend/src/core/surface/policy.ts`;
+- `frontend/src/core/surface/index.ts`;
+- `frontend/scripts/check-surface-capabilities.ts`.
 
-### Navigation Core preservato
-Restano presenti e invariati nel significato:
-- `DestinationRef`;
-- `LocationSample`;
-- `RouteRequest`;
-- `RouteCandidate`;
-- `RecalculationRequest`;
-- `RoutingAdapter` provider-neutral;
-- `NavigationSession` con stati `idle/planning/ready/navigating/recalculating/completed/cancelled/failed`;
-- guardie su transizioni illegali, request/candidate, selezione route e ricalcolo;
-- selezione alternativa deterministica;
-- checker lifecycle/cancel/failure/recalculation/immutabilità/idempotenza;
-- nessuna dipendenza da provider mappe.
+Aggiunto per il solo VERIFY di reconciliation:
+- `.github/workflows/surface-capabilities.yml`.
 
-### Correzione conceptual reale
-Il current main era canonico e riportava V06/V21/V26/V27/V28 tutti `concettuale`. Dopo il VERIFY del core, sono state aggiornate solo cinque righe:
-- V06 → `[ ] / parziale` con evidenza PR #19, core reconciliato e Navigation Domain SUCCESS; nessuna mappa/routing reale.
-- V21 → `[ ] / parziale` per `RoutePreference` fastest/shortest/balanced/scenic; nessun provider reale.
-- V26 → `[ ] / parziale` per candidates, `alternativesLimit` e selezione deterministica; nessuna Alternative Live runtime.
-- V27 → `[ ] / parziale` per `RecalculationRequest` e lifecycle di ricalcolo; nessun ricalcolo continuo GPS/provider.
-- V28 → resta `[ ] / concettuale`; PR #19 non implementa né testa Route Explanation. Il finding storico che l'aveva promossa a `parziale` è quindi corretto conservativamente.
+Il fix storico fondamentale resta preservato: `resolveSurfaceCapability()` mantiene la runtime availability (`available/degraded/...`) distinta dalla product policy (`permitted/constrained/prohibited`); una policy `prohibited` imposta `usable=false` senza riscrivere availability. Il checker prova esplicitamente `available + prohibited` e `degraded + prohibited`.
 
-La patch del commit conceptual `fa10def694ef9b642358cd6e4ab94a697e22d5b9` modifica esclusivamente queste cinque righe del registro.
+## Conceptual
+Partendo dal conceptual canonico post-#19 sono state modificate soltanto V05/V44/V45/V46:
+- V05 `[ ] / parziale`: contratti smartphone/CarPlay/Android Auto, nessun runtime automotive.
+- V44 `[ ] / parziale`: constraints moving/stopped, nessuna UI finale.
+- V45 `[ ] / parziale`: capability/policy e availability ortogonali, nessuna presentazione runtime.
+- V46 `[ ] / parziale`: touch/free-text/rich-detail constraints, nessun test in auto.
 
-## Cronologia commit della reconciliation corrente
-- `3a1f11cfc3b5d0400c1f50306b6621d3b90489e4` — ripristino Navigation Domain Core sul current main.
-- `d0576c61d5f777114cfc39d921d1f3802b7e2253` — ripristino checker deterministico.
-- `40645cd3930e1278b21e8d5de44e59a230a626df` — ripristino workflow Navigation Domain.
-- `fa10def694ef9b642358cd6e4ab94a697e22d5b9` — evidenze conceptual riconciliate e V28 mantenuta conservativa.
-- `5d2f0cae8482ac8ac5621c310b534eb4487c834a` — ripristino verbatim del rapporto storico originale dal backup.
-- commit reporting finali successivi — presente rapporto, `LATEST.md`, `FABIO_CONTROLLO.md`; exact HEAD finale registrato nell'handoff.
+Un typo involontario su E45 introdotto durante la sostituzione completa del file è stato immediatamente corretto nel commit successivo; la net diff conceptual rispetto a main resta limitata alle quattro righe Surface.
 
-## Inventario completo file della PR dopo reconciliation
-### Funzionali/workflow
-- `frontend/src/navigation/domain.ts` — ripristinato sul current main.
-- `frontend/scripts/check-navigation-domain.mjs` — ripristinato.
-- `.github/workflows/navigation-domain.yml` — ripristinato.
+## Commit reconciliation pertinenti
+- `9eba1a49de8f970ad3a2623a15e69abbe1657bb3` — Surface types.
+- `ce85c1d3682e49f5708044e836a37c64faea56fe` — profiles.
+- `55d4d6c26c772d01532630eb8dade853e8801ded` — orthogonal policy.
+- `06d322a365f2eda66b7fb65890fe2c82957ef7ff` — public API.
+- `4962b4a79a2c5e720daba1596990a0b4bf79c3e5` — checker.
+- `f735b7019ca9136e0c208302f620adcfc1c002f2` — Surface reconciliation CI.
+- `a5912991083ff60d3c3fea27bc18c3e5ab020438` — V05/V44/V45/V46 evidence.
+- `4a12effd03ab4034c31a9f45e52ab8c1c8c7d699` — rimozione typo non intenzionale, nessun altro conceptual change.
+- `4a83d69edfb644888d226dc611de75edcce07e91` — storico Surface preservato dal backup.
 
-### Conceptual
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — soltanto V06/V21/V26/V27/V28.
+## Inventario finale atteso della PR
+- `.github/workflows/surface-capabilities.yml` — nuovo, solo validation.
+- `frontend/src/core/surface/types.ts` — ripristinato.
+- `frontend/src/core/surface/profiles.ts` — ripristinato.
+- `frontend/src/core/surface/policy.ts` — ripristinato.
+- `frontend/src/core/surface/index.ts` — ripristinato.
+- `frontend/scripts/check-surface-capabilities.ts` — ripristinato.
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — V05/V44/V45/V46 soltanto nella net diff.
+- `docs/codex-reports/2026-08-21_214943_f0-surface-capabilities.md` — storico originale preservato.
+- `docs/codex-reports/2026-08-22_201500_pr20-surface-reconciliation.md` — presente rapporto.
+- `docs/codex-reports/LATEST.md` — copia integrale del presente rapporto + percorso.
+- `Fabio/FABIO_CONTROLLO.md` — dashboard corrente.
 
-### Reporting
-- `docs/codex-reports/2026-08-22_000500_navigation-domain-core.md` — storico originale preservato verbatim.
-- `docs/codex-reports/2026-08-22_200500_pr19-navigation-reconciliation.md` — presente rapporto.
-- `docs/codex-reports/LATEST.md` — aggiornato con path + copia integrale del presente rapporto.
-- `Fabio/FABIO_CONTROLLO.md` — aggiornato sinteticamente.
+Nessun file eliminato.
 
-### Eliminati
-- nessuno.
+## VERIFY realmente eseguito
+### Exact conceptual HEAD `4a12effd03ab4034c31a9f45e52ab8c1c8c7d699`
+- Surface Capabilities run `32595962428`: **SUCCESS**.
+- NEXO 3 Voice Validation run `32595962430`: **SUCCESS**.
+- Navigation Domain run `32595962460`: **SUCCESS**.
+- Android Readiness run `32595962426`: **SUCCESS**.
+- Location Quality Policy run `32595962463`: **SUCCESS**.
+- Location State Machine run `32595962436`: **SUCCESS**.
+- Location Contract run `32595962371`: inizialmente ancora in progress al momento della prima osservazione finale; deve essere ricontrollato prima del verdetto REVIEW.
 
-## Comandi/check realmente eseguiti e risultati
-### VERIFY reconciled technical HEAD `40645cd3930e1278b21e8d5de44e59a230a626df`
-Workflow osservati:
-- Navigation Domain run `32595355232`: **SUCCESS**.
-- NEXO 3 Voice Validation run `32595355258`: **SUCCESS**.
-- Android Readiness run `32595355237`: **SUCCESS**.
-
-La workflow Navigation Domain esegue realmente:
+La workflow Surface esegue realmente:
 1. `npm ci`;
 2. `npx expo-doctor`;
 3. `npm run lint`;
-4. `node scripts/check-navigation-domain.mjs`.
+4. `npx tsc --strict --target ES2022 --module node16 --moduleResolution node16 --skipLibCheck --outDir /tmp/nexo-surface src/core/surface/*.ts scripts/check-surface-capabilities.ts`;
+5. `node /tmp/nexo-surface/scripts/check-surface-capabilities.js`;
+6. `python3 scripts/check_conceptual_master.py .`.
 
-### VERIFY post-conceptual exact SHA `fa10def694ef9b642358cd6e4ab94a697e22d5b9`
-Tutti i workflow applicabili osservati sono `completed/success`:
-- Navigation Domain run `32595518558`: **SUCCESS**;
-- NEXO 3 Voice Validation run `32595518559`: **SUCCESS**;
-- Android Readiness run `32595518694`: **SUCCESS**;
-- Location Contract run `32595518590`: **SUCCESS**;
-- Location State Machine run `32595518652`: **SUCCESS**;
-- Location Quality Policy run `32595518566`: **SUCCESS**.
-
-Il conceptual validator canonico è eseguito dalla NEXO 3 Voice Validation; la conclusione SUCCESS del run `32595518559` verifica il registro dopo l'edit V06/V21/V26/V27/V28.
+La conclusione SUCCESS del Surface run dimostra install/Doctor/lint/TypeScript strict/checker/conceptual sul contenuto finale functional+conceptual.
 
 ## Verificato realmente
-- PR #19 è stata ricostruita sul current main dopo backup del vecchio HEAD.
-- Sul technical HEAD `40645cd...` la PR risultava OPEN/DRAFT/mergeable=true, base current main.
-- Navigation Domain, Expo Doctor, lint e checker hanno conclusione SUCCESS tramite run `32595355232`.
-- Dopo l'edit conceptual, Navigation Domain e conceptual validator risultano nuovamente SUCCESS sul contenuto `fa10def...`.
-- Voice, Android Readiness e l'intera foundation Location non risultano regrediti nei workflow post-conceptual.
-- V28 non viene promossa senza evidenza.
-- Nessun provider mappe/routing reale, GPS runtime, UI mappa, EAS Build o TestFlight è stato introdotto.
+- backup storico creato prima della reconciliation;
+- current main usato come base canonica;
+- Surface functional core preservato senza riscrittura di comportamento;
+- availability e policy restano ortogonali;
+- V05/V44/V45/V46 restano `[ ] / parziale`;
+- no runtime CarPlay/Android Auto, nessuna UI automotive, nessun EAS/TestFlight, nessuna credenziale.
 
-## Dedotto ma non usato come prova conclusiva
-I commit successivi che ripristinano lo storico e aggiornano esclusivamente reporting non modificano gli input di Navigation Domain, conceptual validator o codice applicativo. Il loro effetto viene comunque controllato mediante diff/fresh metadata prima del verdetto REVIEW.
+## Dedotto ma non usato come prova
+I successivi commit reporting-only non modificano input del workflow Surface/conceptual. Il final exact HEAD viene comunque sottoposto a fresh diff/mergeability/thread review.
 
 ## Non verificato / limiti
-- nessun routing reale end-to-end;
-- nessun provider mappe/routing;
-- nessun GPS/device reale;
-- nessuna mappa/UI di navigazione;
-- nessuna Route Explanation runtime;
-- nessuna Alternative Live reale;
-- nessun ricalcolo continuo guidato da GPS/provider;
-- nessun CarPlay/Android Auto runtime;
-- nessun EAS Build/TestFlight;
-- nessuna credenziale letta o modificata.
+- runtime CarPlay/Android Auto;
+- entitlements/template automotive;
+- test su auto o simulatori automotive;
+- UI Surface finale;
+- EAS/TestFlight;
+- credenziali Apple/EAS.
 
-## Errori e warning rilevati
-- Chiusura temporanea automatica della PR #19 quando il branch è stato portato esattamente a current main: comportamento GitHub previsto, risolto riaprendo la PR dopo il ripristino del delta; backup storico preservato.
-- Nessun errore nei workflow post-conceptual elencati sopra.
-- Warning/deprecazioni di dipendenze eventualmente presenti restano preesistenti e non vengono corretti opportunisticamente in questa PR.
+## Errori e warning
+- chiusura temporanea automatica della PR durante il reset a main: prevista, risolta riaprendo dopo il delta;
+- typo E45 introdotto accidentalmente durante la sostituzione del conceptual: rilevato dal diff e corretto immediatamente;
+- nessun errore nel Surface run `32595962428`.
 
-## Problemi non risolti
-- PR #19 richiede NEXO REVIEW sul final exact HEAD post-reporting.
-- PR #20 resta congelata finché #19 non è CLEAN e mergeata dal Coordinatore.
+## Problemi residui
+- ricontrollare la conclusione finale del Location Contract run `32595962371`;
+- NEXO REVIEW deve revisionare il final exact HEAD post-reporting.
 
-## Dipendenze / credenziali ancora necessarie
-Nessuna per chiudere il domain core. Provider mappe/routing e relative credenziali saranno necessari solo per un futuro vertical slice runtime e richiedono decisione separata.
+## Dipendenze/credenziali
+Nessuna per il merge gate. Runtime automotive futuro richiederà capability native/entitlements e test reali, fuori scope.
 
 ## Rischi tecnici
-- Il domain core è una foundation e non deve essere confuso con navigazione reale.
-- L'adapter provider-neutral dovrà essere preservato quando verrà scelto un provider reale.
-- V26/V27 sono parziali soltanto a livello di dominio: la parola `Live`/`continuo` non è ancora soddisfatta runtime.
-- V28 deve restare concettuale finché non esiste una Route Explanation realmente implementata e testata.
+Surface Capabilities è una foundation policy/constraints, non dimostra integrazione CarPlay/Android Auto. La nuova CI è validation-only e non aggiunge runtime.
 
 ## Prossimo passo consigliato
-Fresh exact HEAD/mergeability/thread/diff review da NEXO REVIEW. Se CLEAN e HEAD invariato, Ready + squash merge Coordinator. Solo dopo il merge rileggere il nuovo main e autorizzare esclusivamente la PR #20.
+Verificare Location Contract final status, final PR metadata/diff/threads; NEXO REVIEW exact-SHA. Se CLEAN, Ready + squash merge Coordinator. Poi produrre report di FULL BACKLOG CONSOLIDATION e non avviare nuovi slice.
 
 ## Decisioni richieste a Fabio
-Nessuna. Nessuna spesa, credenziale o TestFlight/EAS è richiesta per questo merge gate.
+Nessuna per il merge. Il prossimo macro-obiettivo, dopo il report di consolidamento, resta una decisione umana; nessun TestFlight/EAS viene avviato.
