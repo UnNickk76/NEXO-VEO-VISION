@@ -1,48 +1,34 @@
 # Fabio Controllo
 
-> Cruscotto di sola consultazione. Il rapporto tecnico completo è in
-> `docs/codex-reports/LATEST.md`.
+> Cruscotto di sola consultazione. Il rapporto tecnico completo è in `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
-- **Data:** 22 agosto 2026, 04:28 UTC
-- **Attività:** NEXO 1 — N1.4 Location Permission / Degraded State Machine.
-- **Stato:** state machine Location provider-neutral implementata e verificata; PR #23 resta DRAFT e viene consegnata a NEXO REVIEW. Nessun GPS/provider runtime viene dichiarato implementato.
-- **Branch:** `nexo1/f1-location-permission-state-machine`
-- **Pull request:** PR #23
-- **Base:** `main` `8d8dee4a31416acb38c2e654082ca15efafd6fec`
-- **SHA funzionale/conceptual verificato:** `f9c53e40732dce009379a67fd899cfd7679865a7`
+- **Data:** 22 agosto 2026, 08:16 UTC.
+- **Attività:** NEXO 1 — N1.5 Location Freshness / Quality Policy.
+- **Stato:** parziale; PR #24 resta DRAFT. Il core quality/freshness è implementato e i workflow sullo SHA funzionale pre-reporting sono SUCCESS, ma manca ancora il gate concettuale C007 + VERIFY post-edit + handoff review finale.
+- **Branch:** `nexo1/f1-location-quality-policy`.
+- **PR:** #24.
+- **Base:** main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
 
-## Cosa è stato fatto realmente
-- Aggiunta una state machine per gli stati `denied`, `restricted`, `unavailable`, `degraded`, `stale` ed `error`.
-- Solo `permission=granted + status=ready + fix valido` è considerato utilizzabile.
-- Fix ricevuti senza permission granted vengono ignorati.
-- `denied`, `restricted`, `unavailable` ed errori provider non espongono coordinate.
-- `degraded` e `stale` possono conservare soltanto un ultimo fix reale, ma non viene considerato utilizzabile.
-- Un fix invalido porta a `error` e non genera fallback.
-- Creato checker deterministico e workflow dedicato.
-- C007 resta `[ ] / parziale`; è stata aggiunta evidenza PR #23 senza dichiarare GPS reale.
+## Fatto realmente
+- Policy provider-neutral freshness/accuracy con soglie deterministiche.
+- Fix invalidi/futuri/stale/poor-accuracy non sono utilizzabili.
+- Fallback soltanto verso un precedente fix reale ancora valido; nessuna posizione inventata.
+- Reporting N1.5 aggiornato in questa ripresa.
 
-## Controlli reali
-GitHub Actions — Location State Machine run #2 `32551730907`, job `96979479985`: **SUCCESS**.
-GitHub Actions — Location Contract run #8 `32551730913`: **SUCCESS**.
+## Controlli reali disponibili
+Sul precedente HEAD funzionale `f89de36...`:
+- Location Quality Policy `32559482473`: SUCCESS.
+- Location Contract `32559482539`: SUCCESS.
+- Location State Machine `32559482424`: SUCCESS.
 
-- `npm ci`: PASS; audit segnala 15 vulnerabilità già presenti (1 moderate, 14 high).
-- `npx expo-doctor`: **18/18 PASS**.
-- `npm run lint`: PASS con 0 errori / 1 warning preesistente in `frontend/app/index.tsx` (`Text` non usato).
-- TypeScript strict compile contract + state machine: PASS.
-- checker: `location-state-machine checks: PASS`.
-- validator concettuale: PASS, incluso `PASS C: exact stable ID set (7 rows)` e `PASS: conceptual master registry is coherent`.
+Non viene dichiarato un nuovo PASS sul reporting corrente e il conceptual validator deve essere rieseguito dopo l'aggiornamento C007.
 
-## Limiti dichiarati
-- Nessun test su device reale.
-- Nessuna permission OS realmente richiesta.
-- Nessun GPS/provider location OS collegato.
-- Nessuna soglia quantitativa freshness/accuracy: prevista in N1.5.
-- Nessun adapter iOS/Android: previsto in N1.6.
-- Nessun EAS/TestFlight o credenziale Apple/EAS toccati.
-
-## Prossimo passo
-NEXO REVIEW deve revisionare l'exact SHA finale della PR #23 dopo il reporting. NEXO 1 congela la PR durante la review e non avvia N1.5 sullo stesso branch.
+## Problemi aperti
+- Aggiornare C007 conservativamente con evidenza PR #24, lasciandolo `[ ] / parziale`.
+- Rieseguire i check influenzati e registrare exact SHA finale.
+- Consegnare quindi a NEXO REVIEW.
+- N1.6 non deve partire prima.
 
 ## Cosa deve fare Fabio adesso
 Nulla.
