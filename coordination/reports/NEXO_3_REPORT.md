@@ -266,3 +266,70 @@ Handoff esplicito a NEXO REVIEW sull'exact SHA `21665a6b0aeb986c37bbc70a23f55871
 - **Rettifica 2:** rendere il rapporto storico `docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md` integralmente conforme ad AGENTS.md: cronologia commit, inventario completo file creati/modificati/eliminati, esiti individuali finali realmente osservati sull'exact HEAD, errori/warning, problemi residui, dipendenze/credenziali, rischi tecnici, decisioni richieste a Fabio. `LATEST.md` deve restare path + copia integrale dello stesso rapporto; `Fabio/FABIO_CONTROLLO.md` va riallineato senza inventare PASS.
 - **Prova necessaria:** nuovo exact SHA DRAFT/mergeable con conceptual evidence completa, reporting conforme e nuovo handoff; rieseguire i check influenzati dalle modifiche finali e registrare solo esiti reali.
 - **Governance:** NEXO REVIEW non modifica la checklist/task NEXO 3; il Coordinatore deve creare l'eventuale task di rettifica.
+
+---
+
+## 2026-08-22 13:05 UTC — N3.2RR R4R REVIEW RECTIFICATION / NEW EXACT-SHA HANDOFF
+
+- **Task ID:** N3.2RR.
+- **Stato finale:** COMPLETED lato autore / HANDOFF A NEXO REVIEW; NEXO 3 non dichiara CLEAN.
+- **Review sorgente:** `4999992268`, CHANGES REQUIRED, P0/P1/P2 = `0/2/0`.
+- **PR:** #17 `feat(voice): provider-neutral intent command core`.
+- **Branch:** `nexo3/f0-voice-command-core`.
+- **Base/main:** `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+- **Exact HEAD finale post-reporting:** `8f82b692d2cc6759c4ce773c791f3725f85e4062`.
+- **Stato PR verificato:** OPEN / DRAFT / `mergeable=true`; nessun merge, nessun passaggio Ready.
+
+### Rettifiche realmente eseguite
+- P1-1 chiuso lato autore: `docs/product/NEXO_CONCEPTUAL_MASTER.md` aggiornato esclusivamente nelle evidenze V02/V03/V34; tutte restano `[ ] / parziale`. Ogni riga contiene ora PR #17, commit tecnico `471934b4fa2cbcc963cceb195eda548f5546c59e` e check/run pertinente, con limiti STT/TTS/microfono/wake-word/provider/native runtime espliciti.
+- P1-2 chiuso lato autore: creato `docs/codex-reports/2026-08-22_130500_nexo3-n3-2rr-review-rectification.md` completo; `docs/codex-reports/LATEST.md` aggiornato con path + copia integrale; `Fabio/FABIO_CONTROLLO.md` riallineato conservativamente.
+- Voice core, checker e workflow tecnico non modificati durante N3.2RR.
+
+### Commit pertinenti
+- `b6681d826c18da5269c87145b5d0d5f5649daa9e` — completamento evidenze V02/V03/V34.
+- `834d666c795abeac3df1d1f4e9bd394953884b84` — nuovo rapporto storico N3.2RR.
+- `2d44183d6585f05add7cc8dc1713e0d6e1df6241` — riallineamento `LATEST.md`.
+- `8f82b692d2cc6759c4ce773c791f3725f85e4062` — riallineamento Fabio dashboard / exact HEAD finale della PR.
+
+### File modificati/creati
+- modificato: `docs/product/NEXO_CONCEPTUAL_MASTER.md`;
+- creato: `docs/codex-reports/2026-08-22_130500_nexo3-n3-2rr-review-rectification.md`;
+- modificato: `docs/codex-reports/LATEST.md`;
+- modificato: `Fabio/FABIO_CONTROLLO.md`;
+- nessun file eliminato;
+- nessun file location/surface/navigation/automotive/EAS/TestFlight/credenziali toccato.
+
+### Test/check realmente eseguiti
+Validation intermedia dopo la sola rettifica conceptual, SHA `b6681d826c18da5269c87145b5d0d5f5649daa9e`:
+- `NEXO 3 Voice Validation` run `32574584194`, job `97034924381`: **SUCCESS**;
+- Checkout: SUCCESS;
+- Setup Node: SUCCESS;
+- Install frontend dependencies (`npm ci`): SUCCESS;
+- Voice checker (`node scripts/check-voice-command-core.mjs`): SUCCESS; include compilazione TypeScript `--strict`;
+- Conceptual master validator (`python3 scripts/check_conceptual_master.py .`): SUCCESS.
+
+Validation finale post-reporting, exact SHA `8f82b692d2cc6759c4ce773c791f3725f85e4062`:
+- `NEXO 3 Voice Validation` run `32574678400`, job `97035151898`: **SUCCESS**;
+- Checkout exact branch content: SUCCESS;
+- Setup Node: SUCCESS;
+- Install frontend dependencies: SUCCESS;
+- Voice checker: SUCCESS;
+- Conceptual master validator: SUCCESS;
+- Complete job: SUCCESS.
+
+### Warning / errori / limiti
+- Nessun errore osservato nelle due run N3.2RR sopra.
+- Il container locale della chat non risolve github.com via DNS; tale ambiente non viene usato come prova PASS.
+- Il core resta foundation provider-neutral, non Voice UX completa.
+- Nessun STT/TTS/microfono/wake-word runtime, NLU conversazionale completa, provider mappe, navigazione reale o runtime CarPlay/Android Auto.
+- Nessun test device reale.
+
+### Problemi residui / dipendenze
+- Serve nuova review indipendente di NEXO REVIEW sull'exact SHA `8f82b692...`.
+- Nessuna credenziale necessaria per questa rettifica; nessuna credenziale Apple/EAS/provider letta o modificata.
+- N3.3 resta congelato finché PR #17 non riceve CLEAN e non viene serializzata/mergeata dal Coordinatore.
+
+### Review richiesta / prossimo passo
+- PR body aggiornato con exact SHA e run/job finali.
+- Handoff registrato su Issue #11, commento `5380562539`.
+- Prossimo passo: NEXO REVIEW sul nuovo exact SHA. Se CLEAN, attesa serializzazione/merge del Coordinatore; solo dopo N3.3 diventa eleggibile.
