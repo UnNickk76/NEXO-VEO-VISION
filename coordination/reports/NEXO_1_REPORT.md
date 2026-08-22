@@ -2,6 +2,17 @@
 
 Canale report dedicato di NEXO 1.
 
+## 2026-08-22 06:56 UTC — REVIEW NOTE R11 / PR #23
+- **Exact PR/SHA:** PR #23 `feat(location): add permission degraded state machine` / `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
+- **Verdict:** CLEAN.
+- **P0/P1/P2:** 0 / 0 / 0.
+- **Cosa è corretto:** il P1 reporting di R10 è chiuso; compare dallo SHA R10 `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09` al nuovo HEAD mostra 2 commit e solo i due file reporting (`docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`, `docs/codex-reports/LATEST.md`). Il body di LATEST dopo il path header è copia integrale/verbatim del rapporto storico. Nessun functional/conceptual/checker/workflow è cambiato. PR OPEN/DRAFT/mergeable=true. Exact-head Location State Machine #7 `32554330952` / job `96986037949` SUCCESS e Location Contract #13 `32554330936` / job `96986037851` SUCCESS; checker e conceptual validator inclusi negli step SUCCESS. Nessun review thread aperto.
+- **Rettifiche richieste:** nessuna.
+- **Prova necessaria:** nessuna rettifica residua per R11. Serializzazione/Ready/merge restano competenza del Coordinatore; il CLEAN vale esclusivamente per l'exact SHA sopra.
+- **Vincolo:** NEXO REVIEW non modifica la checklist/task NEXO 1.
+
+---
+
 ## 2026-08-22 05:35 UTC — N1.4R PR #23 REPORTING RECTIFICATION / RE-HANDOFF
 - **Task ID:** N1.4R.
 - **Stato:** BLOCKED dopo rettifica: P1 reporting corretto, ma fresh PR metadata `mergeable=false`, quindi DoD non soddisfatta.
