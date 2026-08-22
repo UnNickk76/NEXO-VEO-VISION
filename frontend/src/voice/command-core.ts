@@ -45,16 +45,30 @@ export type CommandHandler = (envelope: CommandEnvelope) => CommandHandlerResult
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
 const MAX_INPUT_LENGTH = 256;
 const MAX_DESTINATION_ID_LENGTH = 128;
+const EXACT_CONFIDENCE = 1;
+const UNKNOWN_CONFIDENCE = 0;
 
-const normalize = (input: string): string =>
+export const normalizeVoiceInput = (input: string): string =>
   input.normalize('NFKC').trim().toLocaleLowerCase('it-IT').replace(/\s+/g, ' ');
+
+const normalizeControlInput = (normalized: string): string =>
+  normalized.replace(/[.!?]+$/g, '').trim();
 
 const unknown = (raw: string, reason: UnknownIntentReason): VoiceIntent => ({
   kind: 'unknown',
   raw,
-  confidence: 0,
+  confidence: UNKNOWN_CONFIDENCE,
   reason,
 });
+
+const hasAmbiguousControlSignals = (normalized: string): boolean => {
+  const categories = [
+    /\b(annulla|cancella|stop)\b/,
+    /\b(conferma|sì|si|ok|va bene)\b/,
+    /\b(rifiuta|no|non confermare)\b/,
+  ];
+  return categories.filter((pattern) => pattern.test(normalized)).length > 1;
+};
 
 export function parseVoiceIntent(input: string): VoiceIntent {
   if (!input.trim()) return unknown(input, 'empty');
@@ -62,14 +76,18 @@ export function parseVoiceIntent(input: string): VoiceIntent {
     return unknown(input, 'unsafe-input');
   }
 
-  const normalized = normalize(input);
+  const normalized = normalizeVoiceInput(input);
+  const normalizedControl = normalizeControlInput(normalized);
+
+  if (hasAmbiguousControlSignals(normalizedControl)) return unknown(input, 'ambiguous');
+
   const exactMatches: Array<[RegExp, VoiceIntent]> = [
-    [/^(annulla|cancella|stop)$/, { kind: 'cancel', confidence: 1 }],
-    [/^(conferma|sì|si|ok|va bene)$/, { kind: 'confirm', confidence: 1 }],
-    [/^(rifiuta|no|non confermare)$/, { kind: 'reject', confidence: 1 }],
+    [/^(annulla|cancella|stop)$/, { kind: 'cancel', confidence: EXACT_CONFIDENCE }],
+    [/^(conferma|sì|si|ok|va bene)$/, { kind: 'confirm', confidence: EXACT_CONFIDENCE }],
+    [/^(rifiuta|no|non confermare)$/, { kind: 'reject', confidence: EXACT_CONFIDENCE }],
   ];
 
-  const matched = exactMatches.filter(([pattern]) => pattern.test(normalized));
+  const matched = exactMatches.filter(([pattern]) => pattern.test(normalizedControl));
   if (matched.length > 1) return unknown(input, 'ambiguous');
   if (matched.length === 1) return matched[0][1];
 
@@ -81,7 +99,7 @@ export function parseVoiceIntent(input: string): VoiceIntent {
     if (destinationId.length > MAX_DESTINATION_ID_LENGTH) {
       return unknown(input, 'unsafe-input');
     }
-    return { kind: 'start_navigation', destinationId, confidence: 1 };
+    return { kind: 'start_navigation', destinationId, confidence: EXACT_CONFIDENCE };
   }
 
   return unknown(input, 'unsupported');
