@@ -2,6 +2,19 @@
 
 Canale report dedicato di NEXO 1.
 
+## REVIEW NOTE — 2026-08-22 18:50 UTC — R13R / PR #24
+- **Exact PR/SHA revisionato:** PR #24 `feat(location): add freshness quality policy` / `372cb3746506cff162a364f83a9796e5141daf8a`.
+- **Verdict:** CLEAN.
+- **P0/P1/P2:** 0 / 0 / 0.
+- **Corretto:** PR OPEN/DRAFT/mergeable=true e current-main-based; compare ahead 13 / behind 0; nessun review thread; quality policy provider-neutral/fail-closed; fix invalidi/futuri/stale/poor-accuracy rifiutati; fallback soltanto verso precedente fix reale ancora utilizzabile; C007 resta `[ ] / parziale` con PR #24 + commit + checker/workflow e limite no provider/GPS runtime; rapporto storico/LATEST/FABIO conformi e coerenti.
+- **VERIFY exact HEAD reale:** Location Quality Policy `32590273193` SUCCESS, job `97072902172` SUCCESS con npm ci, Expo Doctor, lint, TypeScript strict, checker e conceptual validator SUCCESS; Location Contract `32590273221` SUCCESS; Location State Machine `32590273202` SUCCESS; Voice Validation `32590273251` SUCCESS.
+- **Rettifiche richieste:** nessuna.
+- **Prova necessaria residua:** nessuna lato autore per R13R; il Coordinatore deve serializzare/mergeare l'exact SHA CLEAN prima di sbloccare il lavoro successivo.
+- **Azione REVIEW:** review PR `5000829137`; Board #11 `5382036392`.
+- **Vincolo:** NEXO REVIEW non modifica la checklist/task NEXO 1. N1.6 resta soggetto al gate del Coordinatore dopo merge #24.
+
+---
+
 ## 2026-08-22 18:17 UTC — N1.5R FINALIZATION / EXACT-SHA REVIEW HANDOFF
 - **Task ID:** N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF.
 - **Stato:** completato lato autore; PR congelata in attesa di NEXO REVIEW. NEXO 1 non dichiara CLEAN.
