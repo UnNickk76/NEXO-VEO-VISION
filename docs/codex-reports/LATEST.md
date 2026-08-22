@@ -1,146 +1,143 @@
-Rapporto corrente: `docs/codex-reports/2026-08-22_130500_nexo3-n3-2rr-review-rectification.md`
+Rapporto storico: `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md`
 
-# NEXO 3 — N3.2RR rettifica R4R PR #17 Voice Intent → Command
+# NEXO 1 — N1.5R PR #24 finalizzazione Location Freshness / Quality Policy
 
 ## Dati attività
-- **Data e ora UTC:** 2026-08-22 13:05 UTC.
-- **Task:** N3.2RR — PR #17 R4R review rectification / new exact-SHA handoff.
-- **Obiettivo richiesto:** chiudere esclusivamente i due P1 della review `4999992268` senza modificare il Voice core già accettato: (1) completare le evidenze V02/V03/V34; (2) rendere reporting e prove conformi ad `AGENTS.md`, poi rieseguire i check applicabili e riconsegnare un nuovo exact SHA a NEXO REVIEW.
-- **Stato finale di questa attività:** completato lato autore per la rettifica documentale/conceptual; nuovo handoff a NEXO REVIEW richiesto dopo verifica post-reporting dell'HEAD finale. NEXO 3 non dichiara CLEAN.
-- **Branch:** `nexo3/f0-voice-command-core`.
-- **Pull request:** PR #17, OPEN / DRAFT.
-- **Base incorporata prima della rettifica:** `main` `ba39d977072231d69ef848b1cc9ae2637b556c72`.
-- **SHA revisionato dalla precedente review:** `21665a6b0aeb986c37bbc70a23f55871d0723807`.
-- **SHA conceptual rettificato e realmente validato prima del reporting finale:** `b6681d826c18da5269c87145b5d0d5f5649daa9e`.
-
-## Fonte review e rilievi corretti
-NEXO REVIEW ha emesso `CHANGES REQUIRED` sulla PR #17 exact SHA `21665a6b...`, review `4999992268`, con P0/P1/P2 = `0/2/0`.
-
-P1-1: le righe V02/V03/V34 non contenevano per ciascuna voce l'intera combinazione richiesta `PR + commit pertinente + test/check pertinente`.
-
-P1-2: il rapporto storico N3.2R precedente non registrava tutti i campi obbligatori di `AGENTS.md` né l'esito exact-head realmente osservato della validation conclusiva.
+- **Data e ora UTC:** 2026-08-22 18:15 UTC.
+- **Task ID:** N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF.
+- **Obiettivo richiesto:** completare esclusivamente i gate residui della PR #24 già riconciliata sul current main: evidenza C007 conservativa, VERIFY post-edit, reporting finale conforme ad `AGENTS.md` e handoff exact-SHA a NEXO REVIEW, senza avviare N1.6.
+- **Stato finale di questa attività repository:** completato lato autore per implementazione/conceptual/reporting; handoff REVIEW richiesto dopo fresh final-head verification. NEXO 1 non dichiara CLEAN autonomamente.
+- **Branch:** `nexo1/f1-location-quality-policy`.
+- **Pull request:** #24 — `feat(location): add freshness quality policy`, DRAFT.
+- **Current main letto prima della scrittura:** `1d0a01c91bb328baf141560a534f4b62fe406b01`.
+- **Reconciliation Coordinator già completata:** `950f01c814b953f7332f2b3fbf7a9f55c0573145`, current-main based; non è stata rifatta.
+- **SHA conceptual verificato post-edit:** `d65c0042746fdd1c4f961d0af7f29d24d73deb40`.
 
 ## READ realmente eseguito
-Prima della scrittura della rettifica sono stati letti/verificati:
-- `AGENTS.md` su `main`;
-- Issue #11 e aggiornamenti di governance/conflitto;
-- `coordination/agents/README.md` su `coordination/agent-control`;
-- `coordination/agents/NEXO_3.md`;
-- `coordination/reports/NEXO_3_REPORT.md`, inclusa la REVIEW NOTE R4R;
-- PR #17 e stato OPEN/DRAFT/mergeable;
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md` sulla PR #17;
-- rapporto storico N3.2R precedente;
-- `docs/codex-reports/LATEST.md`;
-- `Fabio/FABIO_CONTROLLO.md`.
+Prima della scrittura sono stati letti/verificati:
+- `AGENTS.md` integralmente su `main`;
+- Issue #11 — NEXO COORDINATION BOARD e direttive recenti;
+- `coordination/agents/README.md` sul branch `coordination/agent-control`;
+- `coordination/agents/NEXO_1.md`;
+- `coordination/reports/NEXO_1_REPORT.md`, incluse le precedenti note di blocker/rollback;
+- stato reale delle PR aperte #24/#18/#19/#20;
+- PR #24, current HEAD/mergeability, diff e review thread;
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md` integralmente per intervalli prima della replacement;
+- `docs/codex-reports/LATEST.md` e `Fabio/FABIO_CONTROLLO.md` sul branch riconciliato.
 
 ## PLAN applicato
-1. Non modificare `frontend/src/voice/command-core.ts`, checker o comportamento tecnico Voice.
-2. Modificare soltanto V02/V03/V34 nel registro concettuale, lasciando `[ ] / parziale` e aggiungendo PR #17, commit tecnico pertinente e prova check/run pertinente.
-3. Rieseguire la workflow `NEXO 3 Voice Validation` sull'exact SHA prodotto dalla rettifica conceptual.
-4. Registrare esiti reali e completi in un nuovo rapporto storico, aggiornare `LATEST.md` con path + copia integrale e riallineare `Fabio/FABIO_CONTROLLO.md`.
-5. Verificare l'HEAD finale post-reporting, attendere la nuova validation automatica e fare handoff a NEXO REVIEW senza dichiarare CLEAN.
+1. Non rifare la reconciliation e non riscrivere il core N1.5 già verificato.
+2. Aggiornare soltanto C007 con evidenza PR #24 + commit pertinente + checker/workflow pertinente, lasciando `[ ] / parziale` e dichiarando esplicitamente l'assenza di provider/GPS runtime.
+3. Verificare che il documento canonico non perda contenuti; correggere qualsiasi variazione accidentale prima del VERIFY.
+4. Eseguire i workflow applicabili sull'exact content post-conceptual.
+5. Creare questo rapporto, sincronizzare `LATEST.md` e riallineare `Fabio/FABIO_CONTROLLO.md` senza ripristinare copie stale pre-reconciliation.
+6. Verificare exact HEAD finale, mergeability/current-main compatibility e fare handoff a NEXO REVIEW. Non iniziare N1.6.
 
 ## WRITE realmente eseguito
-### P1-1 — evidenze V02/V03/V34
-Aggiornato `docs/product/NEXO_CONCEPTUAL_MASTER.md` senza cambiare checkbox o stato:
-- `V02`: `[ ] / parziale`; evidenza ora include PR #17, commit tecnico `471934b4fa2cbcc963cceb195eda548f5546c59e`, comando/check Voice + TypeScript strict e run/job GitHub Actions pertinente; restano esplicitamente assenti STT/TTS/microfono/wake-word/provider/native runtime.
-- `V03`: `[ ] / parziale`; stessa struttura PR + commit + check/run, con parity touch e runtime Voice esplicitamente non implementati.
-- `V34`: `[ ] / parziale`; PR #17 + commit `471934...` + parser verificato dal checker/TypeScript strict; destinazione soltanto pre-risolta, nessuna invenzione; NLU conversazionale completa e runtime non implementati.
+### C007
+`docs/product/NEXO_CONCEPTUAL_MASTER.md` mantiene C007 `[ ] / parziale` e ora registra anche:
+- PR #24 freshness/quality policy;
+- commit N1.5 pertinente `f89de36ae055de60ae0079b426d2496736dd1e6e`;
+- checker `frontend/scripts/check-location-quality-policy.mjs`;
+- Location Quality Policy run `32583597232` SUCCESS come evidenza baseline già disponibile;
+- fallback consentito soltanto verso un precedente fix reale ancora utilizzabile;
+- assenza esplicita di provider/GPS runtime.
 
-Commit della rettifica conceptual: `b6681d826c18da5269c87145b5d0d5f5649daa9e` — `docs(voice): complete V02 V03 V34 evidence`.
+La prima replacement C007 (`e01492a3f069d595ea4e99c32f4ee2cbb4c0f36a`) aveva introdotto accidentalmente un refuso sulla riga E45 e rimosso il newline finale. È stata immediatamente corretta nel commit `d65c0042746fdd1c4f961d0af7f29d24d73deb40`. La diff del commit correttivo conferma il ripristino di `CONTESTUALE` e del newline finale; nessun requisito E45 è stato intenzionalmente modificato.
 
-### P1-2 — reporting
-Creato questo nuovo rapporto storico completo anziché alterare retroattivamente il rapporto N3.2R precedente. `LATEST.md` viene aggiornato con il percorso e la copia integrale di questo rapporto. `Fabio/FABIO_CONTROLLO.md` viene riallineato in forma sintetica e conservativa.
+### Reporting
+- creato questo rapporto storico;
+- `docs/codex-reports/LATEST.md` viene sincronizzato con percorso + copia integrale del presente rapporto;
+- `Fabio/FABIO_CONTROLLO.md` viene riallineato sinteticamente alla PR #24 riconciliata/finalizzata.
 
 ## Cronologia commit pertinente
-### Core tecnico già accettato dalla review
-- `471934b4fa2cbcc963cceb195eda548f5546c59e` — hardening Voice Intent/Command core.
-- `5d642d330e1c3ab2ebf2edac8d175fc78dd457d1` — checker comportamentale/TypeScript strict.
-- `21665a6b0aeb986c37bbc70a23f55871d0723807` — exact SHA N3.2R precedentemente consegnato, con workflow read-only e validation SUCCESS.
+- `f89de36ae055de60ae0079b426d2496736dd1e6e` — exact HEAD funzionale N1.5 pre-reporting già verificato nella fase originaria;
+- `950f01c814b953f7332f2b3fbf7a9f55c0573145` — safe reconciliation Coordinator contro current main;
+- `e01492a3f069d595ea4e99c32f4ee2cbb4c0f36a` — aggiunta evidenza PR #24 a C007;
+- `d65c0042746fdd1c4f961d0af7f29d24d73deb40` — correzione immediata del refuso accidentale e ripristino esatto del contenuto non-C007.
+- I commit reporting-only successivi sono prodotti nella stessa PR; il loro exact HEAD viene registrato nel Control Plane/handoff finale.
 
-### Rettifica R4R corrente
-- `b6681d826c18da5269c87145b5d0d5f5649daa9e` — completamento evidenze V02/V03/V34; nessuna modifica al Voice core/checker.
-- commit di questo rapporto, `LATEST.md` e dashboard: prodotti successivamente come reporting-only; l'exact HEAD finale viene verificato e registrato nel Control Plane/handoff dopo tali commit.
+## Inventario completo file della PR #24 / attività N1.5R
+### File funzionali/workflow già presenti e preservati
+- `.github/workflows/location-quality-policy.yml` — workflow N1.5;
+- `frontend/scripts/check-location-quality-policy.mjs` — checker deterministico;
+- `frontend/src/location/index.ts` — export quality policy;
+- `frontend/src/location/quality-policy.ts` — policy freshness/accuracy.
 
-## Inventario completo dei file interessati dalla rettifica N3.2RR
-### Modificato
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — solo evidenza V02/V03/V34.
-- `docs/codex-reports/LATEST.md` — path + copia integrale del rapporto corrente.
-- `Fabio/FABIO_CONTROLLO.md` — stato sintetico N3.2RR.
+### File conceptual/reporting finalizzati
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — C007 aggiornato conservativamente;
+- `docs/codex-reports/2026-08-22_081600_n1-5-quality-policy-continuation.md` — storico precedente preservato;
+- `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md` — presente rapporto creato;
+- `docs/codex-reports/LATEST.md` — sostituito con path + copia integrale del rapporto corrente;
+- `Fabio/FABIO_CONTROLLO.md` — riallineato allo stato N1.5R.
 
-### Creato
-- `docs/codex-reports/2026-08-22_130500_nexo3-n3-2rr-review-rectification.md` — presente rapporto.
+### File eliminati
+- nessuno.
 
-### Non modificato
-- `frontend/src/voice/command-core.ts`.
-- `frontend/scripts/check-voice-command-core.mjs`.
-- `.github/workflows/nexo3-voice-validation.yml`.
-- location, surface, navigation, automotive native, EAS/TestFlight e credenziali.
+## Comandi/check realmente eseguiti e risultati
+### Baseline riconciliata `950f01c814b953f7332f2b3fbf7a9f55c0573145`
+Osservati prima della nuova scrittura:
+- Location Quality Policy run `32583597232`: SUCCESS;
+- Location Contract run `32583597225`: SUCCESS;
+- Location State Machine run `32583597351`: SUCCESS;
+- NEXO 3 Voice Validation run `32583597311`: SUCCESS.
 
-### Eliminato
-- nessun file.
+### VERIFY post-conceptual sull'exact SHA `d65c0042746fdd1c4f961d0af7f29d24d73deb40`
+GitHub Actions Location Quality Policy run `32590169920`, job `97072646033`: **SUCCESS**.
+Step osservati individualmente:
+- Checkout: SUCCESS;
+- Setup Node.js: SUCCESS;
+- Install dependencies (`npm ci`): SUCCESS;
+- Expo Doctor (`npx expo-doctor`): SUCCESS;
+- Lint (`npm run lint`): SUCCESS;
+- Compile location quality policy (`npx tsc src/location/contract.ts src/location/quality-policy.ts --target ES2020 --module commonjs --strict --skipLibCheck --outDir /tmp/nexo-location-quality`): SUCCESS;
+- Location quality checker (script versionato `frontend/scripts/check-location-quality-policy.mjs` adattato al build `/tmp` dalla workflow): SUCCESS;
+- Conceptual registry validator (`python3 ../scripts/check_conceptual_master.py ..`): SUCCESS.
 
-## Test/check realmente eseguiti
-### Validation precedente accettata da REVIEW
-Sull'exact SHA `21665a6b0aeb986c37bbc70a23f55871d0723807`:
-- GitHub Actions `NEXO 3 Voice Validation` run `32566648776`, job `97016122933`: **SUCCESS**.
-- `npm ci`: SUCCESS.
-- `node scripts/check-voice-command-core.mjs`: SUCCESS; il checker compila `command-core.ts` con TypeScript `--strict` prima dei test comportamentali.
-- `python3 scripts/check_conceptual_master.py .`: SUCCESS.
+Workflow di compatibilità sullo stesso exact SHA:
+- Location Contract run `32590169947`: SUCCESS;
+- Location State Machine run `32590169941`: SUCCESS;
+- NEXO 3 Voice Validation run `32590169910`: SUCCESS.
 
-### Validation dopo la rettifica P1-1
-Sull'exact SHA conceptual `b6681d826c18da5269c87145b5d0d5f5649daa9e`:
-- GitHub Actions `NEXO 3 Voice Validation` run `32574584194`, job `97034924381`: **SUCCESS**.
-- step `Checkout exact branch content`: SUCCESS.
-- step `Setup Node`: SUCCESS.
-- step `Install frontend dependencies`: SUCCESS.
-- step `Voice checker`: SUCCESS.
-- step `Conceptual master validator`: SUCCESS.
+## Verificato realmente
+- PR #24 era current-main based e mergeable prima del reporting finale.
+- C007 resta `[ ] / parziale`.
+- La quality policy rifiuta fix invalidi/futuri/stale/poor-accuracy secondo le soglie implementate e consente fallback soltanto verso un precedente fix reale ancora utilizzabile.
+- Nessun provider OS/GPS, permission runtime, mappa o routing reale viene introdotto da N1.5.
+- Nessun file Voice/TestFlight funzionale è stato modificato.
+- Tutti i workflow applicabili post-conceptual su `d65c004...` hanno conclusione SUCCESS.
 
-Comandi riproducibili versionati dalla workflow:
-- `cd frontend && npm ci`.
-- `cd frontend && node scripts/check-voice-command-core.mjs`.
-- `python3 scripts/check_conceptual_master.py .` dalla root.
+## Dedotto ma non usato come prova conclusiva
+- I successivi commit esclusivamente di reporting non modificano gli input funzionali di TypeScript/checker/Expo Doctor/lint né il contenuto C007 già validato; eventuali run automatiche sul final HEAD vengono comunque osservate e registrate nel Control Plane/handoff se disponibili.
 
-Il PASS di `b6681d826...` è realmente osservato dopo la modifica conceptual. Nessun esito viene dedotto da lettura statica.
-
-## VERIFY tecnico/conceptual
-- Il Voice core e il checker non sono stati modificati da N3.2RR.
-- V02/V03/V34 restano `[ ] / parziale`.
-- Ogni riga contiene ora PR #17 + commit tecnico pertinente + check/run pertinente.
-- Nessuna destinazione libera viene trasformata in destinazione inventata.
-- Nessun STT/TTS/microfono/wake-word/provider mappe/runtime CarPlay/Android Auto è dichiarato implementato.
-- Nessun TestFlight/EAS è stato rilanciato o modificato.
+## Non verificato / limiti
+- nessun test su device reale;
+- nessuna permission OS reale;
+- nessun GPS/provider location reale;
+- nessun adapter iOS/Android runtime;
+- nessuna mappa o routing reale;
+- nessun EAS Build/TestFlight eseguito;
+- nessuna credenziale letta o modificata.
 
 ## Errori e warning rilevati
-- Nessun errore nella run `32574584194`: conclusion `success`.
-- Nessun P0 tecnico aperto dalla review R4R.
-- I due P1 erano di governance/evidenza; il core tecnico era stato esplicitamente accettato da NEXO REVIEW.
-- Il runtime locale della chat continua a non poter clonare GitHub per DNS; non viene usato come prova. Le prove conclusive usano GitHub Actions sull'exact content.
+- Durante la prima replacement di C007 è stato introdotto un refuso documentale `CONTESTTUALE` e perso il newline finale; entrambi sono stati corretti immediatamente prima del VERIFY e non restano nello stato verificato `d65c004...`.
+- Nessun errore osservato nei workflow post-conceptual elencati sopra.
 
 ## Problemi non risolti
-- PR #17 deve essere nuovamente revisionata da NEXO REVIEW sul nuovo exact HEAD post-reporting.
-- NEXO 3 non può dichiarare CLEAN autonomamente.
-- N3.3 resta congelato finché PR #17 non riceve CLEAN e viene serializzata/mergeata dal Coordinatore.
-- Le funzioni Voice utente complete restano non implementate: STT/TTS/microfono/wake-word, NLU conversazionale completa, touch parity, provider e runtime automotive.
+- PR #24 richiede NEXO REVIEW indipendente sull'exact HEAD finale post-reporting.
+- NEXO 1 non può dichiarare CLEAN né mergeare autonomamente.
+- N1.6 resta congelato fino a CLEAN + serializzazione/merge Coordinator della PR #24.
 
-## Dipendenze / credenziali necessarie
-- Nessuna credenziale è necessaria per chiudere N3.2RR.
-- Nessuna credenziale Apple/EAS, chiave provider o provisioning è stata letta/modificata.
-- Futuri runtime STT/TTS/provider/automotive avranno dipendenze proprie, ma sono fuori perimetro di questa rettifica.
+## Dipendenze / credenziali ancora necessarie
+Nessuna per la chiusura N1.5R. Future location runtime reali richiederanno provider/permission adapter, fuori perimetro.
 
 ## Rischi tecnici
-- Il parser corrente è intenzionalmente deterministico e minimale: non deve essere confuso con un NLU conversazionale completo.
-- L'idempotency del Command Bus è foundation in-memory del core corrente, non una garanzia distribuita/persistente.
-- Dichiarare V02/V03/V34 implementati ora sarebbe scorretto; per questo restano `[ ] / parziale`.
-- La serializzazione di shared conceptual/reporting resta responsabilità del Coordinatore al merge.
-
-## Decisioni richieste a Fabio
-Nessuna. Non è richiesta alcuna azione manuale a Fabio per questa rettifica.
+- Le soglie default `30_000 ms` / `100 m` sono policy foundation, non ancora validate su device/condizioni reali.
+- Il fallback è intenzionalmente conservativo e non deve essere confuso con una stima/sintesi di posizione.
+- Qualsiasi futura integrazione OS deve mantenere le semantiche fail-closed e il divieto di inventare coordinate.
 
 ## Prossimo passo consigliato
-1. Completare i commit reporting-only (`LATEST.md` e `Fabio/FABIO_CONTROLLO.md`).
-2. Verificare il nuovo exact HEAD della PR #17, che deve restare OPEN/DRAFT e current-main-compatible.
-3. Osservare la `NEXO 3 Voice Validation` automatica sul nuovo exact HEAD post-reporting e registrare solo l'esito reale nel report dedicato del Control Plane e nell'handoff.
-4. Riconsegnare il nuovo exact SHA a NEXO REVIEW per il verdetto CLEAN/CHANGES REQUIRED.
-5. Non iniziare N3.3 prima di CLEAN + serializzazione/merge del Coordinatore.
+Verificare il final HEAD post-reporting, fresh mergeability/current-main compatibility e gli eventuali workflow automatici associati; quindi handoff exact-SHA a NEXO REVIEW. N1.6 resta fermo fino a CLEAN + merge della PR #24.
+
+## Decisioni richieste a Fabio
+Nessuna. Nessuna spesa, credenziale o TestFlight è richiesta per questo handoff.
