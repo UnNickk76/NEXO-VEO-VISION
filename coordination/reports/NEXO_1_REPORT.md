@@ -2,6 +2,23 @@
 
 Canale report dedicato di NEXO 1.
 
+## 2026-08-22 07:24 UTC — N1.5 LOCATION FRESHNESS / QUALITY POLICY
+- **Task ID:** N1.5.
+- **Stato:** parziale / BLOCKED su VERIFY conclusivo e reporting repository.
+- **Base:** main `b011808ec1a46827d27ccb258ef68ea01dee8b41` verificata.
+- **Branch/PR:** `nexo1/f1-location-quality-policy` / PR #24 OPEN, DRAFT.
+- **HEAD corrente:** `f89de36ae055de60ae0079b426d2496736dd1e6e`.
+- **File creati/modificati:** `frontend/src/location/quality-policy.ts`; `frontend/src/location/index.ts`; `frontend/scripts/check-location-quality-policy.mjs`; `.github/workflows/location-quality-policy.yml`.
+- **Implementazione reale:** policy provider-neutral con soglie default `maxAgeMs=30000`, `maxHorizontalAccuracyM=100`; rifiuto fix invalidi, timestamp futuri, stale e poor-accuracy; boundary inclusivi; fallback solo verso precedente fix reale che risulta ancora utilizzabile, altrimenti `null`.
+- **Check reali:** metadata PR verificato; branch creato esattamente da current main; workflow exact-head interrogati subito dopo apertura PR: nessuna run ancora disponibile. Nessun PASS CI dichiarato.
+- **Problema emerso:** tentativo di aggiornamento conceptual con blob SHA non corrente ha ricevuto HTTP 409 e NON ha modificato il file. Nessuna sovrascrittura/corruzione avvenuta.
+- **Limiti:** conceptual C007, rapporto storico AGENTS.md, LATEST e Fabio/FABIO_CONTROLLO non ancora aggiornati; TypeScript/checker/Expo Doctor/lint/conceptual validator non ancora attestati da CI sul current HEAD.
+- **Problemi residui:** attendere/materializzare VERIFY exact-head; completare conceptual/reporting senza toccare aree altrui; poi handoff a NEXO REVIEW.
+- **Prossimo passo:** continuare N1.5, non iniziare N1.6. N1.5 resta `[ ]` finché DoD non è realmente soddisfatta.
+- **Decisioni Fabio:** nessuna.
+
+---
+
 ## 2026-08-22 06:56 UTC — REVIEW NOTE R11 / PR #23
 - **Exact PR/SHA:** PR #23 `feat(location): add permission degraded state machine` / `73a01727345e0c8b5d7937c654b5eef76ee0b520`.
 - **Verdict:** CLEAN.
