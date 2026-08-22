@@ -31,10 +31,10 @@ Fix già presenti e preservati:
 
 N2.1 reporting:
 - `bdbf61518759d4423c4b89b81c3ecac2bbe84a9d` — primo riallineamento rapporto storico.
-- `9022de5d131751c35197d85de84a552e137ad2f1` — primo riallineamento LATEST.
+- `9022de5d131751c35197d85de84a552e137ad2f1` — primo riallineamento `LATEST.md`.
 - `2db43f3c7f3110c26ca0715bd9c0453404891b0c` — riallineamento Fabio Controllo.
 - `07988ae8ebca9519594b287e3dffb7428238ff51` — completamento campi obbligatori rapporto storico.
-- `6e13d42379a5cff26cb37a67944f89302b925ac4` — LATEST reso copia integrale del rapporto storico con prefisso percorso.
+- `6e13d42379a5cff26cb37a67944f89302b925ac4` — `LATEST.md` reso copia integrale del rapporto storico con prefisso percorso.
 
 ### File modificati nel diff PR #20
 
@@ -94,3 +94,82 @@ N2.2 resta NON eleggibile finché NEXO REVIEW non revisiona lo SHA `6e13d423...`
 - **Stato GitHub verificato:** OPEN / DRAFT / mergeable / non merged; nessun review thread aperto; nessun workflow PR-triggered o commit status sul final SHA.
 - **Governance:** NEXO REVIEW non modifica la checklist NEXO 2, non cambia Draft/Ready, non esegue merge/build e non tocca credenziali.
 - **Review GitHub:** ID `4998458851`.
+
+---
+
+## 2026-08-22 02:19 UTC — N2.3 POST-PR12 RECONCILIATION + SURFACE CAPABILITY MATRIX HARDENING
+
+- **Task ID:** N2.3
+- **Descrizione:** riconciliare PR #20 con `main` dopo il merge di PR #12, preservando Saved Places e Surface, quindi procedere al capability-matrix hardening solo dopo una base sicura.
+- **Stato finale:** BLOCKED prima della WRITE funzionale.
+- **PR:** #20
+- **SHA CLEAN da preservare:** `6e13d42379a5cff26cb37a67944f89302b925ac4`
+- **Branch:** `nexo2/f0-surface-capabilities`
+- **Current main verificata:** `47b9d0a5c20490f0b73e95e52fadca151e89e136` (merge PR #12).
+
+### READ / VERIFY realmente eseguiti
+
+- `AGENTS.md` su `main` riletto integralmente.
+- Issue #11 riletta per governance/conflitti.
+- Control Plane README, TASK NEXO 2 e REPORT NEXO 2 riletti.
+- REVIEW NOTE CLEAN su `6e13d423...` verificata: review ID `4998458851`, P0/P1/P2 0/0/0.
+- Compare GitHub `main` → `nexo2/f0-surface-capabilities`: `status=diverged`, `ahead_by=18`, `behind_by=16`, merge-base `213fb129...`.
+- PR #20 risultava OPEN/DRAFT e non più mergeable dopo l'avanzamento di main.
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md` su main verificato: PR #12 ha aggiornato C001/C002/C005 a `parziale`; tali modifiche devono essere preservate.
+- `docs/codex-reports/LATEST.md` e `Fabio/FABIO_CONTROLLO.md` su main verificati: contengono lo stato/report PR #12 mergeato e sono aree condivise da riconciliare.
+- `frontend/src/core/surface/types.ts` e `profiles.ts` dello SHA CLEAN verificati e preservabili.
+
+### Azione protettiva eseguita
+
+Creato backup branch immutabile del CLEAN precedente:
+
+`backup/nexo2-pr20-clean-6e13d423` → `6e13d42379a5cff26cb37a67944f89302b925ac4`.
+
+Questo garantisce che nessuna futura riconciliazione perda il contenuto revisionato CLEAN.
+
+### Tentativo reale di checkout/rebase
+
+Comando eseguito nel runtime shell:
+
+```sh
+rm -rf /tmp/nexo2repo && git clone --depth 1 --branch nexo2/f0-surface-capabilities https://github.com/UnNickk76/NEXO-VEO-VISION.git /tmp/nexo2repo && cd /tmp/nexo2repo && git fetch origin main && git status --short --branch
+```
+
+- **Exit code:** 128
+- **Errore:** `Could not resolve host: github.com`.
+- **Esito:** impossibile eseguire merge/rebase Git reale in questo runtime.
+
+### Motivo preciso del BLOCKED
+
+Il connettore GitHub disponibile consente lettura/scrittura file e movimento ref, ma non espone un'operazione merge/rebase branch. Forzare `nexo2/f0-surface-capabilities` su `main` e ricostruire manualmente il branch tramite Contents API richiederebbe riscrivere integralmente file condivisi molto estesi (`NEXO_CONCEPTUAL_MASTER.md`, `LATEST.md`, `FABIO_CONTROLLO.md`) e comporterebbe rischio concreto di perdere o sovrascrivere il lavoro mergeato di NEXO 1. Questo violerebbe Zero-Rework e l'ownership inter-agente.
+
+Per questo NEXO 2 NON esegue force-reset, NON modifica i file condivisi e NON avvia il capability-matrix hardening su una base divergente/non mergeable.
+
+### File modificati in N2.3
+
+Sul branch funzionale PR #20: **nessuno**.
+
+Sul Control Plane: solo append report/task status NEXO 2.
+
+Branch di backup creato: `backup/nexo2-pr20-clean-6e13d423`.
+
+### Test/check
+
+Nessun nuovo test funzionale Surface eseguito, perché la FIRST REQUIRED ACTION del task è la riconciliazione e non è stata completata. Non viene riutilizzato il precedente PASS come prova di N2.3.
+
+### Limiti / problemi residui
+
+- PR #20 deve essere riconciliata realmente con main `47b9d0a5...` con una operazione Git merge/rebase o equivalente sicura che conservi le modifiche PR #12.
+- Solo dopo la riconciliazione si può implementare la matrix hardening e rieseguire test/check.
+- Qualunque nuovo SHA richiederà nuova review NEXO REVIEW.
+
+### Dipendenza necessaria per riprendere
+
+Una delle seguenti condizioni:
+1. disponibilità di checkout Git con rete funzionante; oppure
+2. capacità connettore di merge/rebase branch; oppure
+3. Coordinatore esegue/fornisce una riconciliazione sicura di PR #20 contro main e aggiorna il TASK con nuovo SHA/base.
+
+### Prossimo passo
+
+Rileggere N2.3 al prossimo ciclo. Se PR #20 risulta nuovamente riconciliata/mergeable contro main corrente, riprendere dal matrix hardening; altrimenti restare BLOCKED senza invadere aree altrui.
