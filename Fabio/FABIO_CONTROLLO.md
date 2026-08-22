@@ -4,42 +4,45 @@
 > `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
-- **Data:** 22 agosto 2026, 02:28 UTC
-- **Attività:** NEXO 1 — N1.3 F1 Location Contract.
-- **Stato:** contratto posizione foreground provider-neutral implementato e verificato; PR #22 resta DRAFT e viene consegnata a NEXO REVIEW. Nessun GPS/provider runtime viene dichiarato implementato.
-- **Branch:** `nexo1/f1-location-contract`
-- **Pull request:** PR #22
-- **Base:** `main` `47b9d0a5c20490f0b73e95e52fadca151e89e136`
-- **SHA funzionale/conceptual verificato:** `0d148712426e381b83a3cb0fe2f8895dcca57096`
+- **Data:** 22 agosto 2026, 04:28 UTC
+- **Attività:** NEXO 1 — N1.4 Location Permission / Degraded State Machine.
+- **Stato:** state machine Location provider-neutral implementata e verificata; PR #23 resta DRAFT e viene consegnata a NEXO REVIEW. Nessun GPS/provider runtime viene dichiarato implementato.
+- **Branch:** `nexo1/f1-location-permission-state-machine`
+- **Pull request:** PR #23
+- **Base:** `main` `8d8dee4a31416acb38c2e654082ca15efafd6fec`
+- **SHA funzionale/conceptual verificato:** `f9c53e40732dce009379a67fd899cfd7679865a7`
 
 ## Cosa è stato fatto realmente
-- Creato un contratto location con coordinate, accuratezza orizzontale e timestamp.
-- Modellati permission/status/error senza dipendere da Expo Location, Mapbox o altri provider concreti.
-- `ready` richiede permission `granted`, fix valido e nessun errore.
-- Stati `idle`, `unavailable` ed `error` non producono coordinate inventate.
+- Aggiunta una state machine per gli stati `denied`, `restricted`, `unavailable`, `degraded`, `stale` ed `error`.
+- Solo `permission=granted + status=ready + fix valido` è considerato utilizzabile.
+- Fix ricevuti senza permission granted vengono ignorati.
+- `denied`, `restricted`, `unavailable` ed errori provider non espongono coordinate.
+- `degraded` e `stale` possono conservare soltanto un ultimo fix reale, ma non viene considerato utilizzabile.
+- Un fix invalido porta a `error` e non genera fallback.
 - Creato checker deterministico e workflow dedicato.
-- Aggiunto C007 al registro concettuale come `[ ] / parziale`, senza spuntare la funzione.
-- Aggiornato il validator canonico dal set C001–C006 al set C001–C007.
+- C007 resta `[ ] / parziale`; è stata aggiunta evidenza PR #23 senza dichiarare GPS reale.
 
 ## Controlli reali
-GitHub Actions — Location Contract run #3 `32546311607`, job `96965279495`: **SUCCESS**.
+GitHub Actions — Location State Machine run #2 `32551730907`, job `96979479985`: **SUCCESS**.
+GitHub Actions — Location Contract run #8 `32551730913`: **SUCCESS**.
 
-- `npm ci`: PASS; audit segnala 15 vulnerabilità già presenti nelle dipendenze (1 moderate, 14 high).
+- `npm ci`: PASS; audit segnala 15 vulnerabilità già presenti (1 moderate, 14 high).
 - `npx expo-doctor`: **18/18 PASS**.
 - `npm run lint`: PASS con 0 errori / 1 warning preesistente in `frontend/app/index.tsx` (`Text` non usato).
-- TypeScript strict compile del contract: PASS.
-- checker location: `location-contract checks: PASS`.
+- TypeScript strict compile contract + state machine: PASS.
+- checker: `location-state-machine checks: PASS`.
 - validator concettuale: PASS, incluso `PASS C: exact stable ID set (7 rows)` e `PASS: conceptual master registry is coherent`.
 
 ## Limiti dichiarati
 - Nessun test su device reale.
-- Nessun GPS/provider location OS collegato.
 - Nessuna permission OS realmente richiesta.
-- Nessuna mappa, routing, UI o navigazione reale implementata da N1.3.
+- Nessun GPS/provider location OS collegato.
+- Nessuna soglia quantitativa freshness/accuracy: prevista in N1.5.
+- Nessun adapter iOS/Android: previsto in N1.6.
 - Nessun EAS/TestFlight o credenziale Apple/EAS toccati.
 
 ## Prossimo passo
-NEXO REVIEW deve revisionare l'exact SHA finale della PR #22 dopo il reporting. NEXO 1 aggiorna il proprio Control Plane e continua soltanto con il successivo task eleggibile, senza merge autonomo.
+NEXO REVIEW deve revisionare l'exact SHA finale della PR #23 dopo il reporting. NEXO 1 congela la PR durante la review e non avvia N1.5 sullo stesso branch.
 
 ## Cosa deve fare Fabio adesso
 Nulla.

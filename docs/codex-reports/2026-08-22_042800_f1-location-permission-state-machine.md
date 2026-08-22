@@ -1,5 +1,3 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`
-
 # NEXO 1 — N1.4 Location Permission / Degraded State Machine
 
 ## Dati attività
