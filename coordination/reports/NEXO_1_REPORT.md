@@ -2,6 +2,29 @@
 
 Canale report dedicato di NEXO 1.
 
+## 2026-08-22 18:17 UTC — N1.5R FINALIZATION / EXACT-SHA REVIEW HANDOFF
+- **Task ID:** N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF.
+- **Stato:** completato lato autore; PR congelata in attesa di NEXO REVIEW. NEXO 1 non dichiara CLEAN.
+- **PR/branch:** PR #24 / `nexo1/f1-location-quality-policy`.
+- **Current main verificata:** `1d0a01c91bb328baf141560a534f4b62fe406b01`.
+- **Exact HEAD finale:** `372cb3746506cff162a364f83a9796e5141daf8a`.
+- **Stato PR fresh:** OPEN / DRAFT / mergeable=true / non merged.
+- **Compare fresh:** main → HEAD = `ahead`, ahead 13 / behind 0, merge-base=current main.
+- **READ reale:** AGENTS.md integralmente, Board #11 e direttive recenti, Control Plane README/task/report, tutte le PR aperte, PR #24/diff/thread, conceptual master, LATEST e FABIO sul branch.
+- **PLAN pubblicato:** Board #11 commento `5381869330`; finalizzazione soltanto, nessuna nuova reconciliation o slice.
+- **WRITE conceptual:** C007 mantiene `[ ] / parziale` e aggiunge PR #24, commit N1.5 `f89de36ae055de60ae0079b426d2496736dd1e6e`, checker `frontend/scripts/check-location-quality-policy.mjs`, evidenza workflow, fallback solo verso precedente fix reale ancora valido, nessun provider/GPS runtime. Commit C007 `e01492a3...`; correzione immediata di refuso accidentale/non-C007 + newline nel commit `d65c0042746fdd1c4f961d0af7f29d24d73deb40`.
+- **Reporting repository:** creato `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md` commit `ba0d7af31c9f721b58aa58a035b5ab068e030327`; `LATEST.md` sincronizzato commit `ec26d44103cae023adae713c3280e1be3a71752a`; `Fabio/FABIO_CONTROLLO.md` riallineato commit finale `372cb3746506cff162a364f83a9796e5141daf8a`.
+- **VERIFY post-conceptual `d65c004...`:** Location Quality Policy `32590169920` SUCCESS, job `97072646033` SUCCESS; step `npm ci`, Expo Doctor, lint, TypeScript strict compile, quality checker e conceptual validator tutti SUCCESS. Compatibilità: Location Contract `32590169947` SUCCESS; Location State Machine `32590169941` SUCCESS; Voice Validation `32590169910` SUCCESS.
+- **VERIFY exact HEAD finale `372cb374...`:** Location Quality Policy `32590273193` SUCCESS, job `97072902172` SUCCESS con tutti gli step sopra SUCCESS; Location Contract `32590273221` SUCCESS; Location State Machine `32590273202` SUCCESS; Voice Validation `32590273251` SUCCESS.
+- **Review thread:** nessuno aperto al pre-write/finalization audit.
+- **Handoff:** commento PR #24 `5381894338`; Board #11 completion/handoff `5381894921`. Richiesta review esclusivamente dell'exact SHA `372cb374...`.
+- **Limiti:** nessun device test, permission OS/GPS/provider runtime, mappa/routing reale, EAS/TestFlight o credenziale toccati.
+- **Problemi residui:** attesa verdict NEXO REVIEW + serializzazione/merge Coordinator. N1.6 resta non eleggibile fino a quel gate.
+- **Prossimo passo:** SAFE FREEZE PR #24. Non modificare l'HEAD finché REVIEW non conclude; poi Coordinatore serializza se CLEAN.
+- **Decisioni Fabio:** nessuna.
+
+---
+
 ## 2026-08-22 10:16 UTC — N1.5R RECONCILIATION BLOCKER
 - **Task ID:** N1.5R.
 - **Stato:** bloccato; task resta `[ ]`.
