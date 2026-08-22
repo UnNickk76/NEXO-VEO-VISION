@@ -182,3 +182,75 @@ Unico gate di prova N3.2 ancora mancante: esecuzione reale del conceptual valida
 
 ### Review / prossimo passo
 Nessun handoff finale a NEXO REVIEW finché il conceptual validator non è realmente eseguito. N3.3 resta non eleggibile. Prossimo passo: continuare esclusivamente N3.2 e chiudere il solo gate concettuale, poi reporting finale/exact SHA/handoff.
+
+---
+
+## 2026-08-22 10:06 UTC — N3.2R FINAL EXACT-HEAD VALIDATION / HANDOFF
+
+- Task ID: N3.2R.
+- Stato finale: COMPLETED lato autore / HANDOFF A NEXO REVIEW.
+- PR: #17 `feat(voice): provider-neutral intent command core`, OPEN / DRAFT / mergeable=true.
+- Branch: `nexo3/f0-voice-command-core`.
+- Current main incorporata: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+- Exact PR HEAD finale: `21665a6b0aeb986c37bbc70a23f55871d0723807`.
+
+### Commit pertinenti di questa finalizzazione
+- `2b1f48a1249982bcbbcde5d77c8f11ca3c56e158` — riconciliazione minimale PR #17 con current main, preservando i due blob Voice.
+- `05f8211ec55fa41d869e1000e64ccd4ba2b8694b` — finalizzazione conceptual/reporting/dashboard: V02/V03/V34 `[ ] / parziale`, rapporto storico/LATEST/Fabio dashboard.
+- `21665a6b0aeb986c37bbc70a23f55871d0723807` — workflow di validazione finale reso read-only e exact-head definitivo.
+
+### File presenti nel diff finale PR #17
+- `.github/workflows/nexo3-voice-validation.yml`
+- `frontend/src/voice/command-core.ts`
+- `frontend/scripts/check-voice-command-core.mjs`
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md`
+- `docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md`
+- `docs/codex-reports/LATEST.md`
+- `Fabio/FABIO_CONTROLLO.md`
+
+### VERIFY realmente eseguito sull'exact HEAD finale
+GitHub Actions `NEXO 3 Voice Validation`:
+- Run ID: `32566648776`
+- Job ID: `97016122933`
+- Stato: completed
+- Conclusione: SUCCESS
+- Checkout exact branch content: SUCCESS
+- Setup Node: SUCCESS
+- `npm ci`: SUCCESS
+- `node scripts/check-voice-command-core.mjs`: SUCCESS
+- `python3 scripts/check_conceptual_master.py .`: SUCCESS sul checkout completo
+
+Il Voice checker compila `frontend/src/voice/command-core.ts` con TypeScript `--strict` prima dei test comportamentali. Sono quindi realmente verificati sul contenuto finale: parser fail-closed, no destination invention, destination ID pre-risolto per navigation.start, envelope invariants, handled/unhandled/rejected, duplicate/idempotency e divieto dipendenze provider/platform previste dal checker.
+
+### Verifica PR / governance
+- PR #17 OPEN.
+- PR #17 DRAFT mantenuta intenzionalmente.
+- `mergeable=true` sull'exact SHA `21665a6...`.
+- Base SHA `ba39d977...` current main.
+- 7 file diff, tutti nel perimetro Voice + verifica + conceptual/reporting obbligatorio.
+- Review submissions: un solo vecchio `COMMENTED` del Coordinatore, antecedente alla rimozione dei vecchi blocker.
+- Inline review threads: nessuno.
+- Nessun `CHANGES REQUIRED` corrente rilevato.
+
+### Conceptual / reporting
+- V02: `[ ] / parziale`.
+- V03: `[ ] / parziale`.
+- V34: `[ ] / parziale`.
+- Nessuna funzione Voice utente viene dichiarata implementata.
+- Rapporto storico PR: `docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md`.
+- `LATEST.md` e `Fabio/FABIO_CONTROLLO.md` presenti nella stessa PR.
+- PR body aggiornato con exact SHA, run/job e handoff a NEXO REVIEW.
+
+### Errori/warning osservati durante il percorso
+- Tentativi container precedenti: DNS verso github.com/raw.githubusercontent.com non disponibile; non usati come PASS.
+- Primo tentativo di workflow auto-finalizzante: fallito solo per push non-fast-forward concorrente dopo che un'altra esecuzione aveva già pubblicato la stessa finalizzazione. Non classificato come errore funzionale Voice.
+- Durante `npm ci` in una run precedente della stessa workflow sono state riportate 15 vulnerabilità dipendenze preesistenti (1 moderate, 14 high) e warning di deprecazione delle action Node; non sono stati modificati lockfile/dipendenze in questo task.
+
+### Limiti residui
+- Nessun STT/TTS, microfono, wake-word runtime, Siri/Google Assistant, provider mappe, navigazione reale o runtime CarPlay/Android Auto.
+- Nessun test device reale.
+- NEXO 3 non dichiara CLEAN: il verdetto appartiene a NEXO REVIEW.
+- Nessun merge, nessun passaggio Ready, nessun rilancio TestFlight, nessuna credenziale toccata.
+
+### Review richiesta / prossimo passo
+Handoff esplicito a NEXO REVIEW sull'exact SHA `21665a6b0aeb986c37bbc70a23f55871d0723807`, run `32566648776` SUCCESS. N3.3 resta non eleggibile finché PR #17 non riceve CLEAN e non viene serializzata/mergeata dal Coordinatore.
