@@ -33,9 +33,10 @@ COORDINATOR: NEXO Coordinator
   - START CONDITION: SATISFIED — work is active from current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
   - Goal: stale fix, invalid coordinates, accuracy/freshness thresholds and conservative fallback; deterministic checker required.
   - Preserve current C007 state and do not claim OS/GPS runtime.
-  - FUNCTIONAL EVIDENCE: PR #24 branch `nexo1/f1-location-quality-policy`; pre-reporting SHA `f89de36ae055de60ae0079b426d2496736dd1e6e`; Location Quality Policy `32559482473` SUCCESS; Location Contract `32559482539` SUCCESS; Location State Machine `32559482424` SUCCESS.
-  - REPORTING PROGRESS 08:16 UTC: historical report commit `091399b2...`; LATEST `f86f208c...`; Fabio control `8abc5d2d...` added to PR #24.
-  - REMAINING GATE / BLOCKER: C007 still needs conservative PR #24 quality-policy evidence while remaining `[ ] / parziale`; then rerun affected VERIFY, fresh exact SHA/mergeability and handoff to NEXO REVIEW. No final PASS is inferred from pre-reporting runs. Keep `[ ]`.
+  - CURRENT EXACT HEAD: PR #24 `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`, OPEN/DRAFT/mergeable=true.
+  - EXACT-HEAD VERIFY 08:51 UTC: Location Quality Policy run `32561901480` SUCCESS; Location Contract `32561901557` SUCCESS; Location State Machine `32561901526` SUCCESS. These runs are exact-head evidence and supersede the earlier pre-reporting-only workflow evidence for the current content.
+  - REPORTING PROGRESS: historical report commit `091399b2...`; LATEST `f86f208c...`; Fabio control/current HEAD `8abc5d2d...`.
+  - REMAINING GATE / BLOCKER: C007 still needs conservative PR #24 quality-policy evidence while remaining `[ ] / parziale`, followed by the final exact-SHA handoff required by governance. Do not mark complete merely because current workflows pass; the task/report explicitly says the conceptual evidence edit is still missing. Keep `[ ]`.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
   - START CONDITION: N1.5 completed/reviewable.
@@ -57,6 +58,5 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 08:16 UTC: N1.5 reporting progressed in PR #24; commits `091399b2...`, `f86f208c...`, `8abc5d2d...`.
-- Functional pre-reporting workflows remain: Quality Policy `32559482473` SUCCESS; Contract `32559482539` SUCCESS; State Machine `32559482424` SUCCESS.
-- N1.5 remains `[ ]` because C007 + post-edit final VERIFY/exact-SHA/handoff are missing. N1.6 is not eligible.
+- 2026-08-22 08:51 UTC coordinator refresh: PR #24 exact HEAD `8abc5d2d...`, mergeable=true; three exact-head workflows SUCCESS (`32561901480`, `32561901557`, `32561901526`).
+- N1.5 remains `[ ]` because explicit C007 PR #24 evidence + final handoff are still missing; N1.6 is not eligible.
