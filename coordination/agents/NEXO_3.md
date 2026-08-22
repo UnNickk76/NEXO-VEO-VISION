@@ -7,9 +7,10 @@ COORDINATOR: NEXO Coordinator
 ## CURRENT VERIFIED STATE
 - Current main: `b011808ec1a46827d27ccb258ef68ea01dee8b41` after merge of CLEAN PR #23.
 - PR #17 `feat(voice): provider-neutral intent command core`: OPEN / DRAFT / mergeable, exact HEAD `468e4118adfa71d7500842304715fd5c55e27312`.
-- Fresh compare current main → PR #17: `ahead`, behind 0, merge-base current main; diff is exactly the two Voice files.
+- Fresh PR metadata after the latest verification: base `b011808...`, exact HEAD `468e4118...`, changed_files=2, mergeable=true.
 - PR #23 Location Permission/Degraded State Machine/C007/reporting is preserved from current main and no location/shared reporting file is in the PR #17 diff after reconciliation.
-- No final voice-checker/conceptual-validator PASS is claimed for current content; this run has no executable repository checkout and exact-HEAD GitHub Actions are absent.
+- Exact-head Voice checker is now REAL PASS: exact GitHub blobs `command-core.ts` (`6aaef7a6...`) and checker (`eb92d902...`) were materialized unchanged and `node frontend/scripts/check-voice-command-core.mjs` returned exit 0 / `voice-command-core checks: PASS`.
+- Final conceptual validator remains NOT EXECUTED on a complete exact-head repository; no conceptual PASS is claimed.
 - Do not touch location/surface/navigation/automotive native/EAS/TestFlight areas owned elsewhere.
 
 ## QUEUE — ONE TASK AT A TIME
@@ -21,7 +22,8 @@ COORDINATOR: NEXO Coordinator
   - START CONDITION: ACTIONABLE; this remains the only active NEXO 3 task.
   - CURRENT HEAD: `468e4118adfa71d7500842304715fd5c55e27312`; current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`.
   - RECONCILIATION COMPLETED: merge commit `468e4118adfa71d7500842304715fd5c55e27312` has parents prior Voice HEAD `c80964fab1895a44a999e687ab50934d364c94cd` and current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`, with tree built from current main plus only `frontend/src/voice/command-core.ts` and `frontend/scripts/check-voice-command-core.mjs`. Fresh compare is ahead/behind 0 and exact diff is those two Voice files; Location PR #23 state is preserved.
-  - BLOCKED FINAL EVIDENCE: final runtime voice checker and conceptual validator have not been executed on exact HEAD `468e4118...`; `fetch_commit_workflow_runs` returns no runs. Per AGENTS.md no PASS may be inferred. Required condition to complete: executable checkout/runtime or CI capable of running `node frontend/scripts/check-voice-command-core.mjs` and `python3 scripts/check_conceptual_master.py .` on this exact content, followed by final reporting/conceptual/dashboard reconciliation and review handoff.
+  - VOICE CHECKER EVIDENCE: `cd /tmp/nexo3 && node frontend/scripts/check-voice-command-core.mjs` executed on exact-head GitHub blob contents, exit `0`, output `voice-command-core checks: PASS`; checker itself compiles the exact core with TypeScript strict before behavioral assertions.
+  - BLOCKED FINAL EVIDENCE: `python3 scripts/check_conceptual_master.py .` has not been executed against a complete exact-head materialization. Direct raw GitHub retrieval in the runtime still fails DNS (`curl` exit 6, `Could not resolve host: raw.githubusercontent.com`). Per AGENTS.md no conceptual PASS may be inferred. Required condition to complete: execute the versioned conceptual validator on complete exact-head content, then final conceptual/reporting/dashboard reconciliation and exact-SHA review handoff.
 
 - [ ] **N3.3 — VOICE INTENT NORMALIZATION**
   - START CONDITION: N3.2 completed/reviewable and no exact-SHA review conflict.
@@ -47,6 +49,7 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, write chat + GitHub report, then immediately reread and start the next eligible task. A blocked task remains `[ ]` with blocker recorded.
 
 ## LAST EVIDENCE
-- 2026-08-22 08:00 UTC NEXO 3 reconciled PR #17 to main `b011808...`; exact HEAD `468e4118...`, mergeable true, compare ahead/behind 0, exact diff two Voice files.
-- N3.2 remains `[ ]`: exact-head runtime checker + conceptual validator are still missing and no exact-head workflow run exists; no PASS/CLEAN/handoff is claimed.
+- 2026-08-22 08:44 UTC: PR #17 still OPEN/DRAFT/mergeable at exact HEAD `468e4118...`, base/current main `b011808...`, 2-file Voice diff.
+- Exact-head Voice checker now PASS: `node frontend/scripts/check-voice-command-core.mjs` → exit 0 / `voice-command-core checks: PASS` on materialized exact GitHub blob contents.
+- N3.2 remains `[ ]` only because the versioned conceptual validator has not yet run against a complete exact-head repository; no conceptual PASS/CLEAN/handoff is claimed.
 - N3.3 is not eligible.
