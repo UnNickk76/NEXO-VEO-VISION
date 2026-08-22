@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - nexo1/validate-pr12-conceptual
-  pull_request:
-    branches:
-      - main
+    paths:
+      - ".github/workflows/nexo1-pr12-conceptual-validator.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate-pr12-conceptual:
@@ -21,16 +20,52 @@ jobs:
           ref: 155ba7e8005d6848a506478d7f3139b3b69776d8
           persist-credentials: false
 
-      - name: Verify exact SHA
+      - name: Run canonical conceptual validator and capture result
+        id: validator
         shell: bash
         run: |
-          set -euo pipefail
+          set -u
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "155ba7e8005d6848a506478d7f3139b3b69776d8"
-          echo "validated_sha=$actual"
+          expected="155ba7e8005d6848a506478d7f3139b3b69776d8"
+          result_file="${RUNNER_TEMP}/nexo1-pr12-conceptual-result.txt"
+          {
+            echo "validated_sha=$actual"
+            echo "expected_sha=$expected"
+            echo "command=python3 scripts/check_conceptual_master.py ."
+          } > "$result_file"
 
-      - name: Run canonical conceptual validator
+          if [ "$actual" != "$expected" ]; then
+            echo "exit_code=97" >> "$result_file"
+            echo "FAIL exact SHA mismatch" >> "$result_file"
+            exit 0
+          fi
+
+          set +e
+          output="$(python3 scripts/check_conceptual_master.py . 2>&1)"
+          code=$?
+          set -e
+          echo "exit_code=$code" >> "$result_file"
+          printf '%s\n' "$output" >> "$result_file"
+
+      - name: Checkout diagnostic branch
+        uses: actions/checkout@v4
+        with:
+          ref: nexo1/validate-pr12-conceptual
+          path: diagnostic
+
+      - name: Persist validator evidence
         shell: bash
         run: |
           set -euo pipefail
-          python3 scripts/check_conceptual_master.py .
+          mkdir -p diagnostic/validation
+          cp "${RUNNER_TEMP}/nexo1-pr12-conceptual-result.txt" diagnostic/validation/nexo1-pr12-conceptual-result.txt
+          cd diagnostic
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add validation/nexo1-pr12-conceptual-result.txt
+          if git diff --cached --quiet; then
+            echo "No evidence change to commit."
+          else
+            git commit -m "test(nexo1): record PR12 conceptual validator result [skip ci]"
+            git push origin HEAD:nexo1/validate-pr12-conceptual
+          fi
