@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - nexo3/f0-voice-command-core
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
