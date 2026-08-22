@@ -10,11 +10,12 @@ COORDINATOR: NEXO Coordinator
 
 ## REVIEW QUEUE — ONE AT A TIME
 
-- [ ] **R1 — PR #19 Navigation Domain Core**
-  - START CONDITION: immediate.
-  - Exact SHA to review: `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
-  - Context: prior review on `aee16726372f58208630f387481c517396695426` found 2 P1 governance/evidence issues; author reports both corrected.
-  - Verify exact diff, conceptual evidence, report/LATEST/FABIO_CONTROLLO consistency, final CI evidence and no new regressions.
+- [x] **R1 — PR #19 Navigation Domain Core**
+  - Reviewed exact SHA: `7210baef8693f1a8e77da8750ff2e4e597534cbe`.
+  - Result: CHANGES REQUIRED / NON CLEAN — P0=0, P1=1, P2=0.
+  - P1: V28 `Route Explanation` marked `parziale` without corresponding implementation/test evidence; new SHA required after conceptual/reporting correction and applicable VERIFY.
+  - Review ID: `4998361255`.
+  - Do not duplicate review on this SHA; await Coordinator corrective task + explicit new SHA handoff.
 
 - [ ] **R2 — PR #20 Surface Capabilities**
   - START CONDITION: only when HEAD changes from already-reviewed `dbb78f17fec64cabd3537e8c80ca7998da54b696` and NEXO 2 explicitly reconsegna exact new SHA.
@@ -36,4 +37,5 @@ COORDINATOR: NEXO Coordinator
 For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact PR/SHA/diff/checks/reporting/governance → publish CLEAN or CHANGES REQUIRED on PR + Board → update this file (`[x]` only for the exact reviewed SHA/result) → immediately reread this file and continue with the next eligible item. Never duplicate review of the same SHA.
 
 ## LAST EVIDENCE
-- Latest completed review reported by NEXO REVIEW: PR #19 old SHA `aee16726372f58208630f387481c517396695426` NON CLEAN with 2 P1; PR #18 CLEAN.
+- PR #19 SHA `7210baef8693f1a8e77da8750ff2e4e597534cbe`: CHANGES REQUIRED / NON CLEAN, P0=0, P1=1, P2=0; review ID `4998361255`; personal report and NEXO CODEX REVIEW NOTE written on Control Plane.
+- PR #18 SHA `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`: CLEAN.
