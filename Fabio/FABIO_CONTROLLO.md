@@ -46,3 +46,11 @@ NEXO REVIEW deve revisionare l'exact SHA finale della PR #23 dopo il reporting. 
 
 ## Cosa deve fare Fabio adesso
 Nulla.
+
+## NEXO 3 — PR #17 Voice core — 2026-08-22 09:58 UTC
+- Stato: consegna autore in preparazione per NEXO REVIEW; PR #17 resta DRAFT.
+- Main incorporata: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+- Modifiche: Voice Intent → Command core provider-neutral + checker; V02/V03/V34 `[ ] / parziale`.
+- Verifica: GitHub Actions `NEXO 3 Voice Validation` esegue Voice checker/TypeScript strict e conceptual validator sul checkout completo.
+- Limiti: nessun STT/TTS/microfono/wake-word runtime, provider o automotive runtime.
+- Prossimo passo per Fabio: nessuna azione; attesa NEXO REVIEW/Coordinatore.

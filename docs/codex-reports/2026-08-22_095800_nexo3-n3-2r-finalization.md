@@ -1,5 +1,3 @@
-Rapporto corrente: `docs/codex-reports/2026-08-22_095800_nexo3-n3-2r-finalization.md`
-
 # NEXO 3 — N3.2R finalizzazione PR #17 Voice Intent → Command
 
 - Data e ora UTC: 2026-08-22 09:58 UTC

@@ -97,8 +97,8 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | Fatto | ID | Requisito | Stato | Evidenza | Fonte dettagliata |
 | --- | --- | --- | --- | --- | --- |
 | [ ] | `V01` | Identità | concettuale | — | memory/NEXO_VEO_VISION.md §1 |
-| [ ] | `V02` | NEXO + VEO — un solo assistente | concettuale | — | memory/NEXO_VEO_VISION.md §2 |
-| [ ] | `V03` | Voice-First | concettuale | — | memory/NEXO_VEO_VISION.md §3 |
+| [ ] | `V02` | NEXO + VEO — un solo assistente | parziale | PR #17 provider-neutral Voice Intent → Command core; exact-head checker/strict compile tramite NEXO 3 Voice Validation; nessun STT/TTS/wake-word runtime | memory/NEXO_VEO_VISION.md §2 |
+| [ ] | `V03` | Voice-First | parziale | PR #17 command path provider-neutral e fail-closed; exact-head checker/strict compile tramite NEXO 3 Voice Validation; microfono/STT/TTS e parity touch runtime non implementati | memory/NEXO_VEO_VISION.md §3 |
 | [ ] | `V04` | Audio / Radio / Musica / Telefonate | concettuale | — | memory/NEXO_VEO_VISION.md §4 |
 | [ ] | `V05` | CarPlay & Android Auto (requisiti fondamentali, non opzionali) | concettuale | — | memory/NEXO_VEO_VISION.md §5 |
 | [ ] | `V06` | Cartografia & Motore di navigazione | concettuale | — | memory/NEXO_VEO_VISION.md §6 |
@@ -129,7 +129,7 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `V31` | Road Ask | concettuale | — | memory/NEXO_VEO_VISION.md §31 |
 | [ ] | `V32` | Guarda avanti | concettuale | — | memory/NEXO_VEO_VISION.md §32 |
 | [ ] | `V33` | Memoria stradale personale | concettuale | — | memory/NEXO_VEO_VISION.md §33 |
-| [ ] | `V34` | Navigazione conversazionale | concettuale | — | memory/NEXO_VEO_VISION.md §34 |
+| [ ] | `V34` | Navigazione conversazionale | parziale | PR #17 parser deterministico per comandi base con destinazione pre-risolta; nessuna destinazione inventata; NLU conversazionale completa non implementata | memory/NEXO_VEO_VISION.md §34 |
 | [ ] | `V35` | POI contestuali | concettuale | — | memory/NEXO_VEO_VISION.md §35 |
 | [ ] | `V36` | Journey Points | concettuale | — | memory/NEXO_VEO_VISION.md §36 |
 | [ ] | `V37` | Safe Stop | concettuale | — | memory/NEXO_VEO_VISION.md §37 |
