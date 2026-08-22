@@ -1,0 +1,41 @@
+name: Location Quality Policy
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/src/location/**'
+      - 'frontend/scripts/check-location-quality-policy.mjs'
+      - 'docs/product/NEXO_CONCEPTUAL_MASTER.md'
+      - '.github/workflows/location-quality-policy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-location-quality-policy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Expo Doctor
+        run: npx expo-doctor
+      - name: Lint
+        run: npm run lint
+      - name: Compile location quality policy
+        run: npx tsc src/location/contract.ts src/location/quality-policy.ts --target ES2020 --module commonjs --strict --skipLibCheck --outDir /tmp/nexo-location-quality
+      - name: Location quality checker
+        run: sed "s#../src/location/quality-policy.js#file:///tmp/nexo-location-quality/quality-policy.js#" scripts/check-location-quality-policy.mjs > /tmp/check-location-quality-policy.mjs && node /tmp/check-location-quality-policy.mjs
+      - name: Conceptual registry validator
+        run: python3 ../scripts/check_conceptual_master.py ..
