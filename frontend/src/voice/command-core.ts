@@ -61,13 +61,14 @@ const unknown = (raw: string, reason: UnknownIntentReason): VoiceIntent => ({
   reason,
 });
 
+const containsToken = (input: string, token: string): boolean =>
+  (` ${input} `).includes(` ${token} `);
+
 const hasAmbiguousControlSignals = (normalized: string): boolean => {
-  const categories = [
-    /\b(annulla|cancella|stop)\b/,
-    /\b(conferma|sì|si|ok|va bene)\b/,
-    /\b(rifiuta|no|non confermare)\b/,
-  ];
-  return categories.filter((pattern) => pattern.test(normalized)).length > 1;
+  const hasCancel = ['annulla', 'cancella', 'stop'].some((token) => containsToken(normalized, token));
+  const hasConfirm = ['conferma', 'sì', 'si', 'ok', 'va bene'].some((token) => containsToken(normalized, token));
+  const hasReject = ['rifiuta', 'no', 'non confermare'].some((token) => containsToken(normalized, token));
+  return [hasCancel, hasConfirm, hasReject].filter(Boolean).length > 1;
 };
 
 export function parseVoiceIntent(input: string): VoiceIntent {
