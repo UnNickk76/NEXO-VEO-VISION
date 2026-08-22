@@ -101,7 +101,7 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `V03` | Voice-First | parziale | PR #17; commit `471934b4fa2cbcc963cceb195eda548f5546c59e`; `node scripts/check-voice-command-core.mjs` + TypeScript strict in NEXO 3 Voice Validation run `32566648776`, job `97016122933`, SUCCESS; microfono/STT/TTS e parity touch runtime non implementati | memory/NEXO_VEO_VISION.md §3 |
 | [ ] | `V04` | Audio / Radio / Musica / Telefonate | concettuale | — | memory/NEXO_VEO_VISION.md §4 |
 | [ ] | `V05` | CarPlay & Android Auto (requisiti fondamentali, non opzionali) | concettuale | — | memory/NEXO_VEO_VISION.md §5 |
-| [ ] | `V06` | Cartografia & Motore di navigazione | concettuale | — | memory/NEXO_VEO_VISION.md §6 |
+| [ ] | `V06` | Cartografia & Motore di navigazione | parziale | PR #19; core reconciliato commit `3a1f11cfc3b5d0400c1f50306b6621d3b90489e4`; checker `frontend/scripts/check-navigation-domain.mjs`; Navigation Domain run `32595355232` SUCCESS; dominio/provider adapter soltanto, nessuna mappa/routing provider/runtime reale | memory/NEXO_VEO_VISION.md §6 |
 | [ ] | `V07` | Eventi stradali realtime | concettuale | — | memory/NEXO_VEO_VISION.md §7 |
 | [ ] | `V08` | Eventi a livello di corsia | concettuale | — | memory/NEXO_VEO_VISION.md §8 |
 | [ ] | `V09` | Live Road Layer (separato dalla Base Map) | concettuale | — | memory/NEXO_VEO_VISION.md §9 |
@@ -116,14 +116,14 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `V18` | Road Intelligence | concettuale | — | memory/NEXO_VEO_VISION.md §18 |
 | [ ] | `V19` | Map Evolution | concettuale | — | memory/NEXO_VEO_VISION.md §19 |
 | [ ] | `V20` | Correzioni mappa da parte degli utenti | concettuale | — | memory/NEXO_VEO_VISION.md §20 |
-| [ ] | `V21` | Tipi di percorso | concettuale | — | memory/NEXO_VEO_VISION.md §21 |
+| [ ] | `V21` | Tipi di percorso | parziale | PR #19; `RoutePreference` fastest/shortest/balanced/scenic nel core reconciliato `3a1f11c...`; checker Navigation Domain run `32595355232` SUCCESS; nessun routing provider reale | memory/NEXO_VEO_VISION.md §21 |
 | [ ] | `V22` | TOUR generato dall'AI | concettuale | — | memory/NEXO_VEO_VISION.md §22 |
 | [ ] | `V23` | Preferenze di percorso | concettuale | — | memory/NEXO_VEO_VISION.md §23 |
 | [ ] | `V24` | ZTL | concettuale | — | memory/NEXO_VEO_VISION.md §24 |
 | [ ] | `V25` | Profilo del veicolo | concettuale | — | memory/NEXO_VEO_VISION.md §25 |
-| [ ] | `V26` | Alternative Live | concettuale | — | memory/NEXO_VEO_VISION.md §26 |
-| [ ] | `V27` | Ricalcolo continuo | concettuale | — | memory/NEXO_VEO_VISION.md §27 |
-| [ ] | `V28` | Route Explanation | concettuale | — | memory/NEXO_VEO_VISION.md §28 |
+| [ ] | `V26` | Alternative Live | parziale | PR #19; candidates + `alternativesLimit` + selezione deterministica nel core `3a1f11c...`; checker Navigation Domain run `32595355232` SUCCESS; nessuna alternativa live/provider runtime | memory/NEXO_VEO_VISION.md §26 |
+| [ ] | `V27` | Ricalcolo continuo | parziale | PR #19; `RecalculationRequest` e stati recalculating/ready nel core `3a1f11c...`; checker Navigation Domain run `32595355232` SUCCESS; nessun ricalcolo continuo GPS/provider runtime | memory/NEXO_VEO_VISION.md §27 |
+| [ ] | `V28` | Route Explanation | concettuale | PR #19 non implementa né testa Route Explanation; finding storico corretto mantenendo la voce non promossa | memory/NEXO_VEO_VISION.md §28 |
 | [ ] | `V29` | Navigazione predittiva | concettuale | — | memory/NEXO_VEO_VISION.md §29 |
 | [ ] | `V30` | Dynamic Lane Intelligence | concettuale | — | memory/NEXO_VEO_VISION.md §30 |
 | [ ] | `V31` | Road Ask | concettuale | — | memory/NEXO_VEO_VISION.md §31 |
