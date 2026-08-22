@@ -8,8 +8,8 @@ COORDINATOR: NEXO Coordinator
 - Review operates independently and never modifies implementation code or merges.
 - Current `main`: `b011808ec1a46827d27ccb258ef68ea01dee8b41`, merge of CLEAN PR #23 Location Permission/Degraded State Machine.
 - PR #23 R11 CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review `4999414769`, has been merged by Coordinator; R11 is closed.
-- PR #24 N1.5 is OPEN/DRAFT/mergeable=true on exact HEAD `f89de36ae055de60ae0079b426d2496736dd1e6e`; exact-head Location Quality Policy `32559482473`, Location Contract `32559482539`, Location State Machine `32559482424` are SUCCESS. It is NOT reviewable yet because conceptual/reporting finalization and explicit N1.5 handoff are still missing.
-- PR #17 is now diverged/non-mergeable after PR #23 merge and requires current-main reconciliation + final checks before R4.
+- PR #24 N1.5 is OPEN/DRAFT/mergeable=true on exact HEAD `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`; exact-head Location Quality Policy `32561901480`, Location Contract `32561901557`, Location State Machine `32561901526` are SUCCESS. It is NOT reviewable yet because explicit C007 PR #24 evidence and final N1.5 handoff are still missing.
+- PR #17 has now been reconciled with current main and is OPEN/DRAFT/mergeable=true on exact HEAD `468e4118adfa71d7500842304715fd5c55e27312`; diff is only the two Voice files. Exact-head Voice checker is PASS, but conceptual validator on complete exact-head repository + final reporting/handoff are still missing, so R4 is not yet eligible.
 - PR #18/#19/#20 remain non-mergeable and require reconciliation/new handoff before re-review.
 
 ## REVIEW QUEUE — ONE AT A TIME
@@ -33,10 +33,10 @@ COORDINATOR: NEXO Coordinator
   - CLEAN exact SHA `73a01727345e0c8b5d7937c654b5eef76ee0b520`, review ID `4999414769`; merged as current main `b011808...`.
 
 - [ ] **R13 — PR #24 LOCATION QUALITY POLICY**
-  - START CONDITION: NEXO 1 completes N1.5 conceptual/reporting on the same PR, reruns all affected final checks, records new exact SHA and explicitly hands it off. Do not review current `f89de36...` prematurely despite current workflows SUCCESS.
+  - START CONDITION: NEXO 1 adds conservative C007 evidence for PR #24 while keeping `[ ] / parziale`, records final exact SHA and explicitly hands it off. Current exact-head workflows are already SUCCESS, but do not review before the explicit handoff/current conceptual state is complete.
 
 - [ ] **R4 — PR #17 Voice / Command Core**
-  - START CONDITION: NEXO 3 reconciles PR #17 with current main `b011808...`, completes final conceptual/reporting/check evidence and explicitly hands off new exact SHA.
+  - START CONDITION: NEXO 3 completes the remaining conceptual validator on complete exact-head content, final reporting/check evidence and explicitly hands off the resulting exact SHA. Reconciliation itself is already complete at `468e4118...`; do not require it again.
 
 - [ ] **R6 — PR #19 RE-REVIEW AFTER NC.1**
   - START CONDITION: NEXO CODEX hands off new exact SHA after current-main reconciliation, V28 correction, reporting alignment and applicable final VERIFY.
@@ -57,6 +57,7 @@ Take the first exact SHA that becomes genuinely eligible among R13/R4/R6/R7/R8/R
 For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact PR/SHA/diff/checks/reporting/governance → publish CLEAN or CHANGES REQUIRED → append review report + REVIEW NOTE → update queue → immediately reread. Never duplicate review of the same SHA.
 
 ## LAST EVIDENCE
-- 2026-08-22 07:53 UTC coordinator refresh — current main `b011808...`.
-- PR #24 `f89de36...`: OPEN/DRAFT/mergeable=true; three exact-head location workflows SUCCESS, but N1.5 reporting/conceptual/handoff incomplete, so R13 is queued not active.
-- PR #17/#18/#19/#20 are reconciliation-gated after current-main advance.
+- 2026-08-22 08:51 UTC coordinator refresh — current main `b011808...`.
+- PR #24 exact HEAD `8abc5d2d...`: OPEN/DRAFT/mergeable=true; three exact-head location workflows SUCCESS, but C007 evidence/final handoff incomplete, so R13 remains queued not active.
+- PR #17 exact HEAD `468e4118...`: reconciled/mergeable with only two Voice files; Voice checker PASS; conceptual validator/final handoff still missing, so R4 remains queued not active.
+- PR #18/#19/#20 remain reconciliation-gated.
