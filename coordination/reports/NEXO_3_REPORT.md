@@ -333,3 +333,52 @@ Validation finale post-reporting, exact SHA `8f82b692d2cc6759c4ce773c791f3725f85
 - PR body aggiornato con exact SHA e run/job finali.
 - Handoff registrato su Issue #11, commento `5380562539`.
 - Prossimo passo: NEXO REVIEW sul nuovo exact SHA. Se CLEAN, attesa serializzazione/merge del Coordinatore; solo dopo N3.3 diventa eleggibile.
+
+---
+
+## 2026-08-22 13:52 UTC — N3.3 CONSOLIDATION FREEZE CORRECTION / STANDBY
+
+- **Task ID:** N3.3.
+- **Stato finale:** BLOCKED / NOT COMPLETED; checkbox deve restare `[ ]`.
+- **Governance rilevata:** dopo il primo snapshot del Task Plane, una rilettura fresca di `coordination/agents/NEXO_3.md` ha mostrato una direttiva più recente del Coordinatore: `Consolidation freeze remains active` e `do not open another Voice PR yet`. Exact task blob osservato: `93a8c45e4a3648fb43eb76c87348fede70aa483d`.
+- **Start condition attuale:** N3.3 resta bloccato finché il Coordinatore non rilascia esplicitamente NEXO 3 dopo la serializzazione sufficiente della coda di consolidamento indicata nel Task Plane (#24, #18, #19, #20).
+
+### Lavoro avviato da snapshot ormai superato
+Prima della scoperta del freeze più recente era stato creato il branch `nexo3/n3-3-voice-intent-normalization` dalla main `1d0a01c91bb328baf141560a534f4b62fe406b01` e aperta PR #25 DRAFT.
+
+Exact HEAD finale della PR chiusa: `afada5ac935a04698791219c6b89fe50f075e174`.
+
+File presenti solo sul branch/PR chiusi:
+- `frontend/src/voice/command-core.ts`;
+- `frontend/scripts/check-voice-command-core.mjs`;
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md`;
+- `docs/codex-reports/2026-08-22_135300_nexo3-n3-3-voice-intent-normalization.md`;
+- `docs/codex-reports/LATEST.md`;
+- `Fabio/FABIO_CONTROLLO.md`.
+
+### Correzione governance realmente eseguita
+- PR #25 verificata e poi **CLOSED**.
+- `merged=false`.
+- DRAFT rimasta tale.
+- Nessun commit della PR #25 è entrato in `main`.
+- N3.3 NON viene marcato completato e nessun handoff a NEXO REVIEW viene effettuato come task autorizzato.
+
+### Evidenze tecniche del branch chiuso — NON equivalgono ad autorizzazione/completamento
+Prima run `NEXO 3 Voice Validation` `32576736422`, job `97040062658`: FAILURE reale sul caso `sì no`, classificato `unsupported` invece di `ambiguous`; conceptual validator skipped.
+
+Il difetto tecnico è stato corretto sul branch chiuso. Successivamente:
+- SHA `3b22a1e33e9c95817d88e7d7892e6028a1b5c1f5`: run `32576880341`, job `97040401580`, SUCCESS con Voice checker, TypeScript strict e conceptual validator.
+- Exact HEAD post-reporting `afada5ac935a04698791219c6b89fe50f075e174`: run `32576970842`, job `97040611813`, SUCCESS con Voice checker e conceptual validator.
+
+Questi SUCCESS descrivono soltanto lo stato tecnico della PR chiusa. **Non rendono N3.3 autorizzato, completato o reviewable**, perché la Start Condition corrente è il freeze del Coordinatore.
+
+### Warning / errori / limiti
+- L'errore operativo è stato usare uno snapshot Task Plane diventato stale durante l'esecuzione; la rilettura obbligatoria ha intercettato la nuova direttiva prima di qualsiasi merge.
+- `npm ci` nella prima run ha riportato 12 vulnerabilità preesistenti (1 moderate, 11 high); nessun fix dipendenze eseguito.
+- Nessun TestFlight/EAS, credenziale, provisioning, location/surface/navigation/automotive runtime toccato.
+
+### Problemi residui / dipendenze
+Dipendenza unica per riprendere N3.3: **rilascio esplicito del Coordinatore** nel Task Plane dopo il consolidation freeze. Al rilascio, NEXO 3 deve rileggere main/task/report e decidere da stato reale se riutilizzare concetti della PR #25 chiusa o implementare su un nuovo branch dalla nuova main; nessun riuso è automatico.
+
+### Prossimo passo
+STANDBY. Non riaprire PR #25, non avviare N3.4 e non creare nuovo lavoro Voice finché il Task Plane non libera N3.3.
