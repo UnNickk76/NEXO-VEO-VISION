@@ -153,7 +153,7 @@ Attendere l'esito indipendente NEXO REVIEW sullo SHA `75b661afffc45887cad1e64c78
 - **Review:** CLEAN, review GitHub ID `4998454274`, P0/P1/P2 = 0/0/0.
 - **WRITE:** nessuna modifica al branch funzionale: REVIEW non ha richiesto rettifiche; modificare codice/reporting della PR avrebbe creato un nuovo SHA e invalidato inutilmente il CLEAN.
 - **Verifiche reali:** riletto AGENTS.md su main; Issue #11; Control Plane README; task file NEXO_1; report NEXO_1 con REVIEW NOTE; metadata PR #12. PR verificata OPEN / DRAFT / mergeable / non merged, HEAD invariato `75b661...`.
-- **File modificati dal task:** solo questo report Control Plane e il file task NEXO_1 sul branch `coordination/agent-control`; nessun file funzionale PR #12.
+- **File modificati dal task:** solo questo report Control Plane e il file task NEXO 1 sul branch `coordination/agent-control`; nessun file funzionale PR #12.
 - **Test/check:** nessun nuovo test applicabile, perché N1.2 non ha prodotto modifica funzionale e il CLEAN indipendente dichiara nessuna prova ulteriore necessaria sullo SHA esatto.
 - **Limiti:** NEXO 1 non effettua merge; nessun EAS/TestFlight/credenziale toccato.
 - **Problemi residui:** N1.3 resta bloccato finché PR #12 non è merged/closed oppure il Coordinatore non rilascia esplicitamente i shared reporting/conceptual files.
@@ -229,3 +229,85 @@ Non toccati voice/surface/navigation esistenti, app.json/eas.json, EAS/TestFligh
 
 ### Prossimo passo
 Rileggere immediatamente la queue. N1.4 è eleggibile solo se N1.3 risulta ancora completed/reviewable e non è emerso un nuovo conflitto/REVIEW NOTE che richieda rettifica prioritaria.
+
+---
+
+## 2026-08-22 04:30 UTC — N1.4 LOCATION PERMISSION / DEGRADED STATE MACHINE
+- **Task ID:** N1.4
+- **Stato finale:** COMPLETED / REVIEWABLE; NEXO 1 non dichiara CLEAN.
+- **PR:** #23 `feat(location): add permission degraded state machine`.
+- **Branch:** `nexo1/f1-location-permission-state-machine`.
+- **Base:** `main` `8d8dee4a31416acb38c2e654082ca15efafd6fec`.
+- **Exact SHA finale post-reporting:** `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
+- **SHA funzionale/conceptual verificato:** `f9c53e40732dce009379a67fd899cfd7679865a7`.
+- **PR state al handoff:** OPEN / DRAFT / mergeable / non merged.
+
+### READ / governance / conflitti
+Riletti AGENTS.md, Issue #11 con direttiva Coordinator che sbloccava N1.4 dopo merge CLEAN di PR #22, README Control Plane, task/report NEXO 1, main corrente, contract Location canonico e PR aperte #17/#18/#19/#20. Nessuna PR aperta possiede `frontend/src/location/**`; nessuna area voice/surface/navigation/automotive/EAS/TestFlight è stata toccata.
+
+Piano N1.4 registrato sulla Board prima del WRITE: commento `5377849285`.
+
+### WRITE reale
+Creati/modificati nella PR #23:
+- `frontend/src/location/state-machine.ts` — nuovo reducer/state model;
+- `frontend/src/location/index.ts` — export state machine;
+- `frontend/scripts/check-location-state-machine.mjs` — checker deterministico;
+- `.github/workflows/location-state-machine.yml` — workflow dedicato;
+- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — C007 resta `[ ] / parziale`, con evidenza PR #23;
+- `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md` — rapporto storico;
+- `docs/codex-reports/LATEST.md` — copia integrale del rapporto più recente;
+- `Fabio/FABIO_CONTROLLO.md` — cruscotto aggiornato.
+Nessun file eliminato.
+
+### Semantica implementata
+- Stati: `idle`, `ready`, `degraded`, `stale`, `unavailable`, `denied`, `restricted`, `error`.
+- Fix senza permission `granted`: ignorato.
+- `denied` / `restricted`: nessun fix disponibile.
+- `unavailable` / provider-error: fix rimosso.
+- `degraded` / `stale`: possono conservare esclusivamente un fix reale già ricevuto, ma non sono mai usable.
+- Fix invalido: `error`, nessun fallback.
+- Solo `permission=granted + status=ready + valid fix` è usable.
+- Nessuna posizione viene inventata o sintetizzata.
+
+### Commit pertinenti
+- `3389f5bcb93838924a33207afb79f73c6bac407f` — state machine;
+- `a7d6aacf979c81a40c7d08fde0f5a3d1f08a9975` — checker;
+- `5c2722c4cc86af84d5c0400e3aa9e2d3903ec8ba` — export;
+- `ad4f4d7ba14ae3a3ec0c6b5ce339f3d82a93ba21` — workflow;
+- `f9c53e40732dce009379a67fd899cfd7679865a7` — C007 evidence;
+- reporting: `a165e80e4c25843a51fc426be24d0221e94871ff`, `b6da4bf97b644e1efb302da9d89cb92502ef6497`, `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
+
+### VERIFY reale conclusivo
+Dopo il conceptual update sono stati rieseguiti i check sul contenuto funzionale/conceptual finale:
+- Location State Machine run #2 `32551730907`, job `96979479985`: SUCCESS.
+- Location Contract run #8 `32551730913`: SUCCESS.
+- `npm ci`: PASS; 15 vulnerabilità preesistenti (1 moderate, 14 high).
+- `npx expo-doctor`: 18/18 PASS.
+- `npm run lint`: PASS, 0 errori / 1 warning preesistente (`Text` unused in `frontend/app/index.tsx`).
+- `npx tsc src/location/contract.ts src/location/state-machine.ts --target ES2020 --module commonjs --strict --skipLibCheck --outDir /tmp/nexo-location-state`: PASS.
+- `node scripts/check-location-state-machine.mjs /tmp/nexo-location-state/state-machine.js`: PASS, output `location-state-machine checks: PASS`.
+- `python3 ../scripts/check_conceptual_master.py ..`: PASS; V=51, E=47, U=31, C=7 stable IDs; `PASS: conceptual master registry is coherent`.
+
+I tre commit successivi al verified SHA sono esclusivamente reporting e non modificano path funzionali/conceptual/workflow osservati dai check.
+
+### Limiti / warning
+- Nessun device test.
+- Nessuna permission OS reale.
+- Nessun provider GPS/location OS.
+- Nessuna soglia numerica freshness/accuracy: N1.5.
+- Nessun adapter iOS/Android: N1.6.
+- 15 vulnerabilità npm preesistenti; package/lock non modificati.
+- 1 lint warning preesistente.
+- GitHub Actions segnala deprecazione runtime Node 20 delle action, ma i job con Node 20.20.2 di progetto concludono SUCCESS.
+
+### Reporting / handoff
+- Rapporto repo: `docs/codex-reports/2026-08-22_042800_f1-location-permission-state-machine.md`.
+- Handoff REVIEW su PR #23: commento `5377875924`.
+- Board completion/handoff: commento `5377876386`.
+- Exact SHA consegnato a REVIEW: `dfeefff17f03d7fcbd3b171a5e82dcd359f12d09`.
+
+### Problemi residui / prossimo passo
+N1.5 resta `[ ]` in **BLOCKED / SAFE FREEZE** perché modificare PR #23 dopo exact-SHA handoff invaliderebbe la review. Riprendere solo dopo verdict/serializzazione della PR #23 oppure esplicita strategia separata del Coordinatore.
+
+### Decisioni richieste a Fabio
+Nessuna.
