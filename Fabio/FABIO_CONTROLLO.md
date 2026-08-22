@@ -3,28 +3,34 @@
 > Cruscotto di sola consultazione. Il rapporto tecnico completo è in
 > `docs/codex-reports/LATEST.md`.
 
-## NEXO 3 — PR #17 Voice core — rettifica review R4R
-- **Data:** 22 agosto 2026, 13:05 UTC.
-- **Task:** N3.2RR — rettifica dei due P1 di NEXO REVIEW sulla PR #17.
-- **Stato:** rettifica lato autore completata; PR #17 resta DRAFT e deve essere nuovamente revisionata da NEXO REVIEW. NEXO 3 non dichiara CLEAN.
-- **Branch:** `nexo3/f0-voice-command-core`.
-- **Pull request:** PR #17.
-- **Review sorgente:** `4999992268`, CHANGES REQUIRED, P0/P1/P2 = 0/2/0.
+## NEXO 3 — N3.3 Voice Intent Normalization
+- **Data:** 22 agosto 2026, 13:53 UTC.
+- **Task:** N3.3 — normalizzazione deterministica degli intent Voice.
+- **Stato:** implementazione e conceptual verificati; PR #25 resta DRAFT e viene preparata per NEXO REVIEW. NEXO 3 non dichiara CLEAN.
+- **Branch:** `nexo3/n3-3-voice-intent-normalization`.
+- **Pull request:** PR #25.
+- **Base:** main dopo merge CLEAN della PR #17.
 
-## Cosa è stato corretto realmente
-- V02, V03 e V34 restano `[ ] / parziale` ma ora ogni riga contiene PR #17, commit tecnico pertinente e test/check pertinente.
-- È stato creato un nuovo rapporto storico completo per N3.2RR e `LATEST.md` è stato riallineato.
-- Il Voice core, il checker e il workflow tecnico non sono stati ridisegnati o ampliati.
-- Nessun STT/TTS/microfono/wake-word/provider/native automotive runtime viene dichiarato implementato.
+## Cosa è stato fatto realmente
+- Normalizzazione Unicode NFKC, spazi, maiuscole/minuscole resa esplicita e testabile.
+- Punteggiatura terminale tollerata solo per control intent, senza allargare la grammatica delle destinazioni.
+- Segnali di controllo contrastanti vengono classificati `ambiguous`.
+- Confidence deterministica: `1` per intent riconosciuto esatto, `0` per unknown.
+- Raw input preservato sugli unknown.
+- Free text come `portami a Roma` non produce una destinazione inventata.
+- V02/V03/V34 restano `[ ] / parziale`; nessuna funzione Voice completa viene dichiarata implementata.
 
 ## Controlli reali
-Dopo la rettifica conceptual, exact SHA `b6681d826c18da5269c87145b5d0d5f5649daa9e`:
-- GitHub Actions `NEXO 3 Voice Validation` run `32574584194`, job `97034924381`: **SUCCESS**.
-- Install frontend dependencies: SUCCESS.
-- Voice checker: SUCCESS; include TypeScript strict.
+Prima run `32576736422`: **FAILURE** sul caso `sì no` (unsupported invece di ambiguous); il difetto è stato corretto.
+
+Dopo correzione + conceptual, exact SHA `3b22a1e33e9c95817d88e7d7892e6028a1b5c1f5`:
+- `NEXO 3 Voice Validation` run `32576880341`, job `97040401580`: **SUCCESS**.
+- `npm ci`: SUCCESS.
+- Voice checker: SUCCESS.
+- TypeScript strict: SUCCESS, eseguito dal checker.
 - Conceptual master validator: SUCCESS.
 
-Dopo i commit di reporting viene eseguita automaticamente una nuova `NEXO 3 Voice Validation` sull'HEAD finale; il suo esito viene registrato nel Control Plane/handoff e non viene anticipato qui.
+La validation sull'HEAD finale post-reporting viene osservata nel Control Plane/handoff prima della consegna a REVIEW.
 
 ## Limiti dichiarati
 - Nessun STT/TTS/microfono/wake-word runtime.
@@ -34,7 +40,7 @@ Dopo i commit di reporting viene eseguita automaticamente una nuova `NEXO 3 Voic
 - Nessun TestFlight/EAS o credenziale Apple/EAS toccati.
 
 ## Prossimo passo
-Nuovo handoff dell'exact HEAD post-reporting a NEXO REVIEW. N3.3 resta congelato fino a CLEAN + serializzazione/merge del Coordinatore.
+Verifica exact-head post-reporting e handoff di PR #25 a NEXO REVIEW. N3.4 resta congelato finché N3.3 non è completato/reviewable secondo il Control Plane.
 
 ## Cosa deve fare Fabio adesso
 Nulla.
