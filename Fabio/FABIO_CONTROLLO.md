@@ -4,34 +4,45 @@
 > `docs/codex-reports/LATEST.md`.
 
 ## Stato semplice
-- **Data:** 22 agosto 2026, 06:48 UTC
-- **Attività:** NEXO 3 — N3.2 completamento PR #17 Voice Intent → Command Core.
-- **Stato:** parziale; PR #17 resta DRAFT. Il core Voice è isolato e mergeable sul main verificato, ma i check finali devono essere rieseguiti prima dell'handoff a NEXO REVIEW.
-- **Branch:** `nexo3/f0-voice-command-core`
-- **Pull request:** PR #17
-- **Main verificata:** `8d8dee4a31416acb38c2e654082ca15efafd6fec`
-- **HEAD iniziale di questa ripresa:** `fc5932b685406dd566848afc0ab40f098cd00f2a`
+- **Data:** 22 agosto 2026, 04:28 UTC
+- **Attività:** NEXO 1 — N1.4 Location Permission / Degraded State Machine.
+- **Stato:** state machine Location provider-neutral implementata e verificata; PR #23 resta DRAFT e viene consegnata a NEXO REVIEW. Nessun GPS/provider runtime viene dichiarato implementato.
+- **Branch:** `nexo1/f1-location-permission-state-machine`
+- **Pull request:** PR #23
+- **Base:** `main` `8d8dee4a31416acb38c2e654082ca15efafd6fec`
+- **SHA funzionale/conceptual verificato:** `f9c53e40732dce009379a67fd899cfd7679865a7`
 
 ## Cosa è stato fatto realmente
-- Verificato che PR #17 è OPEN/DRAFT/mergeable e senza review thread aperti.
-- Confermato il perimetro funzionale Voice provider-neutral e fail-closed.
-- Aggiornato conservativamente il concettuale: V02, V03 e V34 restano `[ ]` ma passano a `parziale`; nessuna funzione Voice viene dichiarata completa.
-- Preservato C007/Location Contract già presente su main.
+- Aggiunta una state machine per gli stati `denied`, `restricted`, `unavailable`, `degraded`, `stale` ed `error`.
+- Solo `permission=granted + status=ready + fix valido` è considerato utilizzabile.
+- Fix ricevuti senza permission granted vengono ignorati.
+- `denied`, `restricted`, `unavailable` ed errori provider non espongono coordinate.
+- `degraded` e `stale` possono conservare soltanto un ultimo fix reale, ma non viene considerato utilizzabile.
+- Un fix invalido porta a `error` e non genera fallback.
+- Creato checker deterministico e workflow dedicato.
+- C007 resta `[ ] / parziale`; è stata aggiunta evidenza PR #23 senza dichiarare GPS reale.
 
 ## Controlli reali
-- `node -v`: PASS (`v22.16.0`).
-- `tsc -v`: PASS (`Version 5.8.3`).
-- Tentativo di checkout + voice checker: FALLITO prima del checker con exit 128 per DNS (`Could not resolve host: github.com`).
-- Voice checker finale: NON eseguito in questa ripresa, quindi nessun nuovo PASS dichiarato.
-- Validator concettuale finale: NON rieseguito, quindi nessun PASS dichiarato.
+GitHub Actions — Location State Machine run #2 `32551730907`, job `96979479985`: **SUCCESS**.
+GitHub Actions — Location Contract run #8 `32551730913`: **SUCCESS**.
+
+- `npm ci`: PASS; audit segnala 15 vulnerabilità già presenti (1 moderate, 14 high).
+- `npx expo-doctor`: **18/18 PASS**.
+- `npm run lint`: PASS con 0 errori / 1 warning preesistente in `frontend/app/index.tsx` (`Text` non usato).
+- TypeScript strict compile contract + state machine: PASS.
+- checker: `location-state-machine checks: PASS`.
+- validator concettuale: PASS, incluso `PASS C: exact stable ID set (7 rows)` e `PASS: conceptual master registry is coherent`.
 
 ## Limiti dichiarati
-- Il blocco corrente è il runtime di checkout/rete necessario per ripetere i check finali.
-- Nessun microfono/STT/TTS, navigazione reale, provider mappe, CarPlay/Android Auto runtime, EAS/TestFlight o credenziale è stato toccato.
-- PR #17 resta DRAFT e non viene mergeata.
+- Nessun test su device reale.
+- Nessuna permission OS realmente richiesta.
+- Nessun GPS/provider location OS collegato.
+- Nessuna soglia quantitativa freshness/accuracy: prevista in N1.5.
+- Nessun adapter iOS/Android: previsto in N1.6.
+- Nessun EAS/TestFlight o credenziale Apple/EAS toccati.
 
 ## Prossimo passo
-NEXO 3 deve ritentare i check finali sul contenuto corrente; solo con evidenza reale può chiudere N3.2 e consegnare l'exact SHA a NEXO REVIEW.
+NEXO REVIEW deve revisionare l'exact SHA finale della PR #23 dopo il reporting. NEXO 1 congela la PR durante la review e non avvia N1.5 sullo stesso branch.
 
 ## Cosa deve fare Fabio adesso
 Nulla.

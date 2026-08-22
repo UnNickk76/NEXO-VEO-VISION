@@ -16,7 +16,7 @@
 - Una voce implementata non viene eliminata né riscritta per farla sparire.
 - Se una capacità viene sostituita, rinviata o abbandonata, la riga resta e lo stato
   diventa `sostituita`, `rinviata` o `scartata`, con motivazione ed evidenza.
-- Una demo statica, uno splash screen, uno schema o la sola documentazione non rendono
+- Una demo statica, uno splash screen, uno schema o una documentazione non rendono
   completata una funzione utente.
 - Le nuove funzioni ricevono un nuovo ID e vengono collegate alla fase prevista.
 
@@ -90,15 +90,15 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `C004` | Suggerimenti Casa/Lavoro/preferiti basati sul contesto, con consenso e motivazione | F3 | concettuale | Vision §35A; PR #10 |
 | [ ] | `C005` | Conferma obbligatoria prima di avviare una destinazione suggerita | F1 | parziale | Vision §35A; PR #10; PR #12 guardia core, integrazione suggerimenti/UI assente |
 | [ ] | `C006` | Privacy, cancellazione ed elaborazione locale delle abitudini quando possibile | F0/F3 | concettuale | Vision §35A; PR #10 |
-| [ ] | `C007` | Contratto posizione foreground provider-neutral con coordinate, accuratezza, timestamp e stati permission/status/error | F1 | parziale | PR #22; core `3771d8569b198498d7e32c5c8e3068ac0ccefed5`; checker `frontend/scripts/check-location-contract.mjs`; nessun provider/GPS runtime |
+| [ ] | `C007` | Contratto posizione foreground provider-neutral con coordinate, accuratezza, timestamp e stati permission/status/error | F1 | parziale | PR #22 core contract; PR #23 state machine denied/restricted/unavailable/degraded/stale; commit `3389f5bcb93838924a33207afb79f73c6bac407f`; checker `frontend/scripts/check-location-state-machine.mjs`; Location State Machine run #1 `32551620125` SUCCESS; nessun provider/GPS runtime |
 
 ## Registro permanente della Vision originaria
 
 | Fatto | ID | Requisito | Stato | Evidenza | Fonte dettagliata |
 | --- | --- | --- | --- | --- | --- |
 | [ ] | `V01` | Identità | concettuale | — | memory/NEXO_VEO_VISION.md §1 |
-| [ ] | `V02` | NEXO + VEO — un solo assistente | parziale | PR #17: core Voice Intent → Command provider-neutral; nessun STT/runtime/AI conversazionale | memory/NEXO_VEO_VISION.md §2 |
-| [ ] | `V03` | Voice-First | parziale | PR #17: parser intent fail-closed + Command Bus; nessun microfono/STT/TTS/surface runtime | memory/NEXO_VEO_VISION.md §3 |
+| [ ] | `V02` | NEXO + VEO — un solo assistente | concettuale | — | memory/NEXO_VEO_VISION.md §2 |
+| [ ] | `V03` | Voice-First | concettuale | — | memory/NEXO_VEO_VISION.md §3 |
 | [ ] | `V04` | Audio / Radio / Musica / Telefonate | concettuale | — | memory/NEXO_VEO_VISION.md §4 |
 | [ ] | `V05` | CarPlay & Android Auto (requisiti fondamentali, non opzionali) | concettuale | — | memory/NEXO_VEO_VISION.md §5 |
 | [ ] | `V06` | Cartografia & Motore di navigazione | concettuale | — | memory/NEXO_VEO_VISION.md §6 |
@@ -129,7 +129,7 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `V31` | Road Ask | concettuale | — | memory/NEXO_VEO_VISION.md §31 |
 | [ ] | `V32` | Guarda avanti | concettuale | — | memory/NEXO_VEO_VISION.md §32 |
 | [ ] | `V33` | Memoria stradale personale | concettuale | — | memory/NEXO_VEO_VISION.md §33 |
-| [ ] | `V34` | Navigazione conversazionale | parziale | PR #17: intenti deterministici start/cancel/confirm/reject e unknown; conversazione naturale/context/STT assenti | memory/NEXO_VEO_VISION.md §34 |
+| [ ] | `V34` | Navigazione conversazionale | concettuale | — | memory/NEXO_VEO_VISION.md §34 |
 | [ ] | `V35` | POI contestuali | concettuale | — | memory/NEXO_VEO_VISION.md §35 |
 | [ ] | `V36` | Journey Points | concettuale | — | memory/NEXO_VEO_VISION.md §36 |
 | [ ] | `V37` | Safe Stop | concettuale | — | memory/NEXO_VEO_VISION.md §37 |
