@@ -143,3 +143,19 @@ Attendere l'esito indipendente NEXO REVIEW sullo SHA `75b661afffc45887cad1e64c78
 - **Prova necessaria:** nessuna ulteriore prova per il CLEAN su questo exact SHA. Qualsiasi nuovo SHA richiede nuova valutazione secondo governance.
 - **Governance:** PR resta DRAFT; NEXO REVIEW non esegue merge né modifica la checklist NEXO 1. La serializzazione/merge e l'eventuale rilascio dei file condivisi spettano al Coordinatore.
 - **Review GitHub:** ID `4998454274`.
+
+---
+
+## 2026-08-22 01:23 UTC — N1.2 PR #12 REVIEW REWORK / CLEAN HANDOFF
+- **Task ID:** N1.2
+- **Stato:** COMPLETED.
+- **PR/SHA:** PR #12, exact SHA `75b661afffc45887cad1e64c7845d56b6c658288`.
+- **Review:** CLEAN, review GitHub ID `4998454274`, P0/P1/P2 = 0/0/0.
+- **WRITE:** nessuna modifica al branch funzionale: REVIEW non ha richiesto rettifiche; modificare codice/reporting della PR avrebbe creato un nuovo SHA e invalidato inutilmente il CLEAN.
+- **Verifiche reali:** riletto AGENTS.md su main; Issue #11; Control Plane README; task file NEXO_1; report NEXO_1 con REVIEW NOTE; metadata PR #12. PR verificata OPEN / DRAFT / mergeable / non merged, HEAD invariato `75b661...`.
+- **File modificati dal task:** solo questo report Control Plane e il file task NEXO_1 sul branch `coordination/agent-control`; nessun file funzionale PR #12.
+- **Test/check:** nessun nuovo test applicabile, perché N1.2 non ha prodotto modifica funzionale e il CLEAN indipendente dichiara nessuna prova ulteriore necessaria sullo SHA esatto.
+- **Limiti:** NEXO 1 non effettua merge; nessun EAS/TestFlight/credenziale toccato.
+- **Problemi residui:** N1.3 resta bloccato finché PR #12 non è merged/closed oppure il Coordinatore non rilascia esplicitamente i shared reporting/conceptual files.
+- **Board:** chiusura N1.2 registrata su Issue #11, commento `5377047071`.
+- **Prossimo passo:** STANDBY/BLOCKED sul gate di N1.3; non inventare lavoro.
