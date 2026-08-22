@@ -1,143 +1,97 @@
-Rapporto storico: `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md`
+Rapporto storico: `docs/codex-reports/2026-08-22_195500_pr18-android-readiness-reconciliation.md`
 
-# NEXO 1 — N1.5R PR #24 finalizzazione Location Freshness / Quality Policy
+# NEXO CODEX — PR #18 Android Readiness reconciliation finalization
 
 ## Dati attività
-- **Data e ora UTC:** 2026-08-22 18:15 UTC.
-- **Task ID:** N1.5R — FINALIZE RECONCILED PR #24 / EXACT-SHA HANDOFF.
-- **Obiettivo richiesto:** completare esclusivamente i gate residui della PR #24 già riconciliata sul current main: evidenza C007 conservativa, VERIFY post-edit, reporting finale conforme ad `AGENTS.md` e handoff exact-SHA a NEXO REVIEW, senza avviare N1.6.
-- **Stato finale di questa attività repository:** completato lato autore per implementazione/conceptual/reporting; handoff REVIEW richiesto dopo fresh final-head verification. NEXO 1 non dichiara CLEAN autonomamente.
-- **Branch:** `nexo1/f1-location-quality-policy`.
-- **Pull request:** #24 — `feat(location): add freshness quality policy`, DRAFT.
-- **Current main letto prima della scrittura:** `1d0a01c91bb328baf141560a534f4b62fe406b01`.
-- **Reconciliation Coordinator già completata:** `950f01c814b953f7332f2b3fbf7a9f55c0573145`, current-main based; non è stata rifatta.
-- **SHA conceptual verificato post-edit:** `d65c0042746fdd1c4f961d0af7f29d24d73deb40`.
+- **Data e ora UTC:** 2026-08-22 19:55 UTC.
+- **Obiettivo richiesto:** finalizzare la PR #18 già riconciliata sul current main, preservando il workflow Android Readiness esistente e chiudendo esclusivamente VERIFY/reporting/handoff senza EAS Build, APK/AAB, Google Play o modifiche iOS/TestFlight.
+- **Stato finale:** completato lato autore per reconciliation/VERIFY/reporting; attende NEXO REVIEW exact-SHA.
+- **Branch:** `nexo-codex/android-build-readiness`.
+- **Pull request:** #18 — `ci(android): add non-EAS build readiness preflight`, DRAFT.
+- **Current main:** `2155db10e40cebe71ba02e97e3afb35cf7288004`.
+- **HEAD riconciliato verificato prima del reporting:** `93b43bda56ebd521ffec2a8abba653b8bb936f2b`.
+- **Backup storico preservato:** `backup/pr18-before-2155db10` → `1e50e747a60c9ebba0dc98fa6efb136ff456bbf1`.
 
 ## READ realmente eseguito
-Prima della scrittura sono stati letti/verificati:
-- `AGENTS.md` integralmente su `main`;
-- Issue #11 — NEXO COORDINATION BOARD e direttive recenti;
-- `coordination/agents/README.md` sul branch `coordination/agent-control`;
-- `coordination/agents/NEXO_1.md`;
-- `coordination/reports/NEXO_1_REPORT.md`, incluse le precedenti note di blocker/rollback;
-- stato reale delle PR aperte #24/#18/#19/#20;
-- PR #24, current HEAD/mergeability, diff e review thread;
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md` integralmente per intervalli prima della replacement;
-- `docs/codex-reports/LATEST.md` e `Fabio/FABIO_CONTROLLO.md` sul branch riconciliato.
+Sono stati riletti `AGENTS.md` su main, Issue #11 e direttive recenti, current main, PR #18, stato delle PR successive #19/#20, Control Plane NEXO CODEX e stato dei workflow exact-head. La strict serial merge queue resta #18 → #19 → #20.
 
 ## PLAN applicato
-1. Non rifare la reconciliation e non riscrivere il core N1.5 già verificato.
-2. Aggiornare soltanto C007 con evidenza PR #24 + commit pertinente + checker/workflow pertinente, lasciando `[ ] / parziale` e dichiarando esplicitamente l'assenza di provider/GPS runtime.
-3. Verificare che il documento canonico non perda contenuti; correggere qualsiasi variazione accidentale prima del VERIFY.
-4. Eseguire i workflow applicabili sull'exact content post-conceptual.
-5. Creare questo rapporto, sincronizzare `LATEST.md` e riallineare `Fabio/FABIO_CONTROLLO.md` senza ripristinare copie stale pre-reconciliation.
-6. Verificare exact HEAD finale, mergeability/current-main compatibility e fare handoff a NEXO REVIEW. Non iniziare N1.6.
+1. Non riscrivere il lavoro Android Readiness già verificato.
+2. Preservare integralmente il current main, inclusi Location Quality #24, Voice Core e TestFlight manual-only.
+3. Verificare la PR riconciliata sul current main.
+4. Osservare il workflow Android Readiness exact-head.
+5. Rigenerare soltanto reporting finale accurato e handoff exact-SHA.
 
 ## WRITE realmente eseguito
-### C007
-`docs/product/NEXO_CONCEPTUAL_MASTER.md` mantiene C007 `[ ] / parziale` e ora registra anche:
-- PR #24 freshness/quality policy;
-- commit N1.5 pertinente `f89de36ae055de60ae0079b426d2496736dd1e6e`;
-- checker `frontend/scripts/check-location-quality-policy.mjs`;
-- Location Quality Policy run `32583597232` SUCCESS come evidenza baseline già disponibile;
-- fallback consentito soltanto verso un precedente fix reale ancora utilizzabile;
-- assenza esplicita di provider/GPS runtime.
+La reconciliation Coordinator ha ricostruito la PR #18 sul current main preservando esclusivamente il delta necessario:
+- `.github/workflows/android-readiness.yml`;
+- rapporto storico originale `docs/codex-reports/2026-08-21_205500_android-build-readiness.md`.
 
-La prima replacement C007 (`e01492a3f069d595ea4e99c32f4ee2cbb4c0f36a`) aveva introdotto accidentalmente un refuso sulla riga E45 e rimosso il newline finale. È stata immediatamente corretta nel commit `d65c0042746fdd1c4f961d0af7f29d24d73deb40`. La diff del commit correttivo conferma il ripristino di `CONTESTUALE` e del newline finale; nessun requisito E45 è stato intenzionalmente modificato.
+Le copie stale di `LATEST.md` e `Fabio/FABIO_CONTROLLO.md` non sono state reintrodotte durante la reconciliation. In questa finalizzazione vengono aggiornate con informazioni correnti.
 
-### Reporting
-- creato questo rapporto storico;
-- `docs/codex-reports/LATEST.md` viene sincronizzato con percorso + copia integrale del presente rapporto;
-- `Fabio/FABIO_CONTROLLO.md` viene riallineato sinteticamente alla PR #24 riconciliata/finalizzata.
+## Inventario file della finalizzazione
+### Già presenti nella PR e preservati
+- `.github/workflows/android-readiness.yml`;
+- `docs/codex-reports/2026-08-21_205500_android-build-readiness.md`.
 
-## Cronologia commit pertinente
-- `f89de36ae055de60ae0079b426d2496736dd1e6e` — exact HEAD funzionale N1.5 pre-reporting già verificato nella fase originaria;
-- `950f01c814b953f7332f2b3fbf7a9f55c0573145` — safe reconciliation Coordinator contro current main;
-- `e01492a3f069d595ea4e99c32f4ee2cbb4c0f36a` — aggiunta evidenza PR #24 a C007;
-- `d65c0042746fdd1c4f961d0af7f29d24d73deb40` — correzione immediata del refuso accidentale e ripristino esatto del contenuto non-C007.
-- I commit reporting-only successivi sono prodotti nella stessa PR; il loro exact HEAD viene registrato nel Control Plane/handoff finale.
+### Creati/modificati in questa finalizzazione
+- `docs/codex-reports/2026-08-22_195500_pr18-android-readiness-reconciliation.md` — creato;
+- `docs/codex-reports/LATEST.md` — aggiornato con percorso + copia integrale del presente rapporto;
+- `Fabio/FABIO_CONTROLLO.md` — aggiornato sinteticamente.
 
-## Inventario completo file della PR #24 / attività N1.5R
-### File funzionali/workflow già presenti e preservati
-- `.github/workflows/location-quality-policy.yml` — workflow N1.5;
-- `frontend/scripts/check-location-quality-policy.mjs` — checker deterministico;
-- `frontend/src/location/index.ts` — export quality policy;
-- `frontend/src/location/quality-policy.ts` — policy freshness/accuracy.
-
-### File conceptual/reporting finalizzati
-- `docs/product/NEXO_CONCEPTUAL_MASTER.md` — C007 aggiornato conservativamente;
-- `docs/codex-reports/2026-08-22_081600_n1-5-quality-policy-continuation.md` — storico precedente preservato;
-- `docs/codex-reports/2026-08-22_181500_n1-5r-pr24-finalization.md` — presente rapporto creato;
-- `docs/codex-reports/LATEST.md` — sostituito con path + copia integrale del rapporto corrente;
-- `Fabio/FABIO_CONTROLLO.md` — riallineato allo stato N1.5R.
-
-### File eliminati
+### Eliminati
 - nessuno.
 
-## Comandi/check realmente eseguiti e risultati
-### Baseline riconciliata `950f01c814b953f7332f2b3fbf7a9f55c0573145`
-Osservati prima della nuova scrittura:
-- Location Quality Policy run `32583597232`: SUCCESS;
-- Location Contract run `32583597225`: SUCCESS;
-- Location State Machine run `32583597351`: SUCCESS;
-- NEXO 3 Voice Validation run `32583597311`: SUCCESS.
+## Comandi/check realmente eseguiti
+Sul reconciled exact HEAD `93b43bda56ebd521ffec2a8abba653b8bb936f2b`:
+- GitHub Actions `Android Readiness` run `32592321823`: **SUCCESS**.
+- GitHub Actions `NEXO 3 Voice Validation` run `32592321853`: **SUCCESS**.
 
-### VERIFY post-conceptual sull'exact SHA `d65c0042746fdd1c4f961d0af7f29d24d73deb40`
-GitHub Actions Location Quality Policy run `32590169920`, job `97072646033`: **SUCCESS**.
-Step osservati individualmente:
-- Checkout: SUCCESS;
-- Setup Node.js: SUCCESS;
-- Install dependencies (`npm ci`): SUCCESS;
-- Expo Doctor (`npx expo-doctor`): SUCCESS;
-- Lint (`npm run lint`): SUCCESS;
-- Compile location quality policy (`npx tsc src/location/contract.ts src/location/quality-policy.ts --target ES2020 --module commonjs --strict --skipLibCheck --outDir /tmp/nexo-location-quality`): SUCCESS;
-- Location quality checker (script versionato `frontend/scripts/check-location-quality-policy.mjs` adattato al build `/tmp` dalla workflow): SUCCESS;
-- Conceptual registry validator (`python3 ../scripts/check_conceptual_master.py ..`): SUCCESS.
+Il workflow Android Readiness versionato esegue realmente:
+- `npm ci`;
+- `npx expo-doctor`;
+- `npm run lint`;
+- verifica `android.package = com.fabioandreola.nexoveovision`;
+- verifica Expo SDK 54;
+- `npx expo prebuild --platform android --no-install --clean`.
 
-Workflow di compatibilità sullo stesso exact SHA:
-- Location Contract run `32590169947`: SUCCESS;
-- Location State Machine run `32590169941`: SUCCESS;
-- NEXO 3 Voice Validation run `32590169910`: SUCCESS.
+La conclusione SUCCESS della run `32592321823` copre tali step sul contenuto riconciliato.
 
 ## Verificato realmente
-- PR #24 era current-main based e mergeable prima del reporting finale.
-- C007 resta `[ ] / parziale`.
-- La quality policy rifiuta fix invalidi/futuri/stale/poor-accuracy secondo le soglie implementate e consente fallback soltanto verso un precedente fix reale ancora utilizzabile.
-- Nessun provider OS/GPS, permission runtime, mappa o routing reale viene introdotto da N1.5.
-- Nessun file Voice/TestFlight funzionale è stato modificato.
-- Tutti i workflow applicabili post-conceptual su `d65c004...` hanno conclusione SUCCESS.
+- PR #18 è current-main based, OPEN/DRAFT e mergeable sullo stato osservato prima del reporting.
+- Compare current main → `93b43bda...`: ahead 2 / behind 0.
+- Android Readiness exact-head è SUCCESS.
+- Voice Validation exact-head è SUCCESS, quindi la reconciliation non ha regredito il Voice Core.
+- Nessun EAS Build Android è stato avviato.
+- Nessun APK/AAB o submission Google Play è stata prodotta.
+- Nessun file iOS/TestFlight funzionale è stato modificato.
+- Nessuna credenziale è stata letta o modificata.
 
 ## Dedotto ma non usato come prova conclusiva
-- I successivi commit esclusivamente di reporting non modificano gli input funzionali di TypeScript/checker/Expo Doctor/lint né il contenuto C007 già validato; eventuali run automatiche sul final HEAD vengono comunque osservate e registrate nel Control Plane/handoff se disponibili.
+I commit di reporting prodotti dopo `93b43bda...` non modificano alcun input del workflow Android Readiness né codice/configurazione applicativa. Per questo non viene esteso artificialmente il significato del SUCCESS: esso resta attribuito all'exact content tecnico `93b43bda...`, mentre il final HEAD post-reporting viene sottoposto a fresh metadata/diff/review.
 
 ## Non verificato / limiti
-- nessun test su device reale;
-- nessuna permission OS reale;
-- nessun GPS/provider location reale;
-- nessun adapter iOS/Android runtime;
-- nessuna mappa o routing reale;
-- nessun EAS Build/TestFlight eseguito;
-- nessuna credenziale letta o modificata.
+- nessuna EAS Build Android;
+- nessun APK/AAB;
+- nessuna installazione su device Android reale;
+- nessuna pubblicazione Google Play;
+- nessun TestFlight/EAS iOS;
+- nessuna credenziale o segreto.
 
 ## Errori e warning rilevati
-- Durante la prima replacement di C007 è stato introdotto un refuso documentale `CONTESTTUALE` e perso il newline finale; entrambi sono stati corretti immediatamente prima del VERIFY e non restano nello stato verificato `d65c004...`.
-- Nessun errore osservato nei workflow post-conceptual elencati sopra.
+Nessun errore osservato nelle run exact-head `32592321823` e `32592321853`. Eventuali warning npm/lint già presenti nel progetto non vengono reinterpretati come failure se il job GitHub Actions ha conclusione SUCCESS.
 
 ## Problemi non risolti
-- PR #24 richiede NEXO REVIEW indipendente sull'exact HEAD finale post-reporting.
-- NEXO 1 non può dichiarare CLEAN né mergeare autonomamente.
-- N1.6 resta congelato fino a CLEAN + serializzazione/merge Coordinator della PR #24.
+La PR #18 richiede NEXO REVIEW sul final exact HEAD post-reporting. PR #19 resta bloccata fino a CLEAN + merge Coordinator della #18.
 
 ## Dipendenze / credenziali ancora necessarie
-Nessuna per la chiusura N1.5R. Future location runtime reali richiederanno provider/permission adapter, fuori perimetro.
+Nessuna per chiudere la readiness/review. Una futura EAS Build o pubblicazione Android richiederà autorizzazione separata e può avere costo/credenziali, fuori perimetro.
 
 ## Rischi tecnici
-- Le soglie default `30_000 ms` / `100 m` sono policy foundation, non ancora validate su device/condizioni reali.
-- Il fallback è intenzionalmente conservativo e non deve essere confuso con una stima/sintesi di posizione.
-- Qualsiasi futura integrazione OS deve mantenere le semantiche fail-closed e il divieto di inventare coordinate.
+`expo prebuild --platform android --no-install --clean` dimostra readiness di generazione nativa, non equivale a una build APK/AAB né a test su dispositivo reale.
 
 ## Prossimo passo consigliato
-Verificare il final HEAD post-reporting, fresh mergeability/current-main compatibility e gli eventuali workflow automatici associati; quindi handoff exact-SHA a NEXO REVIEW. N1.6 resta fermo fino a CLEAN + merge della PR #24.
+Fresh exact HEAD/mergeability/thread/check review da NEXO REVIEW. Se CLEAN e HEAD invariato, Ready + merge Coordinator. Solo dopo il merge rileggere il nuovo main e autorizzare la reconciliation della PR #19.
 
 ## Decisioni richieste a Fabio
-Nessuna. Nessuna spesa, credenziale o TestFlight è richiesta per questo handoff.
+Nessuna. Nessuna spesa, credenziale o TestFlight/EAS è richiesta per questo merge gate.
