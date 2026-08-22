@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - nexo1/validate-pr12-conceptual
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
