@@ -5,11 +5,11 @@ OWNER: NEXO 2
 COORDINATOR: NEXO Coordinator
 
 ## CURRENT VERIFIED STATE
-- PR #20 `feat(surface): add provider-neutral surface capabilities`: OPEN / DRAFT, exact HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4`, `mergeable=false`.
-- That exact SHA was historically CLEAN before later main advances: review ID `4998458851`, P0/P1/P2=0/0/0.
-- Current main is now `b011808ec1a46827d27ccb258ef68ea01dee8b41` after CLEAN PR #23 Location Permission/Degraded State Machine.
-- Fresh compare current main → PR #20: diverged, ahead 18 / behind 27, merge-base `213fb129201230c3875e5fb8fc157260f995fe04`.
-- Historical CLEAN does not authorize merge after divergence; current-main Saved Places + Location Contract + Location State Machine/C007 conceptual/reporting must be preserved.
+- Current main: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+- Latest main delta disables automatic TestFlight-on-push; production TestFlight is manual/Coordinator-controlled.
+- PR #20 `feat(surface): add provider-neutral surface capabilities`: OPEN / DRAFT, historical exact HEAD `6e13d42379a5cff26cb37a67944f89302b925ac4`, `mergeable=false` against newer main.
+- That historical SHA was CLEAN (review `4998458851`, P0/P1/P2=0/0/0), but historical CLEAN cannot authorize merge after divergence.
+- Existing Surface implementation must be preserved: capability model, availability/policy orthogonality, deterministic checker, V05/V44/V45/V46 conservative conceptual evidence.
 - Backup CLEAN: `backup/nexo2-pr20-clean-6e13d423` → `6e13d42379a5cff26cb37a67944f89302b925ac4`.
 - Do not touch location/voice/navigation/automotive native/EAS/TestFlight areas owned elsewhere.
 
@@ -19,18 +19,20 @@ COORDINATOR: NEXO Coordinator
   - COMPLETED EVIDENCE: exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`; independent CLEAN review ID `4998458851`.
 
 - [x] **N2.2 — PR #20 REVIEW REWORK / CLEAN HANDOFF**
-  - COMPLETED EVIDENCE: CLEAN on exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`, review ID `4998458851`; no correction required on that historical SHA.
+  - COMPLETED EVIDENCE: CLEAN on historical exact SHA `6e13d42379a5cff26cb37a67944f89302b925ac4`.
 
-- [ ] **N2.3 — CURRENT-MAIN RECONCILIATION + SURFACE CAPABILITY MATRIX HARDENING**
-  - START CONDITION: SATISFIED in principle — PR #20 must be reconciled before further work/merge.
-  - FIRST REQUIRED ACTION: reconcile/rebase PR #20 against current main `b011808ec1a46827d27ccb258ef68ea01dee8b41`, preserving all merged Saved Places + Location Contract + Location Permission/Degraded State Machine/C007 conceptual/reporting and Surface ownership; do not overwrite other agents' work.
-  - Goal after safe reconciliation: canonical matrix for iOS phone, Android phone, CarPlay, Android Auto; fail-closed defaults; deterministic tests.
-  - PROOF REQUIRED: new exact SHA, mergeable PR, diff/conflict resolution audited, applicable tests/checks rerun, reporting/conceptual aligned to current main, new handoff to NEXO REVIEW before merge.
-  - STATUS: BLOCKED pending safe reconciliation capability. Last runtime Git retries failed exit 128 (`Could not resolve host: github.com`). Fresh compare is diverged ahead 18 / behind 27. Do not force-reset/reconstruct shared files manually.
-  - RESUME CONDITION: working Git checkout/network, safe connector reconciliation, or Coordinator-provided safe reconciled SHA/base. On resume use the current main above, not the obsolete `8d8dee4...` base.
+- [ ] **N2.3R — SAFE RECONCILIATION PR #20 TO CURRENT MAIN + RE-HANDOFF**
+  - START CONDITION: SATISFIED IN PRINCIPLE / PRIORITY 5, after #24/#17/#18/#19 serialization advances. Do not start a new functional Surface slice.
+  - CURRENT MAIN: use the latest Coordinator-confirmed main at execution time; snapshot now `ba39d977072231d69ef848b1cc9ae2637b556c72`.
+  - FIRST SAFETY STEP: preserve exact current PR #20 HEAD and backup reference before any reconciliation attempt.
+  - PRESERVE: all Surface Capabilities work, availability/policy distinction, checker, V05/V44/V45/V46 evidence, plus every newer main change (Saved Places, Location slices, TestFlight manual-only policy, and subsequently merged backlog PRs).
+  - RECONCILIATION RULE: use safe git merge/rebase/connector capability only. If shared files produce a conflict that cannot be resolved unambiguously, STOP and report exact file/path/hunk to Coordinator; do not manually reconstruct or overwrite global documents speculatively.
+  - AFTER RECONCILIATION: rerun applicable Surface TypeScript/checker/conceptual checks on the exact reconciled content; align reporting to current main; explicit new exact-SHA NEXO REVIEW handoff.
+  - DEFINITION OF DONE: new mergeable exact SHA, no regression/overwrite of current main, exact-head Surface checks recorded, DRAFT, explicit review handoff.
+  - FREEZE RULE: N2.4+ are not eligible until PR #20 is CLEAN and serialized/merged by Coordinator.
 
 - [ ] **N2.4 — SURFACE SESSION / LIFECYCLE MODEL**
-  - START CONDITION: N2.3 completed/reviewable and no conflict.
+  - START CONDITION: PR #20 CLEAN and serialized/merged by Coordinator.
   - Goal: attach/detach/foreground/background/disconnected state model provider-neutral; no native automotive framework.
 
 - [ ] **N2.5 — SAFETY / INTERACTION POLICY CONTRACT**
@@ -49,6 +51,6 @@ COORDINATOR: NEXO Coordinator
 After every task: update this file on `coordination/agent-control`, mark `[x]` only when truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
-- 2026-08-22 07:53 UTC coordinator refresh — main `b011808ec1a46827d27ccb258ef68ea01dee8b41`; PR #20 OPEN/DRAFT, HEAD `6e13d423...`, `mergeable=false`.
-- Compare main→PR #20: diverged, ahead 18, behind 27, merge-base `213fb129...`.
-- N2.3 remains `[ ]` BLOCKED on safe reconciliation; N2.4+ not eligible.
+- Main snapshot for current consolidation: `ba39d977...`.
+- PR #20 remains the deepest-diverged backlog item and must not be rewritten from scratch.
+- N2.3R is reconciliation-only; all new Surface work is frozen until Coordinator serialization.
