@@ -9,8 +9,9 @@ COORDINATOR: NEXO Coordinator
 - Current main: `ba39d977072231d69ef848b1cc9ae2637b556c72`.
 - Production TestFlight is manual / Coordinator-controlled.
 - Consolidation freeze is active: review only exact SHAs explicitly handed off with required evidence; do not review stale/incomplete heads.
-- PR #24 remains DRAFT at `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`; it is mergeable but compare is diverged (ahead 7 / behind 1), and NEXO 1 reports C007/final handoff still blocked. Not reviewable.
-- PR #17 is DRAFT/mergeable on exact HEAD `05f8211ec55fa41d869e1000e64ccd4ba2b8694b`; compare is ahead/behind=0, so reconciliation is complete. However exact-head Voice Validation run `32566568206` is `action_required` with zero jobs, so no valid final handoff yet.
+- PR #24 remains DRAFT at `8abc5d2dc39b2b8b63a62f63ffe8bc8cbed62a17`; it is diverged behind current main by 1 and NEXO 1 reports reconciliation/C007 finalization blocked. Not reviewable.
+- PR #17 is now DRAFT/mergeable on exact HEAD `21665a6b0aeb986c37bbc70a23f55871d0723807`, base SHA exactly current main `ba39d977072231d69ef848b1cc9ae2637b556c72`. Author handoff is explicit in PR body and NEXO 3 task/report.
+- Exact-head `NEXO 3 Voice Validation` run `32566648776` is completed/SUCCESS; associated exact-head Location Contract `32566648845` and Location State Machine `32566648797` are also SUCCESS. The prior jobless `action_required` blocker belonged to obsolete SHA `05f8211...` and is closed by newer evidence.
 - PR #18/#19/#20 remain stale/non-mergeable and require reconciliation/new handoff.
 
 ## REVIEW QUEUE — ONE AT A TIME
@@ -24,11 +25,14 @@ COORDINATOR: NEXO Coordinator
 
 - [ ] **R13R — PR #24 LOCATION QUALITY POLICY**
   - START CONDITION: NEXO 1 hands off a current-main-based exact SHA after conservative C007 evidence, final reporting and applicable exact-head VERIFY. Current `8abc5d2d...` is not eligible.
-  - PRIORITY: 1.
+  - PRIORITY: 1 when eligible; do not idle REVIEW while it is blocked if the next item is genuinely eligible.
 
-- [ ] **R4R — PR #17 VOICE CORE**
-  - START CONDITION: NEXO 3 resolves/diagnoses the jobless `action_required` exact-head validation gate and explicitly hands off a final SHA with real Voice checker/strict compile + complete conceptual validator evidence. Current `05f8211...` is not eligible yet.
-  - PRIORITY: 2.
+- [ ] **R4R — PR #17 VOICE CORE — REVIEW NOW**
+  - START CONDITION: SATISFIED.
+  - EXACT SHA: `21665a6b0aeb986c37bbc70a23f55871d0723807`.
+  - REQUIRED EVIDENCE PRESENT: PR OPEN/DRAFT/mergeable; base=current main `ba39d977...`; explicit handoff; Voice Validation run `32566648776` SUCCESS on exact SHA, including Voice checker/TypeScript strict and complete conceptual validator per workflow/handoff.
+  - REVIEW SCOPE: exact SHA/diff, provider-neutral/fail-closed Voice semantics, V02/V03/V34 conservative status/evidence, workflow evidence, mandatory reporting/governance. Publish CLEAN or CHANGES REQUIRED; append REVIEW report + REVIEW NOTE. Do not merge/Ready/build.
+  - PRIORITY: ACTIVE NOW because R13R is blocked.
 
 - [ ] **R8R — PR #18 ANDROID READINESS**
   - START CONDITION: NEXO CODEX hands off a new mergeable exact SHA preserving Android Readiness/current main, with exact-head Android Readiness SUCCESS and reporting aligned.
@@ -43,13 +47,13 @@ COORDINATOR: NEXO Coordinator
   - PRIORITY: 5.
 
 ## REVIEW ORDER — COORDINATOR DIRECTIVE
-Use consolidation order R13R → R4R → R8R → R6R → R7R whenever eligible. After every Coordinator merge, reread current main before reviewing the next PR. Never duplicate an exact SHA and never treat `action_required`/jobless workflows as PASS.
+Prefer consolidation order R13R → R4R → R8R → R6R → R7R, but a blocked earlier item does not prevent review of the next genuinely eligible exact SHA. After every Coordinator merge, reread current main before reviewing the next PR. Never duplicate an exact SHA and never treat `action_required`/jobless workflows as PASS.
 
 ## REVIEW LOOP
 For every eligible item: READ AGENTS.md + Issue #11 + this file → verify exact PR/SHA/diff/checks/reporting/governance/current main → publish CLEAN or CHANGES REQUIRED → append review report + REVIEW NOTE → update queue → immediately reread.
 
 ## LAST EVIDENCE
-- 2026-08-22 coordinator watch: main remains `ba39d977...`.
-- #24 `8abc5d2d...`: mergeable but diverged behind current main by 1; author reports C007/final handoff incomplete.
-- #17 `05f8211...`: mergeable and fully based on current main, but exact-head Voice Validation `32566568206` = action_required/jobs=0; not reviewable yet.
-- #18/#19/#20 remain non-mergeable historical heads.
+- 2026-08-22 10:55 UTC coordinator watch: main `ba39d977...`.
+- #24 `8abc5d2d...`: blocked/diverged behind main by 1; no final handoff.
+- #17 `21665a6b...`: OPEN/DRAFT/mergeable, base exact current main, explicit handoff; exact-head Voice Validation `32566648776` SUCCESS. R4R is eligible now.
+- #18/#19/#20 remain reconciliation-gated historical heads.
