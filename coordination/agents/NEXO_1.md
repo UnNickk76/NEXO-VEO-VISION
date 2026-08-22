@@ -10,6 +10,7 @@ COORDINATOR: NEXO Coordinator
 - PR #24 Location Freshness / Quality Policy: OPEN / DRAFT / mergeable=true, reconciled exact HEAD `950f01c814b953f7332f2b3fbf7a9f55c0573145`.
 - Fresh compare current main → PR #24: `ahead`, ahead 8 / behind 0, merge-base=current main.
 - Coordinator reconciliation preserved the five N1.5-owned diff files and resolved shared `LATEST`/`FABIO_CONTROLLO` to current-main state; no Voice/TestFlight regression was reintroduced.
+- Exact-head reconciliation CI on `950f01c...` is now fully completed/SUCCESS: Location Contract `32583597225`, Voice Validation `32583597311`, Location Quality Policy `32583597232`, Location State Machine `32583597351`.
 - C007 remains `[ ] / parziale`; no OS/GPS provider runtime exists yet.
 
 ## QUEUE — ONE TASK AT A TIME
@@ -24,9 +25,10 @@ COORDINATOR: NEXO Coordinator
   - START CONDITION: SATISFIED / TOP PRIORITY.
   - RECONCILIATION: COMPLETED BY COORDINATOR at `950f01c814b953f7332f2b3fbf7a9f55c0573145`; do NOT redo/rebase/reconstruct it.
   - PRESERVE: existing quality/freshness implementation, checker/workflow, merged Voice Core, manual-only TestFlight policy and all current-main state.
-  - REQUIRED NOW: wait for/check exact-head workflows on `950f01c...`; update C007 conservatively with PR #24 evidence while keeping `[ ] / parziale`; create/finalize compliant historical reporting + `LATEST.md` + `FABIO_CONTROLLO.md` on the reconciled branch; rerun all checks invalidated by those edits; record final exact SHA and explicit NEXO REVIEW handoff.
+  - VERIFIED BASELINE: all four exact-head reconciliation workflows on `950f01c...` are SUCCESS. These prove the reconciled baseline only; any subsequent conceptual/reporting edit that invalidates an applicable check requires a fresh final run.
+  - REQUIRED NOW: update C007 conservatively with PR #24 evidence while keeping `[ ] / parziale`; create/finalize compliant historical reporting + `LATEST.md` + `FABIO_CONTROLLO.md` on the reconciled branch; rerun all checks invalidated by those edits; record final exact SHA and explicit NEXO REVIEW handoff.
   - IMPORTANT: shared reporting files currently intentionally match current main after reconciliation. Reapply only accurate N1.5 final reporting, not stale pre-reconciliation copies.
-  - DEFINITION OF DONE: final PR #24 mergeable against current main, no regression to merged Location/Voice/TestFlight state, exact-head applicable checks SUCCESS, C007 evidence complete/conservative, reporting coherent, PR DRAFT, explicit REVIEW handoff.
+  - DEFINITION OF DONE: final PR #24 mergeable against current main, no regression to merged Location/Voice/TestFlight state, exact-head applicable checks SUCCESS after final edits, C007 evidence complete/conservative, reporting coherent, PR DRAFT, explicit REVIEW handoff.
   - FREEZE RULE: do not start N1.6 before PR #24 CLEAN + Coordinator serialization.
 
 - [ ] **N1.6 — LOCATION ADAPTER CONTRACT + HARDENING**
@@ -42,10 +44,10 @@ COORDINATOR: NEXO Coordinator
   - START CONDITION: N1.8 CLEAN/reviewable and Coordinator confirms no ownership conflict.
 
 ## UPDATE RULE
-After every task: update this file on `coordination/agent-control`, mark `[x]` only if truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
+After every task: update this file on `coordination/agent-control`, mark `[x]` only if the task is truly completed, append exact PR/SHA/check evidence, then immediately reread and start the next eligible task.
 
 ## LAST EVIDENCE
 - Coordinator safely reconciled PR #24 by creating merge commit `950f01c814b953f7332f2b3fbf7a9f55c0573145` with parents old PR HEAD `8abc5d2d...` + current main `1d0a01c9...` and a tree based on current main with only the N1.5-owned functional/workflow/checker/history files overlaid.
-- Fresh compare: ahead 8 / behind 0; PR #24 now mergeable=true.
-- Exact-head runs started automatically: Location Contract `32583597225`, Voice Validation `32583597311`, Location Quality Policy `32583597232`, Location State Machine `32583597351`; all were in_progress at Coordinator handoff, so no PASS is claimed yet.
-- N1.5R is now UNBLOCKED for conceptual/reporting/final VERIFY only.
+- Fresh compare at reconciliation: ahead 8 / behind 0; PR #24 mergeable=true.
+- Exact-head reconciliation runs are now all completed/SUCCESS: Location Contract `32583597225`; Voice Validation `32583597311`; Location Quality Policy `32583597232`; Location State Machine `32583597351`.
+- N1.5R remains `[ ]` because C007 + final reporting + post-edit VERIFY + exact-SHA REVIEW handoff are still required. N1.6 remains blocked.
