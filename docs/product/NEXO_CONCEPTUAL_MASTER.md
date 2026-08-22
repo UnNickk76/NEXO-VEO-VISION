@@ -196,7 +196,7 @@ vedere l'app su iPhone, ma non completa automaticamente le funzioni F1.
 | [ ] | `E42` | Domande contestuali implicite/frasi incomplete ("piu' avanti c'e' di meglio?" riferito | concettuale | — | NEXO_VEO_VISION_EXPANSION_47.txt pt.42 |
 | [ ] | `E43` | Profilo stradale legato al veicolo (altezza, larghezza, lunghezza, peso, alimentazione, | concettuale | — | NEXO_VEO_VISION_EXPANSION_47.txt pt.43 |
 | [ ] | `E44` | Condizioni fisiche della strada (buche/dissesti, allagamenti, ghiaccio, neve, vento, | concettuale | — | NEXO_VEO_VISION_EXPANSION_47.txt pt.44 |
-| [ ] | `E45` | Rifornimento/ricarica CONTESTTUALE al viaggio (sul percorso vs deviazione X min; tipo | concettuale | — | NEXO_VEO_VISION_EXPANSION_47.txt pt.45 |
+| [ ] | `E45` | Rifornimento/ricarica CONTESTUALE al viaggio (sul percorso vs deviazione X min; tipo | concettuale | — | NEXO_VEO_VISION_EXPANSION_47.txt pt.45 |
 | [ ] | `E46` | LANE GUIDANCE evoluta: indicazione anticipata della corsia migliore ("mantieniti sulle | concettuale | — | NEXO_VEO_VISION_EXPANSION_47.txt pt.46 |
 | [ ] | `E47` | GLOBAL-FIRST — NEXO VEO VISION NASCE MONDIALE (non "app italiana da tradurre"). | concettuale | — | NEXO_VEO_VISION_EXPANSION_47.txt pt.47 |
 
